@@ -1,0 +1,73 @@
+name: healthcare
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  http: ^0.13.4
+  dropdown_button2: ^2.1.4
+
+  cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.7
+  flutter_local_notifications: ^14.1.1
+  timezone: ^0.9.1
+  dio: ^5.2.1+1
+  hexcolor: ^3.0.1
+  flutter_cache_manager: ^3.3.0
+  flutter_screenutil: ^5.7.0
+  flutter_osm_plugin: ^0.55.1+1
+  country_list_pick: ^1.0.1+6
+  intl_phone_number_input: ^0.7.3+1
+  csc_picker: ^0.2.7
+  country_picker: ^2.0.20
+  equatable: ^2.0.5
+  provider: ^6.0.5
+  shared_preferences: ^2.1.0
+  image_picker: ^0.8.7+4
+  path: ^1.8.3
+  cloud_firestore: ^4.7.0
+  firebase_core: ^2.12.0
+  firebase_storage: ^11.2.0
+  email_auth: ^1.0.0
+  syncfusion_flutter_gauges: ^22.1.36
+  syncfusion_flutter_charts: ^22.1.36
+
+
+
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+
+flutter:
+
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    
+    - assets/icons/
+
+  fonts:
+     - family: Kanit
+       fonts:
+         - asset: assets\fonts\Kanit-Medium.ttf
+ 
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
