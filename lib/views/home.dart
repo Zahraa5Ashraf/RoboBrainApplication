@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/Login.dart';
@@ -27,8 +26,6 @@ class home extends StatefulWidget {
 var text_color = Token.text;
 
 class _homeState extends State<home> {
-  final TextEditingController _searchController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterial(context));
@@ -147,9 +144,9 @@ class _homeState extends State<home> {
                   // )
                 ],
               ),
-              // SizedBox(
-              //   height: 25,
-              // ),
+              SizedBox(
+                height: 25,
+              ),
               //  search bar
               Container(
                 decoration: BoxDecoration(

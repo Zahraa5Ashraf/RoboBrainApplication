@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/HomePage.dart';
 import 'package:healthcare/views/chair/chair.dart';
 import 'package:healthcare/views/login/components/body.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+//import 'dart:convert';
+//import 'package:http/http.dart' as http;
 import '../login/components/roundedbutton.dart';
 
 class ChairPage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _ChairPageState extends State<ChairPage> {
     Size size = MediaQuery.of(context).size;
     // style button important
     final ButtonStyle flatbuttonstyle = TextButton.styleFrom(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
         horizontal: 40,
       ),
@@ -36,13 +35,13 @@ class _ChairPageState extends State<ChairPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
-        title: Text('WheelChair details'),
+        title: const Text('WheelChair details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
           children: [
-            SizedBox(
+         const   SizedBox(
               height: 70,
             ),
             ClipRRect(
@@ -63,7 +62,7 @@ class _ChairPageState extends State<ChairPage> {
             ),
             Text(
               widget.item.title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: kPrimaryColor,
                 fontSize: 35,
@@ -71,12 +70,12 @@ class _ChairPageState extends State<ChairPage> {
             ),
             Text(
               widget.item.subtitle,
-              style: TextStyle(
+              style:  const TextStyle(
                 color: Colors.grey,
                 fontSize: 25,
               ),
             ),
-            Text(
+        const    Text(
               'Patient Details:   etc',
               style: TextStyle(
                 color: Colors.grey,
@@ -99,7 +98,7 @@ class _ChairPageState extends State<ChairPage> {
   }
 
   Future<void> reload() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed ( const Duration(seconds: 3));
 
     Navigator.pushReplacement(
         context as BuildContext,

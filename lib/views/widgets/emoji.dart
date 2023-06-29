@@ -13,10 +13,10 @@ class emoji extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.blueGrey[600], borderRadius: BorderRadius.circular(15)),
-      padding: EdgeInsets.all(18.0),
+      padding: const EdgeInsets.all(18.0),
       child: Text(
         emojiface,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 25,
         ),
       ),

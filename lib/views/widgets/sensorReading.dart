@@ -4,13 +4,11 @@ import 'package:healthcare/views/widgets/heart.dart';
 import 'package:healthcare/views/widgets/blood.dart';
 import 'package:healthcare/views/widgets/temprature.dart';
 import 'package:healthcare/views/widgets/oxygen.dart';
-import 'package:healthcare/views/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../register.dart';
 import '../services/notif_service.dart';
-import 'heart.dart';
 
 class sensorReading extends StatefulWidget {
   final textcolor;
@@ -83,7 +81,7 @@ Future sensorupdate(BuildContext cont) async {
 
 class _sensorReadingState extends State<sensorReading> {
   List<Widget> sensors = [
-    heart(),
+    Heart(),
     temprature(),
     blood(),
     oxygen(),

@@ -1,15 +1,13 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/components/body.dart';
 
 import 'package:healthcare/views/map.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:healthcare/views/global.dart';
-import 'package:healthcare/views/login/Login.dart';
+//import 'package:http/http.dart' as http;
+
 import 'home.dart';
 import 'profile screen/proflle_screen.dart';
 
@@ -32,8 +30,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Color iconColor = Colors.white;
 
-  List _users = [];
-  final TextEditingController _searchController = TextEditingController();
   //////////////////////////new code
   int pageIndex = 0;
   int currentIndex = 0;
@@ -80,9 +76,9 @@ class _HomePageState extends State<HomePage> {
                 currentIndex = index;
               });
             },
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
+            items: const [
+               BottomNavigationBarItem(
+                icon:  Icon(
                   CupertinoIcons.house_alt_fill,
                 ),
                 label: '',

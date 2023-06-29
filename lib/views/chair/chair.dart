@@ -1,5 +1,3 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
@@ -19,26 +17,22 @@ class addchair extends StatefulWidget {
 }
 
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  shape: RoundedRectangleBorder(
+  foregroundColor: kPrimaryColor, backgroundColor: Colors.white, shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
-      side: BorderSide(color: kPrimaryColor)),
+      side: const BorderSide(color: kPrimaryColor)),
   //     onPressed: () {},
-  padding: EdgeInsets.all(10.0),
-  primary: Colors.white,
-  onPrimary: kPrimaryColor,
+  padding: const EdgeInsets.all(10.0),
 
   //     color: Color.fromRGBO(0,160,227,1),
   //     textColor: Colors.white,
 );
 final ButtonStyle raisedButtonStyle2 = ElevatedButton.styleFrom(
-  shape: RoundedRectangleBorder(
+  foregroundColor: kPrimaryLightColor, backgroundColor: kPrimaryColor, shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
-      side: BorderSide(color: kPrimaryColor)),
+      side: const BorderSide(color: kPrimaryColor)),
   //     onPressed: () {},
 
-  padding: EdgeInsets.only(top: 10.0, bottom: 10, left: 10, right: 10),
-  primary: kPrimaryColor,
-  onPrimary: kPrimaryLightColor,
+  padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 10, right: 10),
   //     color: Color.fromRGBO(0,160,227,1),
   //     textColor: Colors.white,
 );
@@ -59,27 +53,27 @@ class CardItem {
 
 class _addchairState extends State<addchair> {
   List<CardItem> items = [
-    CardItem(
+    const CardItem(
         urlImage: ('assets/images/wheelchair1.jpg'),
         title: 'ID:23940',
         subtitle: 'Name:Patient1'),
-    CardItem(
+    const CardItem(
         urlImage: ('assets/images/wheelchair3.jpg'),
         title: 'ID:37289',
         subtitle: 'Name:Patient2'),
-    CardItem(
+    const CardItem(
         urlImage: ('assets/images/wheelchair2.png'),
         title: 'ID:62890',
         subtitle: 'Name:Patient3'),
-    CardItem(
+    const CardItem(
         urlImage: ('assets/images/wheelchair1.jpg'),
         title: 'ID:23940',
         subtitle: 'Name:Patient1'),
-    CardItem(
+    const CardItem(
         urlImage: ('assets/images/wheelchair3.jpg'),
         title: 'ID:37289',
         subtitle: 'Name:Patient2'),
-    CardItem(
+    const CardItem(
         urlImage: ('assets/images/wheelchair2.png'),
         title: 'ID:62890',
         subtitle: 'Name:Patient3'),
@@ -96,7 +90,7 @@ class _addchairState extends State<addchair> {
     // style button important
     Size size = MediaQuery.of(context).size;
     final ButtonStyle flatbuttonstyle = TextButton.styleFrom(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
         horizontal: 40,
       ),
@@ -104,7 +98,7 @@ class _addchairState extends State<addchair> {
     );
     //style button important
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 20,
       ),
       decoration: const BoxDecoration(
@@ -126,16 +120,16 @@ class _addchairState extends State<addchair> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_left,
                     size: 40,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
-                Text(
+                const Text(
                   "Wheel-chair",
                   style: TextStyle(
                     color: Colors.white,
@@ -145,17 +139,17 @@ class _addchairState extends State<addchair> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(50),
                   topRight: Radius.circular(50),
                 ),
                 child: Container(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 10,
                     //  left: 25,
                     // right: 25,
@@ -166,12 +160,12 @@ class _addchairState extends State<addchair> {
                       height: MediaQuery.of(context).size.height,
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 30,
                           ),
                           Container(
                             height: 400,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 35, right: 35, bottom: 20),
                             child: Center(
                               child: ListView.separated(
@@ -268,7 +262,8 @@ class _addchairState extends State<addchair> {
                                     ),
                                   ),
                                 ),
-                                separatorBuilder: (context, _) => SizedBox(
+                                separatorBuilder: (context, _) =>
+                                    const SizedBox(
                                   width: 10,
                                 ),
                               ),
@@ -276,7 +271,7 @@ class _addchairState extends State<addchair> {
                           ),
                           Center(
                             child: Container(
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                 top: 10,
                                 right: 10,
                                 left: 10,
@@ -293,7 +288,7 @@ class _addchairState extends State<addchair> {
                                         ShowDialogChair(
                                             context, size, flatbuttonstyle);
                                       },
-                                      child: Text("Add Wheelchair +",
+                                      child: const Text("Add Wheelchair +",
                                           style: TextStyle(fontSize: 20)),
                                     ),
                                   ),
@@ -337,10 +332,10 @@ class _addchairState extends State<addchair> {
       builder: (context) => SimpleDialog(
         children: [
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Center(
+                const Center(
                     child: Text(
                   'Fill in patient\'s data',
                   style: TextStyle(
@@ -349,10 +344,11 @@ class _addchairState extends State<addchair> {
                     color: kPrimaryColor,
                   ),
                 )),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 RoundedInputField(
+                  action: TextInputAction.go,
                   onchanged: ((value) {
                     setState(() {
                       idchair = value;
@@ -361,10 +357,13 @@ class _addchairState extends State<addchair> {
                   controller: null,
                   hinttext: 'chair id',
                   icon: Icons.wheelchair_pickup,
-                  validateStatus: (value) {},
+                  validateStatus: (value) {
+                    return null;
+                  },
                   type: TextInputType.text,
                 ),
                 RoundedInputField(
+                  action: TextInputAction.go,
                   onchanged: ((value) {
                     setState(() {
                       ppass = value;
@@ -373,10 +372,13 @@ class _addchairState extends State<addchair> {
                   controller: null,
                   hinttext: 'Password',
                   icon: Icons.lock,
-                  validateStatus: (value) {},
+                  validateStatus: (value) {
+                    return null;
+                  },
                   type: TextInputType.text,
                 ),
                 RoundedInputField(
+                  action: TextInputAction.go,
                   onchanged: ((value) {
                     setState(() {
                       pfirstname = value;
@@ -385,10 +387,13 @@ class _addchairState extends State<addchair> {
                   controller: null,
                   hinttext: 'First name',
                   icon: Icons.person,
-                  validateStatus: (value) {},
+                  validateStatus: (value) {
+                    return null;
+                  },
                   type: TextInputType.text,
                 ),
                 RoundedInputField(
+                  action: TextInputAction.go,
                   onchanged: ((value) {
                     setState(() {
                       plastname = value;
@@ -397,10 +402,13 @@ class _addchairState extends State<addchair> {
                   controller: null,
                   hinttext: 'Last name',
                   icon: Icons.person,
-                  validateStatus: (value) {},
+                  validateStatus: (value) {
+                    return null;
+                  },
                   type: TextInputType.text,
                 ),
                 RoundedInputField(
+                  action: TextInputAction.go,
                   onchanged: ((value) {
                     setState(() {
                       page = value;
@@ -409,22 +417,26 @@ class _addchairState extends State<addchair> {
                   controller: null,
                   hinttext: ' Age ',
                   icon: Icons.app_registration_sharp,
-                  validateStatus: (value) {},
+                  validateStatus: (value) {
+                    return null;
+                  },
                   type: TextInputType.number,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 1),
                       //<-- SEE HERE
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
-                      borderSide: BorderSide(color: Colors.white, width: 1),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 1),
                       //<-- SEE HERE
                     ),
                     filled: true,
@@ -449,7 +461,7 @@ class _addchairState extends State<addchair> {
                     );
                   }).toList(),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 roundedbutton(
@@ -574,14 +586,14 @@ class _addchairState extends State<addchair> {
                 ),
                 Text(
                   item.title,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
                       color: kPrimaryColor),
                 ),
                 Text(
                   item.subtitle,
-                  style: TextStyle(fontSize: 20, color: Colors.grey),
+                  style: const TextStyle(fontSize: 20, color: Colors.grey),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

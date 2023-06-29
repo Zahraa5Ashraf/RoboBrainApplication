@@ -86,7 +86,7 @@ class _BodyState extends State<Body> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
+                const    Text(
                       "LOGIN",
                       style: TextStyle(
                         color: kPrimaryColor,
@@ -102,6 +102,7 @@ class _BodyState extends State<Body> {
                       height: size.height * 0.35,
                     ),
                     RoundedInputField(
+                      action: TextInputAction.next,
                       onchanged: (String value) {
                         email = value;
                       },
@@ -117,6 +118,7 @@ class _BodyState extends State<Body> {
                       icon: Icons.person,
                     ),
                     roundedpasswordfield(
+                      
                       validateStatus: (value) {
                         if (value!.isEmpty) {
                           return 'Field must not be empty';
@@ -229,7 +231,7 @@ class _BodyState extends State<Body> {
   Future<void> reload() async {
     check = true;
     print(check);
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed( const Duration(seconds: 3));
     print('after 3 secs $check');
     Navigator.pushReplacement(
         context,

@@ -13,10 +13,12 @@ class RoundedInputField extends StatelessWidget {
   final controller;
   final ValueChanged<String> onchanged;
   final FormFieldValidator validateStatus;
+  final TextInputAction action;
 
   const RoundedInputField({
     super.key,
     required this.hinttext,
+    required this.action,
     required this.icon,
     required this.onchanged,
     required this.type,
@@ -28,6 +30,7 @@ class RoundedInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextFormField(
+        textInputAction: action,
         keyboardType: type,
         controller: controller,
         onChanged: onchanged,

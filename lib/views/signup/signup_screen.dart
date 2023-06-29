@@ -145,6 +145,7 @@ class _signupState extends State<signup> {
                     height: size.height * 0.03,
                   ),
                   RoundedInputField(
+                    action: TextInputAction.go,
                     controller: emailController,
                     type: TextInputType.emailAddress,
                     hinttext: "Email",
@@ -173,6 +174,7 @@ class _signupState extends State<signup> {
                     passwordVisible: true,
                   ),
                   RoundedInputField(
+                    action: TextInputAction.go,
                     controller: first_nameController,
                     type: TextInputType.name,
                     hinttext: "First name",
@@ -188,6 +190,7 @@ class _signupState extends State<signup> {
                     },
                   ),
                   RoundedInputField(
+                    action: TextInputAction.go,
                     controller: usernameController,
                     type: TextInputType.name,
                     hinttext: "Username",
@@ -203,6 +206,7 @@ class _signupState extends State<signup> {
                     },
                   ),
                   RoundedInputField(
+                    action: TextInputAction.go,
                     controller: last_nameController,
                     type: TextInputType.text,
                     hinttext: "Last name",
@@ -218,6 +222,7 @@ class _signupState extends State<signup> {
                     },
                   ),
                   RoundedInputField(
+                    action: TextInputAction.go,
                     controller: ageController,
                     type: TextInputType.number,
                     hinttext: "Age",
@@ -233,6 +238,7 @@ class _signupState extends State<signup> {
                     },
                   ),
                   RoundedInputField(
+                    action: TextInputAction.go,
                     controller: phoneController,
                     type: TextInputType.phone,
                     hinttext: "Phone number",
@@ -262,7 +268,6 @@ class _signupState extends State<signup> {
                   alreadyhaveaccount(
                       login: false,
                       press: () {
-                        
                         Navigator.pop(
                           context,
                         );

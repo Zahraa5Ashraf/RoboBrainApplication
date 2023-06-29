@@ -1,87 +1,187 @@
-import 'dart:convert';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:healthcare/constants.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:healthcare/views/HomePage.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:healthcare/views/global.dart';
-
-import '../../components/button.dart';
 import '../../models/chartdata.dart';
-import '../login/components/body.dart';
+import 'package:healthcare/constants.dart';
+import 'package:healthcare/views/widgets/statisticsCard.dart';
 
-class heart extends StatefulWidget {
+class Heart extends StatefulWidget {
   static List<dynamic> activities = [];
 
-  // const heart({super.key});
-
   @override
-  State<heart> createState() => _heartState();
+  State<Heart> createState() => _HeartState();
 }
 
-var heartrate = 120.0;
-// Future update(BuildContext cont) async {
-//   Map<String, dynamic> body = {
-//     "email": "",
-//     "password": "",
-//   };
-//   String jsonBody = json.encode(body);
-//   final encoding = Encoding.getByName('utf-8');
+List<ChartData> data = [];
+ChartSeriesController? _chartSeriesController;
 
-//   var url = Uri.parse("https://304d-197-133-196-239.eu.ngrok.io/chair/data");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${token}"
-//     },
-//   );
+class _HeartState extends State<Heart> {
+  var heartrate = 120.0;
+  Timer? _timer;
 
-//   var data = json.decode(response.body);
-//   print(data);
-//   test = data["heart_rate"].toString();
-//   if (data["heart_rate"] < 120) {
-//     print('patient died');
-//   }
-//   print(data["heart_rate"]);
-// }
-late List<chartData> data;
-
-class _heartState extends State<heart> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    startTimer();
+  }
 
-    data = [
-      chartData(1, 150),
-      chartData(2, 120),
-      chartData(3, 120),
-      chartData(4, 177),
-      chartData(5, 124),
-      chartData(10, 150),
-      chartData(12, 60),
-      chartData(13, 90),
-      chartData(20, 120),
-      chartData(25, 123),
-      chartData(30, 130),
-    ];
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), updateDataSource);
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+  }
+
+  int time = 1;
+  void updateDataSource(Timer timer) {
+    setState(() {
+      data.add(ChartData(time++, (math.Random().nextInt(100) + 80)));
+      if (data.length > 30) {
+        data.removeAt(0);
+      }
+      _chartSeriesController?.updateDataSource();
+    });
+  }
+
+  Widget _getRadialGauge() {
+    return SfRadialGauge(axes: <RadialAxis>[
+      RadialAxis(
+        minimum: 60,
+        maximum: 180,
+        radiusFactor: 0.80,
+        endAngle: 90,
+        startAngle: 90,
+        showLabels: false,
+        showTicks: false,
+        axisLineStyle: const AxisLineStyle(
+          thickness: 0.1,
+          thicknessUnit: GaugeSizeUnit.factor,
+        ),
+        pointers: <GaugePointer>[
+          RangePointer(
+            enableAnimation: true,
+            value: heartrate,
+            width: 0.1,
+            sizeUnit: GaugeSizeUnit.factor,
+            gradient: const SweepGradient(colors: <Color>[
+              Color(0xFF753A88),
+              Color(0xFFCC2B5E),
+            ], stops: <double>[
+              0.25,
+              0.75
+            ]),
+          )
+        ],
+        annotations: <GaugeAnnotation>[
+          GaugeAnnotation(
+            widget: Column(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/heart hehe.gif'),
+                    ),
+                  ),
+                ),
+                Text(
+                  heartrate.toString(),
+                  style: const TextStyle(
+                      fontSize: 45, fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  ' BPM',
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: ktextcolor2),
+                ),
+              ],
+            ),
+            angle: 90,
+            positionFactor: 0.8,
+          ),
+        ],
+      )
+    ]);
+  }
+
+  Widget getChart() {
+    return SfCartesianChart(
+      enableAxisAnimation: true,
+      margin: const EdgeInsets.all(10),
+      borderWidth: 0,
+      borderColor: Colors.transparent,
+      plotAreaBorderWidth: 0,
+      primaryXAxis: NumericAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+        minimum: 1,
+        maximum: 30,
+        isVisible: true,
+        interval: 5,
+        borderWidth: 0,
+        borderColor: Colors.transparent,
+      ),
+      primaryYAxis: NumericAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+        minimum: 60,
+        maximum: 200,
+        isVisible: true,
+        interval: 20,
+        borderWidth: 0,
+        borderColor: Colors.transparent,
+      ),
+      series: <ChartSeries<ChartData, int>>[
+        SplineAreaSeries<ChartData, int>(
+          onRendererCreated: (ChartSeriesController controller) {
+            _chartSeriesController = controller;
+          },
+          dataSource: data,
+          xValueMapper: (ChartData data, _) => data.value,
+          yValueMapper: (ChartData data, _) => data.day,
+          splineType: SplineType.natural,
+          gradient: LinearGradient(
+            colors: [
+              kPrimary2,
+              kPrimaryLightColor.withAlpha(30),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        SplineSeries<ChartData, int>(
+          onRendererCreated: (ChartSeriesController controller) {
+            _chartSeriesController = controller;
+          },
+          dataSource: data,
+          color: kPrimary2,
+          width: 4,
+          markerSettings: const MarkerSettings(
+            color: kPrimaryColor,
+            shape: DataMarkerType.circle,
+            borderColor: kPrimary2,
+            isVisible: true,
+            borderWidth: 3,
+          ),
+          xValueMapper: (ChartData data, _) => data.value,
+          yValueMapper: (ChartData data, _) => data.day,
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // update(context);
-
-    // DioHelper.getData(url: 'activity/', query: {'': ''}).then((value) {
-    //   print(value!.data['type'].toString());
-    //   test = value.data['type'].toString();
-    // }).catchError((error) {
-    //   print(error.toString());
-    // });
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -90,22 +190,33 @@ class _heartState extends State<heart> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-            //replace with our own icon data.
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
           ),
-          title: Text(
+          title: const Text(
             'Heart Rate',
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
-          bottom: TabBar(tabs: [
-            Tab(
-              text: 'Measure',
+          bottom: const TabBar(
+            indicatorColor: Colors.white,
+            tabs: [
+              Tab(
+                text: 'Measure',
+              ),
+              Tab(
+                text: 'Statistics',
+              )
+            ],
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/images/animatedbackground.gif'), // Replace with your image path
+                fit: BoxFit.cover,
+              ),
             ),
-            Tab(
-              text: 'Statistics',
-            )
-          ]),
+          ),
         ),
         backgroundColor: Colors.white,
         body: TabBarView(
@@ -115,278 +226,137 @@ class _heartState extends State<heart> {
                 top: 2.0,
               ),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 5,
-                          //  left: 25,
-                          // right: 25,
-                        ),
-                        color: Colors.white,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Center(
-                                child: _getRadialGauge(),
-                              ),
-
-                              SizedBox(
-                                height: 20,
-                              ),
-                              Container(
-                                width: 500,
-                                height: 223,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                      ),
+                      color: Colors.white,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Center(
+                              child: _getRadialGauge(),
+                            ),
+                            Container(
+                              width: 500,
+                              height: 223,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
                                   image:
                                       AssetImage('assets/images/heartbeat.gif'),
-                                )),
+                                ),
                               ),
-                              // Padding(
-                              //   padding: const EdgeInsets.all(30.0),
-                              //   child: Row(
-                              //     children: [
-                              //       Expanded(
-                              //         child: buttonWidget(
-                              //           label: 'Update',
-                              //           press: () {},
-                              //         ),
-                              //       ),
-                              //       SizedBox(
-                              //         width: 20,
-                              //       ),
-                              //       Expanded(
-                              //         child: buttonWidget(
-                              //           label: 'Plot',
-                              //           press: () {},
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ]),
+                  ),
+                ],
+              ),
             ),
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: Column(
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  //   _chartSeriesController = ChartSeriesController();
+                  data = getChartData();
+                  startTimer();
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 5,
-                          //  left: 25,
-                          // right: 25,
                         ),
                         color: Colors.white,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              SizedBox(
-                                height: 80,
+                              const SizedBox(
+                                height: 30,
                               ),
-                              Container(
-                                child: Center(
-                                  child: getChart(),
+                              const Text(
+                                'Measurments in last 30 days',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w500,
+                                  color: ktextcolor2,
                                 ),
                               ),
-                              SizedBox(
-                                height: 20,
+                              const SizedBox(
+                                height: 40,
                               ),
-                              Row(
+                              Center(
+                                child: getChart(),
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              const Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'Min',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: ktextcolor2,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '80',
-                                        style: TextStyle(
-                                            fontSize: 20, color: ktextcolor2),
-                                      )
-                                    ],
+                                  stasticsCard(
+                                    title: 'Min',
+                                    value: '80',
                                   ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'Max',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: ktextcolor2,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '160',
-                                        style: TextStyle(
-                                            fontSize: 20, color: ktextcolor2),
-                                      )
-                                    ],
+                                  stasticsCard(
+                                    title: 'Avg',
+                                    value: '120',
                                   ),
-                                  Column(
-                                    children: [
-                                      Text(
-                                        'Avg',
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: ktextcolor2,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '120',
-                                        style: TextStyle(
-                                            fontSize: 20, color: ktextcolor2),
-                                      )
-                                    ],
-                                  )
+                                  stasticsCard(
+                                    title: 'Max',
+                                    value: '180',
+                                  ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                  ]),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
   }
-
-  Widget _getRadialGauge() {
-    return SfRadialGauge(axes: <RadialAxis>[
-      RadialAxis(
-          minimum: 60,
-          maximum: 180,
-          radiusFactor: 0.80,
-          endAngle: 90,
-          startAngle: 90,
-          showLabels: false,
-          showTicks: false,
-          axisLineStyle: AxisLineStyle(
-            thickness: 0.1,
-            thicknessUnit: GaugeSizeUnit.factor,
-          ),
-          pointers: <GaugePointer>[
-            RangePointer(
-              enableAnimation: true,
-              // cornerStyle: CornerStyle.bothCurve,
-              value: heartrate,
-              width: 0.1,
-              sizeUnit: GaugeSizeUnit.factor,
-              gradient: const SweepGradient(colors: <Color>[
-                Color(0xFF753A88),
-                Color(0xFFCC2B5E),
-              ], stops: <double>[
-                0.25,
-                0.75
-              ]),
-            )
-          ],
-          annotations: <GaugeAnnotation>[
-            GaugeAnnotation(
-                widget: Container(
-                    child: Column(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage('assets/images/heart hehe.gif'),
-                      )),
-                    ),
-                    Text('${heartrate.toString()}',
-                        style: TextStyle(
-                            fontSize: 45, fontWeight: FontWeight.bold)),
-                    Text(' BPM',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: ktextcolor2)),
-                  ],
-                )),
-                angle: 90,
-                positionFactor: 0.8)
-          ])
-    ]);
-  }
 }
 
-Widget getChart() {
-  return SfCartesianChart(
-    enableAxisAnimation: true,
-    margin: EdgeInsets.all(10),
-    borderWidth: 0,
-    borderColor: Colors.transparent,
-    plotAreaBorderWidth: 0,
-    primaryXAxis: NumericAxis(
-        minimum: 1,
-        maximum: 30,
-        isVisible: true,
-        interval: 5,
-        borderWidth: 0,
-        borderColor: Colors.transparent),
-    primaryYAxis: NumericAxis(
-        minimum: 60,
-        maximum: 200,
-        isVisible: true,
-        interval: 20,
-        borderWidth: 0,
-        borderColor: Colors.transparent),
-    series: <ChartSeries<chartData, int>>[
-      SplineAreaSeries(
-          dataSource: data,
-          xValueMapper: (chartData data, _) => data.value,
-          yValueMapper: (chartData data, _) => data.day,
-          splineType: SplineType.natural,
-          gradient: LinearGradient(
-            colors: [
-              kPrimary2,
-              kPrimaryLightColor.withAlpha(30),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          )),
-      SplineSeries(
-        dataSource: data,
-        color: kPrimary2,
-        width: 4,
-        markerSettings: MarkerSettings(
-          color: kPrimaryColor,
-          shape: DataMarkerType.circle,
-          borderColor: kPrimary2,
-          isVisible: true,
-          borderWidth: 3,
-        ),
-        xValueMapper: (chartData data, _) => data.value,
-        yValueMapper: (chartData data, _) => data.day,
-      ),
-    ],
-  );
+List<ChartData> getChartData() {
+  return <ChartData>[
+    ChartData(1, 150),
+    ChartData(2, 120),
+    ChartData(3, 120),
+    ChartData(4, 177),
+    ChartData(5, 124),
+    ChartData(10, 150),
+    ChartData(12, 60),
+    ChartData(13, 90),
+    ChartData(20, 120),
+    ChartData(25, 123),
+    ChartData(30, 130),
+  ];
 }
 
 Stream<DateTime> getTime() async* {
   DateTime currentTime = DateTime.now();
   while (true) {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     yield currentTime;
   }
 }

@@ -1,16 +1,12 @@
-import 'dart:convert';
+//import 'dart:convert';
 import 'package:healthcare/constants.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+//import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/HomePage.dart';
-import 'package:healthcare/views/global.dart';
+import 'package:healthcare/views/widgets/statisticsCard.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../components/button.dart';
-import '../home.dart';
 import '../login/components/body.dart';
-import '../register.dart';
 
 class temprature extends StatefulWidget {
   static List<dynamic> activities = [];
@@ -34,7 +30,7 @@ class _tempratureState extends State<temprature> {
     //   print(error.toString());
     // });
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 20,
       ),
       decoration: const BoxDecoration(
@@ -43,54 +39,39 @@ class _tempratureState extends State<temprature> {
             fit: BoxFit.cover),
       ),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          ),
+          title: const Text(
+            'Temprature',
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                    'assets/images/animatedbackground.gif'), // Replace with your image path
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        backgroundColor: Colors.white,
         body: Padding(
           padding: const EdgeInsets.only(
-            top: 30.0,
-          ),
+              // top: 30.0,
+              ),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(
-                          Age: globalage,
-                          Username: globalusername,
-                          Gender: globalgender,
-                        ),
-                      ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                ),
-                Text(
-                  "Temprature",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
                 child: Container(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 25,
                     //  left: 25,
                     // right: 25,
@@ -99,15 +80,42 @@ class _tempratureState extends State<temprature> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 60,
                         ),
                         Center(
-                          child: Container(
-                            child: _getRadialGauge(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                child: _getRadialGauge(),
+                              ),
+                              const Column(
+                                children: [
+                                  stasticsCard(
+                                    title: 'Max',
+                                    value: '46',
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  stasticsCard(
+                                    title: 'Avg',
+                                    value: '37',
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                  ),
+                                  stasticsCard(
+                                    title: 'Min',
+                                    value: '35',
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Padding(
@@ -123,7 +131,7 @@ class _tempratureState extends State<temprature> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 80,
                         ),
                       ],
@@ -143,8 +151,8 @@ class _tempratureState extends State<temprature> {
         minimum: 20.0,
         maximum: 45.0,
         orientation: LinearGaugeOrientation.vertical,
-        majorTickStyle: LinearTickStyle(length: 20),
-        axisLabelStyle: TextStyle(fontSize: 12.0, color: Colors.black),
+        majorTickStyle: const LinearTickStyle(length: 20),
+        axisLabelStyle: const TextStyle(fontSize: 12.0, color: Colors.black),
         markerPointers: [
           // LinearShapePointer(
           //   enableAnimation: true,
@@ -159,7 +167,7 @@ class _tempratureState extends State<temprature> {
                 child: Material(
                   elevation: 4, // Set the desired elevation value
                   shadowColor: Colors.black, // Set the desired shadow color
-                  shape: CircleBorder(),
+                  shape: const CircleBorder(),
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -173,14 +181,14 @@ class _tempratureState extends State<temprature> {
                       child: Text(
                         '${tempratureValue.toString()}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                 ),
               )),
         ],
-        axisTrackStyle: LinearAxisTrackStyle(
+        axisTrackStyle: const LinearAxisTrackStyle(
             color: Colors.cyan,
             gradient: LinearGradient(colors: <Color>[
               Color(0xFFCC2B5E),

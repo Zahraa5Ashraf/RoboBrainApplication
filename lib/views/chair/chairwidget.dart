@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class chairwidget extends StatelessWidget {
   const chairwidget({super.key});
@@ -12,7 +10,7 @@ class chairwidget extends StatelessWidget {
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: Container(
-            padding: EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
             color: Colors.amber,
             // child: Image.asset(
             //   pic,
