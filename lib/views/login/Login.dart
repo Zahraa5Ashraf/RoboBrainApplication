@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:healthcare/views/login/components/body.dart';
 
 class login extends StatefulWidget {
-  const login({super.key});
+  const login();
 
   @override
   State<login> createState() => _loginState();

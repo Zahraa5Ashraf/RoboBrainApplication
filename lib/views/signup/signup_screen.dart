@@ -1,9 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print, prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare/constants.dart';
-import 'package:healthcare/views/login/Login.dart';
 import 'package:healthcare/views/login/components/alreadyhaveaccount.dart';
-import 'package:healthcare/views/login/components/body.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
 import 'package:healthcare/views/login/components/roundedinputfield.dart';
 import 'package:healthcare/views/login/components/roundedpasswordfield.dart';
@@ -11,7 +10,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:healthcare/views/profile%20screen/proflle_screen.dart';
 
-import '../chair/chair.dart';
 import 'body.dart';
 
 class signup extends StatefulWidget {
@@ -66,6 +64,7 @@ Future SignUp(BuildContext cont) async {
     var result = response.body;
     print(result);
 
+    // ignore: avoid_print
     print('Registration successful');
     print(result);
 

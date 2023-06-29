@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
@@ -57,7 +59,7 @@ class _CountryInputFieldState extends State<CountryInputField> {
                   borderSide: BorderSide.none,
                 ),
                 hintText: 'choose your country',
-                hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: ktextcolor2,
                       fontSize: 10,
                     ),

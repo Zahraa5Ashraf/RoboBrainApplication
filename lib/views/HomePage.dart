@@ -44,6 +44,12 @@ class _HomePageState extends State<HomePage> {
     profile(),
   ];
 
+  void navigateToTab(int index) async {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     //update(context);
@@ -71,14 +77,10 @@ class _HomePageState extends State<HomePage> {
             currentIndex: currentIndex,
             elevation: 10,
             backgroundColor: Colors.white,
-            onTap: (index) {
-              setState(() {
-                currentIndex = index;
-              });
-            },
+            onTap: navigateToTab,
             items: const [
-               BottomNavigationBarItem(
-                icon:  Icon(
+              BottomNavigationBarItem(
+                icon: Icon(
                   CupertinoIcons.house_alt_fill,
                 ),
                 label: '',

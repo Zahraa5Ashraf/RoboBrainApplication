@@ -1,12 +1,9 @@
 //import 'dart:convert';
 //import 'package:http/http.dart' as http;
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:healthcare/views/HomePage.dart';
-
-import 'package:healthcare/views/global.dart';
-import '../login/components/body.dart';
+import 'package:healthcare/constants.dart';
+import 'package:healthcare/views/widgets/statisticsCard.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class oxygen extends StatefulWidget {
   static List<dynamic> activities = [];
@@ -17,6 +14,7 @@ class oxygen extends StatefulWidget {
   State<oxygen> createState() => _oxygenState();
 }
 
+var _volumeValue = 50.0;
 var date = '11 FEBRUARY';
 // Future update(BuildContext cont) async {
 //   Map<String, dynamic> body = {
@@ -91,136 +89,50 @@ class _oxygenState extends State<oxygen> {
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
                 child: Container(
                   padding: const EdgeInsets.only(
                     top: 25,
-                    //  left: 25,
-                    // right: 25,
                   ),
                   color: Colors.white,
                   child: Column(
                     children: [
                       const SizedBox(
-                        height: 60,
+                        height: 20,
                       ),
-                      Center(
-                        child: Stack(children: [
-                          Container(
-                            width: 300.0,
-                            height: 300.0,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 142, 205, 235),
-                                width: 7.0,
-                              ),
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 80,
-                                  ),
-                                  const Text(
-                                    '11 February',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            Color.fromARGB(255, 114, 109, 109)),
-                                  ),
-                                  Builder(builder: (context) {
-                                    return Text(
-                                      Token.oxygenreading,
-                                      style: const TextStyle(
-                                          fontSize: 60,
-                                          color:
-                                              Color.fromARGB(255, 73, 71, 71)),
-                                    );
-                                  }),
-                                  const Text(
-                                    '❤️  BPM',
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        color:
-                                            Color.fromARGB(255, 114, 109, 109)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ]),
+                      Text(
+                        '  SO2 = ${_volumeValue.toString()} 💧',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: ktextcolor2,
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        height: 130,
-                        width: 600,
-                        margin: const EdgeInsets.all(30.0),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          //color: Colors.grey,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(padding: EdgeInsets.all(10)),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.all(10)),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "💙 ",
-                                      style: TextStyle(fontSize: 25.0),
-                                    ),
-                                    Text(
-                                      "51",
-                                      style: TextStyle(fontSize: 25.0),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  "MIN:4 DEC",
-                                  style: TextStyle(fontSize: 20.0),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: 80,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(padding: EdgeInsets.all(10)),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "💔 ",
-                                      style: TextStyle(fontSize: 25.0),
-                                    ),
-                                    Text(
-                                      "100",
-                                      style: TextStyle(fontSize: 25.0),
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  "MAX:7 FEB",
-                                  style: TextStyle(fontSize: 20.0),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )
+                      Center(
+                        child: Container(child: _getRadialGauge()),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          stasticsCard(
+                            title: 'Min',
+                            value: '50',
+                          ),
+                          stasticsCard(
+                            title: 'Avg',
+                            value: '90',
+                          ),
+                          stasticsCard(
+                            title: 'Max',
+                            value: '100',
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -230,6 +142,57 @@ class _oxygenState extends State<oxygen> {
         ),
       ),
     );
+  }
+
+  Widget _getRadialGauge() {
+    return SfRadialGauge(axes: <RadialAxis>[
+      RadialAxis(
+          minimum: 0,
+          maximum: 100,
+          startAngle: 270,
+          endAngle: 270,
+          showLabels: false,
+          showTicks: false,
+          radiusFactor: 0.6,
+          axisLineStyle: AxisLineStyle(
+              cornerStyle: CornerStyle.bothFlat,
+              color: Colors.black12,
+              thickness: 12),
+          pointers: <GaugePointer>[
+            RangePointer(
+                enableAnimation: true,
+                value: _volumeValue,
+                cornerStyle: CornerStyle.bothFlat,
+                width: 12,
+                sizeUnit: GaugeSizeUnit.logicalPixel,
+                color: kPrimaryColor,
+                gradient: const SweepGradient(
+                    colors: <Color>[kPrimaryLightColor, kPrimary2],
+                    stops: <double>[0.25, 0.75])),
+            MarkerPointer(
+                enableAnimation: true,
+                value: _volumeValue,
+                enableDragging: true,
+                //   onValueChanged: onVolumeChanged,
+                markerHeight: 20,
+                markerWidth: 20,
+                markerType: MarkerType.circle,
+                color: kPrimary2,
+                borderWidth: 2,
+                borderColor: Colors.white54)
+          ],
+          annotations: <GaugeAnnotation>[
+            GaugeAnnotation(
+                angle: 90,
+                axisValue: 5,
+                positionFactor: 0.1,
+                widget: Text(_volumeValue.ceil().toString() + '%',
+                    style: TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: kPrimary2)))
+          ])
+    ]);
   }
 }
 

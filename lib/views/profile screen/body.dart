@@ -20,7 +20,7 @@ class body extends StatelessWidget {
   Widget build(BuildContext context) {
     // style button important
     final ButtonStyle flatbuttonstyle = TextButton.styleFrom(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
         horizontal: 40,
       ),
@@ -49,7 +49,7 @@ class body extends StatelessWidget {
                 width: size.width * 0.4,
               ),
             ),
-            Positioned(
+            const Positioned(
               top: 50,
               child: Text(
                 'Profile',
@@ -61,23 +61,23 @@ class body extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Spacer(),
-                  ProfileCard(),
-                  Spacer(),
-                  Details(
+                  const Spacer(),
+                  const ProfileCard(),
+                  const Spacer(),
+                  const Details(
                     title: 'Email address',
                     desc: 'zozo@gmail.com',
                   ),
-                  Spacer(),
-                  Details(
+                  const Spacer(),
+                  const Details(
                     title: 'Account ID',
                     desc: '7020-229',
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Details(
+                      const Details(
                           title: 'Wheelchairs',
                           desc: 'Check Your personal chairs'),
                       GestureDetector(
@@ -85,7 +85,7 @@ class body extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => addchair(),
+                              builder: (context) => const addchair(),
                             ),
                           );
                         },
@@ -109,7 +109,7 @@ class body extends StatelessWidget {
                       )
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Center(
                     child: roundedbutton(
                         size: size,
@@ -120,12 +120,12 @@ class body extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => login(),
+                              builder: (context) => const login(),
                             ),
                           );
                         }),
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
             )

@@ -1,11 +1,11 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healthcare/views/services/notif_service.dart';
 //import 'package:http/http.dart' as http;
 import 'package:healthcare/network/dio_helper.dart';
-
 import 'package:healthcare/views/login/Login.dart';
-
+import 'package:healthcare/views/services/routes.dart';
 import 'components/theme.dart';
 
 void main() {
@@ -26,12 +26,13 @@ class _healthcareState extends State<healthcare> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(414, 896),
+      designSize: const Size(414, 896),
       builder: (context, child) => MaterialApp(
         title: 'healthcare',
         theme: AppTheme(context).initTheme(),
         debugShowCheckedModeBanner: false,
         home: login(),
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }

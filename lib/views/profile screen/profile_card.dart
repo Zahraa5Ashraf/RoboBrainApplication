@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../services/routes.dart';
 import '/views/profile screen/editprofile.dart';
 import '../../constants.dart';
 
@@ -51,12 +52,7 @@ class ProfileCard extends StatelessWidget {
         GestureDetector(
           onTap: () {
             try {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const editProfile(),
-                ),
-              );
+              Navigator.of(context).pushNamed(RouteGenerator.edit);
             } catch (e) {
               print(e.toString());
             }

@@ -2,11 +2,9 @@
 import 'package:healthcare/constants.dart';
 //import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:healthcare/views/HomePage.dart';
 import 'package:healthcare/views/widgets/statisticsCard.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../components/button.dart';
-import '../login/components/body.dart';
 
 class temprature extends StatefulWidget {
   static List<dynamic> activities = [];

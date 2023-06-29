@@ -1,4 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 
@@ -13,7 +12,7 @@ class map extends StatefulWidget {
 
 class _mapState extends State<map> {
   final _mapController = MapController.withUserPosition(
-      trackUserLocation: UserTrackingOption(
+      trackUserLocation: const UserTrackingOption(
     enableTracking: true,
     unFollowUser: false,
   ));
@@ -41,11 +40,11 @@ class _mapState extends State<map> {
     });
   }
 
-  @override
-  void dispose() {
-    _mapController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _mapController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class _mapState extends State<map> {
       mapIsLoading: const Center(
         child: CircularProgressIndicator(),
       ),
-      userTrackingOption: UserTrackingOption(
+      userTrackingOption: const UserTrackingOption(
         enableTracking: true,
         unFollowUser: false,
       ),
@@ -63,14 +62,14 @@ class _mapState extends State<map> {
       maxZoomLevel: 14,
       stepZoom: 1.0,
       userLocationMarker: UserLocationMaker(
-        personMarker: MarkerIcon(
+        personMarker: const MarkerIcon(
           icon: Icon(
             Icons.location_history_rounded,
             color: Colors.red,
             size: 48,
           ),
         ),
-        directionArrowMarker: MarkerIcon(
+        directionArrowMarker: const MarkerIcon(
           icon: Icon(
             Icons.double_arrow,
             size: 48,
@@ -78,11 +77,11 @@ class _mapState extends State<map> {
           ),
         ),
       ),
-      roadConfiguration: RoadOption(
+      roadConfiguration: const RoadOption(
         roadColor: Colors.yellowAccent,
       ),
       markerOption: MarkerOption(
-          defaultMarker: MarkerIcon(
+          defaultMarker: const MarkerIcon(
         icon: Icon(
           Icons.person_pin_circle,
           color: Colors.blue,

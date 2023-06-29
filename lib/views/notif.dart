@@ -3,7 +3,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/HomePage.dart';
 
-import '../constants.dart';
 import 'login/components/body.dart';
 
 class notif extends StatefulWidget {
@@ -19,7 +18,7 @@ class _notifState extends State<notif> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         top: 20,
       ),
       decoration: const BoxDecoration(
@@ -54,12 +53,12 @@ class _notifState extends State<notif> {
                       ),
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
                   ),
                 ),
-                Text(
+                const Text(
                   "Notifications",
                   style: TextStyle(
                     color: Colors.white,
@@ -69,17 +68,17 @@ class _notifState extends State<notif> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(50),
                   topRight: Radius.circular(50),
                 ),
                 child: Container(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 25,
                     //  left: 25,
                     // right: 25,
@@ -90,7 +89,7 @@ class _notifState extends State<notif> {
                         return ListViewItem(index);
                       },
                       separatorBuilder: (context, index) {
-                        return Divider(
+                        return const Divider(
                           height: 20,
                         );
                       },
@@ -108,8 +107,8 @@ class _notifState extends State<notif> {
     return Container(
       height: 50,
       width: 50,
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
         color: Colors.white,
       ),
@@ -123,7 +122,7 @@ class _notifState extends State<notif> {
 
   Widget ListViewItem(int index) {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         left: 20,
         right: 20,
       ),
@@ -131,14 +130,14 @@ class _notifState extends State<notif> {
         borderRadius: BorderRadius.circular(20),
         color: Colors.grey[100],
       ),
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           prefixIcon(),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(left: 5),
+              margin: const EdgeInsets.only(left: 5),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -165,7 +164,7 @@ class _notifState extends State<notif> {
                   color: Colors.grey[600],
                 ),
                 children: [
-                  TextSpan(
+                  const TextSpan(
                       text: ' Emergency detected in one of the sensors',
                       style: TextStyle(fontSize: 15, color: Colors.grey))
                 ])));
@@ -173,7 +172,7 @@ class _notifState extends State<notif> {
 
   Widget TimeandDate(int index) {
     return Container(
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
