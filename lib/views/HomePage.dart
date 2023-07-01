@@ -1,5 +1,7 @@
 //import 'dart:convert';
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/login/components/body.dart';
@@ -17,7 +19,7 @@ class HomePage extends StatefulWidget {
   final String Age;
   final String Gender;
 
-  HomePage({
+  const HomePage({super.key, 
     required this.Username,
     required this.Age,
     required this.Gender,
@@ -40,8 +42,8 @@ class _HomePageState extends State<HomePage> {
       gender: globalgender,
       username: globalusername,
     ),
-    map(),
-    profile(),
+    const map(),
+    const profile(),
   ];
 
   void navigateToTab(int index) async {
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     //update(context);
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage(

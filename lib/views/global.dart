@@ -1,8 +1,12 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 class Token {
+  static int counter = 0;
+
   static var token = "";
   static var globalusername = 'zahraa';
   static var globalage = "15";

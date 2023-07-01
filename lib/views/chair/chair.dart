@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
@@ -6,6 +8,7 @@ import 'package:healthcare/views/login/components/roundedinputfield.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'ChairPage.dart';
+import 'gridview.dart';
 
 class addchair extends StatefulWidget {
   static List<dynamic> activities = [];
@@ -17,7 +20,9 @@ class addchair extends StatefulWidget {
 }
 
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  foregroundColor: kPrimaryColor, backgroundColor: Colors.white, shape: RoundedRectangleBorder(
+  foregroundColor: kPrimaryColor,
+  backgroundColor: kPrimaryColor,
+  shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
       side: const BorderSide(color: kPrimaryColor)),
   //     onPressed: () {},
@@ -27,7 +32,9 @@ final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
   //     textColor: Colors.white,
 );
 final ButtonStyle raisedButtonStyle2 = ElevatedButton.styleFrom(
-  foregroundColor: kPrimaryLightColor, backgroundColor: kPrimaryColor, shape: RoundedRectangleBorder(
+  foregroundColor: kPrimaryLightColor,
+  backgroundColor: kPrimaryColor,
+  shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
       side: const BorderSide(color: kPrimaryColor)),
   //     onPressed: () {},
@@ -97,230 +104,150 @@ class _addchairState extends State<addchair> {
       backgroundColor: kPrimaryColor,
     );
     //style button important
-    return Container(
-      padding: const EdgeInsets.only(
-        top: 20,
-      ),
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/images/animatedbackground.gif'),
-            fit: BoxFit.cover),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Padding(
-          padding: const EdgeInsets.only(
-            top: 30.0,
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        ),
+        title: const Text(
+          'Wheelchairs',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  'assets/images/animatedbackground.gif'), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
           ),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_left,
-                    size: 40,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  "Wheel-chair",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    //  left: 25,
-                    // right: 25,
-                  ),
-                  color: Colors.white,
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Container(
-                            height: 400,
-                            padding: const EdgeInsets.only(
-                                left: 35, right: 35, bottom: 20),
-                            child: Center(
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                // physics: PageScrollPhysics(),
-                                itemCount: items.length,
-                                itemBuilder: (context, int index) =>
-                                    /**ICONS EDIT AND DELETE */
-                                    // Row(
-                                    //   children: [
-                                    //     Expanded(
-                                    //       child: IconButton(
-                                    //         onPressed: () {
-                                    //           showDialog(
-                                    //             context: context,
-                                    //             builder: (context) => SimpleDialog(
-                                    //               children: [
-                                    //                 RoundedInputField(
-                                    //                   onchanged: ((value) {
-                                    //                     setState(() {
-                                    //                       idchair = value;
-                                    //                     });
-                                    //                   }),
-                                    //                   controller: null,
-                                    //                   hinttext: 'add chair id',
-                                    //                   icon: Icons.wheelchair_pickup,
-                                    //                   validateStatus: (value) {},
-                                    //                   type: TextInputType.text,
-                                    //                 ),
-                                    //                 roundedbutton(
-                                    //                     size: size,
-                                    //                     flatbuttonstyle: flatbuttonstyle,
-                                    //                     text: 'Update',
-                                    //                     textcolor: Colors.white,
-                                    //                     press: () {
-                                    //                       setState(() {
-                                    //                         data[index] = idchair;
-                                    //                       });
-                                    //                     })
-                                    //               ],
-                                    //             ),
-                                    //           );
-                                    //         },
-                                    //         icon: Icon(
-                                    //           Icons.edit,
-                                    //           color: _color,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //     Expanded(
-                                    //       child: IconButton(
-                                    //         onPressed: () {
-                                    //           setState(() {
-                                    //             data.removeAt(index);
-                                    //           });
-                                    //         },
-                                    //         icon: Icon(
-                                    //           Icons.delete,
-                                    //           color: _color2,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                    /**ICONS EDIT AND DELETE */
-                                    Center(
-                                  child: buildcard(
-                                    item: items[index],
-                                    delete: IconButton(
-                                      splashColor: kPrimaryLightColor,
-                                      onPressed: () {
-                                        setState(() {
-                                          items.removeAt(index);
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.remove_rounded,
-                                        size: 35,
-                                        color: _color2,
-                                      ),
-                                    ),
-                                    edit: IconButton(
-                                      splashColor: kPrimary2,
-                                      onPressed: () {
-                                        ShowDialogChair(
-                                            context, size, flatbuttonstyle);
-                                      },
-                                      icon: Icon(
-                                        Icons.edit,
-                                        size: 25,
-                                        color: _color,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                separatorBuilder: (context, _) =>
-                                    const SizedBox(
-                                  width: 10,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                top: 10,
-                                right: 10,
-                                left: 10,
-                                bottom: 5,
-                              ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: 325,
-                                    height: 70,
-                                    child: ElevatedButton(
-                                      style: raisedButtonStyle,
-                                      onPressed: () {
-                                        ShowDialogChair(
-                                            context, size, flatbuttonstyle);
-                                      },
-                                      child: const Text("Add Wheelchair +",
-                                          style: TextStyle(fontSize: 20)),
-                                    ),
-                                  ),
-
-                                  // Container(
-                                  //   height: 70,
-                                  //   width: 325,
-                                  //   margin: EdgeInsets.only(bottom: 50),
-                                  //   child: ElevatedButton(
-                                  //     style: raisedButtonStyle2,
-                                  //     onPressed: () {
-                                  //       Navigator.of(context)
-                                  //         ..pop()
-                                  //         ..pop();
-                                  //     },
-                                  //     child: Text("Submit",
-                                  //         style: TextStyle(fontSize: 20)),
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: 20.0,
+          right: 20.0,
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(
+                top: 10,
+                //  left: 25,
+                // right: 25,
+              ),
+              color: Colors.white,
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
+                      //  GridDashboard(),
+
+                      Container(
+                        height: 400,
+                        padding: const EdgeInsets.only(
+                            left: 35, right: 35, bottom: 20),
+                        child: Center(
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            // physics: PageScrollPhysics(),
+                            itemCount: items.length,
+                            itemBuilder: (context, int index) => Center(
+                              child: buildcard(
+                                item: items[index],
+                                delete: IconButton(
+                                  splashColor: kPrimaryLightColor,
+                                  onPressed: () {
+                                    setState(() {
+                                      items.removeAt(index);
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.remove_rounded,
+                                    size: 35,
+                                    color: _color2,
+                                  ),
+                                ),
+                                edit: IconButton(
+                                  splashColor: kPrimary2,
+                                  onPressed: () {
+                                    ShowDialogChair(
+                                        context, size, flatbuttonstyle);
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    size: 25,
+                                    color: _color,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            separatorBuilder: (context, _) => const SizedBox(
+                              width: 10,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            top: 10,
+                            right: 10,
+                            left: 10,
+                            bottom: 5,
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 325,
+                                height: 70,
+                                child: ElevatedButton(
+                                  style: raisedButtonStyle,
+                                  onPressed: () {
+                                    ShowDialogChair(
+                                        context, size, flatbuttonstyle);
+                                  },
+                                  child: const Text("Add Wheelchair +",
+                                      style: TextStyle(fontSize: 20)),
+                                ),
+                              ),
+
+                              // Container(
+                              //   height: 70,
+                              //   width: 325,
+                              //   margin: EdgeInsets.only(bottom: 50),
+                              //   child: ElevatedButton(
+                              //     style: raisedButtonStyle2,
+                              //     onPressed: () {
+                              //       Navigator.of(context)
+                              //         ..pop()
+                              //         ..pop();
+                              //     },
+                              //     child: Text("Submit",
+                              //         style: TextStyle(fontSize: 20)),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -471,9 +398,6 @@ class _addchairState extends State<addchair> {
                     textcolor: Colors.white,
                     press: () {
                       _save();
-                      print(
-                        '${pfirstname},+${plastname},+${pgender}+&${page}+,${idchair}+,${ppass}',
-                      );
                       setState(() {
                         //  items[index].title = idchair;
                       });
@@ -510,31 +434,10 @@ class _addchairState extends State<addchair> {
         encoding: encoding);
 
     var data = json.decode(response.body);
-    print(data);
-    if (data["message"] == "Success") {
-      print("addchair succeeded");
-    }
+    if (data["message"] == "Success") {}
     /* UNCOMMENT WHEN SERVER ONLINE */
   }
 
-  void _getchairs() {
-    /* UNCOMMENT WHEN SERVER ONLINE */
-    // var url2 = Uri.parse("https://cba7-196-221-98-202.eu.ngrok.io/patient/me");
-    // var response = await http.get(
-    //   url2,
-    //   headers: {
-    //     'content-Type': 'application/json',
-    //     "Authorization": "Bearer ${token}"
-    //   },
-    // );
-
-    // if (response.statusCode == 200) {
-    //   var data2 = json.decode(response.body);
-    //   print(data2);
-    //
-    // }
-    /* UNCOMMENT WHEN SERVER ONLINE */
-  }
   Widget buildcard({
     required CardItem item,
     required IconButton delete,

@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, prefer_const_constructors
+// ignore_for_file: use_build_context_synchronously, avoid_print, prefer_const_constructors, camel_case_types, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
@@ -64,7 +64,6 @@ Future SignUp(BuildContext cont) async {
     var result = response.body;
     print(result);
 
-    // ignore: avoid_print
     print('Registration successful');
     print(result);
 
@@ -86,7 +85,6 @@ Future SignUp(BuildContext cont) async {
 }
 
 class _signupState extends State<signup> {
-  @override
   /* Controllers */
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -98,14 +96,11 @@ class _signupState extends State<signup> {
   var phoneController = TextEditingController();
   bool passwordVisible = true;
   /* Controllers */
+  @override
   Widget build(BuildContext context) {
-    void initState() {
-      super.initState();
-    }
 
     Size size = MediaQuery.of(context).size;
 
-    bool value = false;
 
     // style button important
     final ButtonStyle flatbuttonstyle = TextButton.styleFrom(

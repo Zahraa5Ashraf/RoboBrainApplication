@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, unnecessary_brace_in_string_interps, empty_catches
+
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/global.dart';
 import 'package:healthcare/views/widgets/heart.dart';
@@ -19,7 +21,7 @@ class sensorReading extends StatefulWidget {
   final Color2;
   final index;
 
-  sensorReading({
+  const sensorReading({
     Key? key,
     required this.textcolor,
     required this.sensorName,
@@ -51,13 +53,10 @@ Future sensorupdate(BuildContext cont) async {
     );
     /*remove this comments*/
     var data = json.decode(response.body);
-    print(data);
     heartint = data["pulse_rate"];
     tempint = data["temperature"];
     heart2 = data["pulse_rate"].toString();
     temp2 = data["temperature"].toString();
-    print(heart2);
-    print(temp2);
     /*remove this comments*/
 
     // heart2 = '100';
@@ -74,16 +73,14 @@ Future sensorupdate(BuildContext cont) async {
           title: 'Temprature Emergency',
           body: 'body Temp Rate is high Call the doctor immediately!');
     }
-  } catch (e) {
-    print(e.toString());
-  }
+  } catch (e) {}
 }
 
 class _sensorReadingState extends State<sensorReading> {
   List<Widget> sensors = [
     Heart(),
     temprature(),
-    blood(),
+    const blood(),
     oxygen(),
   ];
 
@@ -97,7 +94,6 @@ class _sensorReadingState extends State<sensorReading> {
             Token.heartreading = heart2;
             Token.tempreading = temp2;
           });
-          print('tapped ${widget.index}');
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -107,7 +103,7 @@ class _sensorReadingState extends State<sensorReading> {
         },
         child: Container(
           height: 200,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             gradient: LinearGradient(
@@ -122,7 +118,7 @@ class _sensorReadingState extends State<sensorReading> {
                 radius: 40,
                 backgroundImage: NetworkImage(widget.pic),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Text(

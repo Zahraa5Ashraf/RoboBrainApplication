@@ -32,7 +32,7 @@ class chairCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(
             12.r,
           ),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               offset: Offset(0, 5),
               color: Color.fromARGB(255, 233, 233, 233),
@@ -55,7 +55,7 @@ class chairCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       8.r,
                     ),
-                    color: Color.fromARGB(255, 233, 233, 233),
+                    color: const Color.fromARGB(255, 233, 233, 233),
                   ),
                   child: Center(
                     child: SvgPicture.asset(
@@ -78,16 +78,16 @@ class chairCard extends StatelessWidget {
             ),
             Text(
               info.id,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
-            Spacer(),
+            const Spacer(),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               IconButton(
                 splashColor: kPrimaryLightColor,
                 onPressed: delete as VoidCallback,
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove_rounded,
                   size: 35,
                   color: kPrimaryColor,
@@ -96,7 +96,7 @@ class chairCard extends StatelessWidget {
               IconButton(
                 splashColor: kPrimary2,
                 onPressed: edit as VoidCallback,
-                icon: Icon(
+                icon: const Icon(
                   Icons.edit,
                   size: 25,
                   color: kPrimaryColor,

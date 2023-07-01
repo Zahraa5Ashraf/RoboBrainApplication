@@ -1,9 +1,7 @@
-// ignore_for_file: dead_code
+// ignore_for_file: dead_code, non_constant_identifier_names
 
 //import 'dart:convert';
 
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 //import 'package:http/http.dart' as http;
 
@@ -70,7 +68,7 @@ Future SignUp(BuildContext cont) async {
   Navigator.push(
     cont,
     MaterialPageRoute(
-      builder: (context) => addchair(),
+      builder: (context) => const addchair(),
     ),
   );
 
@@ -93,8 +91,8 @@ Future SignUp(BuildContext cont) async {
   //}
 }
 
+// ignore: camel_case_types
 class _registerState extends State<register> {
-  @override
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var idController = TextEditingController();
@@ -104,11 +102,8 @@ class _registerState extends State<register> {
   var ageController = TextEditingController();
   var phoneController = TextEditingController();
   bool passwordVisible = true;
+  @override
   Widget build(BuildContext context) {
-    void initState() {
-      super.initState();
-      // fetch_users();
-    }
 
     //var gender =
 
@@ -119,7 +114,7 @@ class _registerState extends State<register> {
           Expanded(
               flex: 3,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fill,
                         image: AssetImage(
@@ -138,13 +133,13 @@ class _registerState extends State<register> {
                       children: [
                         Text(
                           'SIGN UP',
-                          style: Theme.of(context).textTheme.headline3,
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Email',
                             prefixIcon: Icon(Icons.email),
                           ),
@@ -160,7 +155,7 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         TextFormField(
@@ -168,7 +163,7 @@ class _registerState extends State<register> {
                           //  obsecure: passwordVisible,
                           decoration: InputDecoration(
                             labelText: 'Password',
-                            prefixIcon: Icon(Icons.lock),
+                            prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(passwordVisible
                                   ? Icons.visibility
@@ -195,11 +190,11 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Fullname',
                             prefixIcon: Icon(Icons.person),
                           ),
@@ -215,11 +210,11 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Username',
                             prefixIcon: Icon(Icons.person_pin_rounded),
                           ),
@@ -235,11 +230,11 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'City',
                             prefixIcon: Icon(Icons.map),
                           ),
@@ -255,11 +250,11 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Chair ID',
                             prefixIcon: Icon(Icons.wheelchair_pickup),
                           ),
@@ -275,11 +270,11 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Phone Number',
                             prefixIcon: Icon(Icons.phone),
                           ),
@@ -295,11 +290,11 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Age',
                             prefixIcon: Icon(Icons.lock_clock),
                           ),
@@ -315,7 +310,7 @@ class _registerState extends State<register> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Column(
@@ -334,7 +329,7 @@ class _registerState extends State<register> {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 5),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10)),
@@ -359,13 +354,13 @@ class _registerState extends State<register> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            child: Text(
+                            child: const Text(
                               'REGISTER',
                               style: TextStyle(fontSize: 20.0),
                             ),
@@ -376,20 +371,20 @@ class _registerState extends State<register> {
                             },
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Already have an account?'),
+                            const Text('Already have an account?'),
                             TextButton(
                                 onPressed: () {
                                   Navigator.pop(
                                     context,
                                   );
                                 },
-                                child: Text('SIGN IN'))
+                                child: const Text('SIGN IN'))
                           ],
                         )
                       ],

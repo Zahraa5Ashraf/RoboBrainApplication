@@ -1,5 +1,6 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare/constants.dart';
@@ -7,6 +8,7 @@ import 'package:healthcare/constants.dart';
 class CharityInputField extends StatelessWidget {
   const CharityInputField(
     this.title, {
+    super.key,
     this.assetName,
     this.focusnode,
     this.onTap,
@@ -34,7 +36,7 @@ class CharityInputField extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(),
+          style: const TextStyle(),
         ),
         SizedBox(
           height: 2.h,
@@ -42,7 +44,7 @@ class CharityInputField extends StatelessWidget {
         Stack(
           children: [
             TextFormField(
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
               focusNode: focusnode,
               keyboardType: keyboardtype,
               controller: controller,
@@ -57,7 +59,7 @@ class CharityInputField extends StatelessWidget {
                   borderSide: BorderSide.none,
                 ),
                 hintText: hintText,
-                hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: Colors.grey,
                     ),
                 contentPadding: EdgeInsets.symmetric(

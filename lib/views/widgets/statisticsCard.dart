@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types, file_names
+
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
@@ -21,7 +23,7 @@ class stasticsCard extends StatelessWidget {
           height: 80,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
@@ -33,15 +35,15 @@ class stasticsCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                '${title}',
-                style: TextStyle(
+                title,
+                style: const TextStyle(
                     fontSize: 24,
                     color: ktextcolor2,
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                '${value}',
-                style: TextStyle(
+                value,
+                style: const TextStyle(
                   fontSize: 20,
                   color: ktextcolor2,
                 ),

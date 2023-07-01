@@ -12,7 +12,7 @@ class RouteGenerator {
     switch (settings.name) {
       case main:
         return MaterialPageRoute(
-          builder: (_) => HomePage(
+          builder: (_) => const HomePage(
             Age: '',
             Username: '',
             Gender: '',
@@ -22,8 +22,7 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (_) => const editProfile(),
         );
-           case login:
-       
+      case login:
       default:
         throw const RouteException('Route not found');
     }

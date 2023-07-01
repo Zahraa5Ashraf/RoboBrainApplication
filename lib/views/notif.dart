@@ -1,5 +1,6 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
+// ignore_for_file: camel_case_types, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/HomePage.dart';
 
@@ -153,21 +154,20 @@ class _notifState extends State<notif> {
 
   Widget message(int index) {
     double textsize = 20;
-    return Container(
-        child: RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-                text: 'Alert: ',
-                style: TextStyle(
-                  fontSize: textsize,
-                  color: Colors.grey[600],
-                ),
-                children: [
-                  const TextSpan(
-                      text: ' Emergency detected in one of the sensors',
-                      style: TextStyle(fontSize: 15, color: Colors.grey))
-                ])));
+    return RichText(
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+            text: 'Alert: ',
+            style: TextStyle(
+              fontSize: textsize,
+              color: Colors.grey[600],
+            ),
+            children: const [
+              TextSpan(
+                  text: ' Emergency detected in one of the sensors',
+                  style: TextStyle(fontSize: 15, color: Colors.grey))
+            ]));
   }
 
   Widget TimeandDate(int index) {

@@ -38,6 +38,8 @@ dependencies:
   cloud_firestore: ^4.7.0
   firebase_core: ^2.12.0
   firebase_storage: ^11.2.0
+  google_fonts: ^4.0.4
+  firebase_messaging: ^14.6.4
   email_auth: ^1.0.0
   syncfusion_flutter_gauges: ^22.1.36
   syncfusion_flutter_charts: ^22.1.36

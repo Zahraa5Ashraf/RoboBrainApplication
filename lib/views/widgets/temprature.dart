@@ -1,4 +1,6 @@
 //import 'dart:convert';
+// ignore_for_file: camel_case_types
+
 import 'package:healthcare/constants.dart';
 //import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -8,6 +10,8 @@ import '../../components/button.dart';
 
 class temprature extends StatefulWidget {
   static List<dynamic> activities = [];
+
+  const temprature({super.key});
   //const temprature({super.key});
 
   @override
@@ -50,7 +54,7 @@ class _tempratureState extends State<temprature> {
           ),
           centerTitle: true,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
                     'assets/images/animatedbackground.gif'), // Replace with your image path
@@ -159,7 +163,7 @@ class _tempratureState extends State<temprature> {
           LinearWidgetPointer(
               enableAnimation: true,
               value: tempratureValue,
-              child: Container(
+              child: SizedBox(
                 width: 34,
                 height: 34,
                 child: Material(
@@ -177,7 +181,7 @@ class _tempratureState extends State<temprature> {
                     ),
                     child: Center(
                       child: Text(
-                        '${tempratureValue.toString()}',
+                        tempratureValue.toString(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white),
                       ),

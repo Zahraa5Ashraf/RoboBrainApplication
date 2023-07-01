@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import 'package:healthcare/constants.dart';
@@ -82,7 +84,7 @@ class _ChairPageState extends State<ChairPage> {
                 fontSize: 20,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             roundedbutton(
                 size: size,
                 flatbuttonstyle: flatbuttonstyle,
@@ -101,7 +103,7 @@ class _ChairPageState extends State<ChairPage> {
     await Future.delayed ( const Duration(seconds: 3));
 
     Navigator.pushReplacement(
-        context as BuildContext,
+        context,
         MaterialPageRoute(
             builder: (context) => HomePage(
                   Age: globalage,
