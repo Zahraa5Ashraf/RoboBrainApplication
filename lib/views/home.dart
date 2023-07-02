@@ -15,7 +15,8 @@ class home extends StatefulWidget {
   final String age;
   final String gender;
 
-  const home({super.key, 
+  const home({
+    super.key,
     required this.username,
     required this.age,
     required this.gender,
@@ -228,7 +229,7 @@ class _homeState extends State<home> {
                         primary: false,
                         crossAxisCount: 2,
                         crossAxisSpacing: 8,
-                        childAspectRatio: (1 / 1.5),
+                        childAspectRatio: (1 / 1.4),
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(10),
                         children: [

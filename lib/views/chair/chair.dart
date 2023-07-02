@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
@@ -7,6 +9,7 @@ import 'package:healthcare/views/login/components/roundedinputfield.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../global.dart';
 import 'ChairPage.dart';
 import 'gridview.dart';
 
@@ -20,8 +23,8 @@ class addchair extends StatefulWidget {
 }
 
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
-  foregroundColor: kPrimaryColor,
-  backgroundColor: kPrimaryColor,
+  foregroundColor: kPlaceholder3,
+  backgroundColor: Colors.white,
   shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
       side: const BorderSide(color: kPrimaryColor)),
@@ -118,7 +121,7 @@ class _addchairState extends State<addchair> {
         ),
         centerTitle: true,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
                   'assets/images/animatedbackground.gif'), // Replace with your image path
@@ -133,121 +136,84 @@ class _addchairState extends State<addchair> {
           left: 20.0,
           right: 20.0,
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.only(
-                top: 10,
-                //  left: 25,
-                // right: 25,
-              ),
-              color: Colors.white,
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(height: 490, child: GridDashboard()),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      //  GridDashboard(),
-
-                      Container(
-                        height: 400,
-                        padding: const EdgeInsets.only(
-                            left: 35, right: 35, bottom: 20),
-                        child: Center(
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            // physics: PageScrollPhysics(),
-                            itemCount: items.length,
-                            itemBuilder: (context, int index) => Center(
-                              child: buildcard(
-                                item: items[index],
-                                delete: IconButton(
-                                  splashColor: kPrimaryLightColor,
-                                  onPressed: () {
-                                    setState(() {
-                                      items.removeAt(index);
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.remove_rounded,
-                                    size: 35,
-                                    color: _color2,
-                                  ),
-                                ),
-                                edit: IconButton(
-                                  splashColor: kPrimary2,
-                                  onPressed: () {
-                                    ShowDialogChair(
-                                        context, size, flatbuttonstyle);
-                                  },
-                                  icon: Icon(
-                                    Icons.edit,
-                                    size: 25,
-                                    color: _color,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            separatorBuilder: (context, _) => const SizedBox(
-                              width: 10,
+                      SizedBox(
+                        width: 157.5,
+                        child: ElevatedButton(
+                          style: raisedButtonStyle,
+                          onPressed: () {
+                            if (Token.selectedwheelchair != -1) {
+                              ShowDialogChair(context, size, flatbuttonstyle);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'you have to select wheelchair!')));
+                            }
+                          },
+                          child: const Text(
+                            "Edit",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: kPrimaryColor,
                             ),
                           ),
                         ),
                       ),
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                            top: 10,
-                            right: 10,
-                            left: 10,
-                            bottom: 5,
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 325,
-                                height: 70,
-                                child: ElevatedButton(
-                                  style: raisedButtonStyle,
-                                  onPressed: () {
-                                    ShowDialogChair(
-                                        context, size, flatbuttonstyle);
-                                  },
-                                  child: const Text("Add Wheelchair +",
-                                      style: TextStyle(fontSize: 20)),
-                                ),
-                              ),
-
-                              // Container(
-                              //   height: 70,
-                              //   width: 325,
-                              //   margin: EdgeInsets.only(bottom: 50),
-                              //   child: ElevatedButton(
-                              //     style: raisedButtonStyle2,
-                              //     onPressed: () {
-                              //       Navigator.of(context)
-                              //         ..pop()
-                              //         ..pop();
-                              //     },
-                              //     child: Text("Submit",
-                              //         style: TextStyle(fontSize: 20)),
-                              //   ),
-                              // ),
-                            ],
+                      SizedBox(
+                        width: 157.5,
+                        child: ElevatedButton(
+                          style: raisedButtonStyle,
+                          onPressed: () {},
+                          child: const Text(
+                            "Delete",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: kPrimaryColor,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  SizedBox(
+                    height: 50,
+                    width: 335,
+                    child: ElevatedButton(
+                      style: raisedButtonStyle2,
+                      onPressed: () {
+                        ShowDialogChair(context, size, flatbuttonstyle);
+                      },
+                      child: const Text(
+                        "Add wheelchair",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
@@ -505,3 +471,51 @@ class _addchairState extends State<addchair> {
         ),
       );
 }
+
+
+    // Container(
+                      //   height: 400,
+                      //   padding: const EdgeInsets.only(
+                      //       left: 35, right: 35, bottom: 20),
+                      // child: Center(
+                      //   child: ListView.separated(
+                      //     shrinkWrap: true,
+                      //     scrollDirection: Axis.horizontal,
+                      //     // physics: PageScrollPhysics(),
+                      //     itemCount: items.length,
+                      //     itemBuilder: (context, int index) => Center(
+                      //       child: buildcard(
+                      //         item: items[index],
+                      //         delete: IconButton(
+                      //           splashColor: kPrimaryLightColor,
+                      //           onPressed: () {
+                      //             setState(() {
+                      //               items.removeAt(index);
+                      //             });
+                      //           },
+                      //           icon: Icon(
+                      //             Icons.remove_rounded,
+                      //             size: 35,
+                      //             color: _color2,
+                      //           ),
+                      //         ),
+                      //         edit: IconButton(
+                      //           splashColor: kPrimary2,
+                      //           onPressed: () {
+                      //             ShowDialogChair(
+                      //                 context, size, flatbuttonstyle);
+                      //           },
+                      //           icon: Icon(
+                      //             Icons.edit,
+                      //             size: 25,
+                      //             color: _color,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     separatorBuilder: (context, _) => const SizedBox(
+                      //       width: 10,
+                      //     ),
+                      //   ),
+                      // ),
+                      //   ),

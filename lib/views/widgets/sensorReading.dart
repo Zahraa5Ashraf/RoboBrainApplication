@@ -102,7 +102,7 @@ class _sensorReadingState extends State<sensorReading> {
           );
         },
         child: Container(
-          height: 200,
+          height: 150,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

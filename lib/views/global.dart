@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class Token {
   static int counter = 0;
-
+  static int selectedwheelchair = -1;
   static var token = "";
   static var globalusername = 'zahraa';
   static var globalage = "15";
