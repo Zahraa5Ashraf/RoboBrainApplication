@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healthcare/views/login/Login.dart';
@@ -29,7 +31,7 @@ class body extends StatelessWidget {
     //style button important
     return Container(
       child: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           height: size.height,
           child: Stack(alignment: Alignment.center, children: <Widget>[

@@ -10,6 +10,8 @@ import 'package:healthcare/views/widgets/statisticsCard.dart';
 class Heart extends StatefulWidget {
   static List<dynamic> activities = [];
 
+  const Heart({super.key});
+
   @override
   State<Heart> createState() => _HeartState();
 }
@@ -209,7 +211,7 @@ class _HeartState extends State<Heart> {
             ],
           ),
           flexibleSpace: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
                     'assets/images/animatedbackground.gif'), // Replace with your image path

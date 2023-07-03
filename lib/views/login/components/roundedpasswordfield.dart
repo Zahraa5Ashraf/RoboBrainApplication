@@ -1,4 +1,5 @@
-import 'package:dio/dio.dart';
+// ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';

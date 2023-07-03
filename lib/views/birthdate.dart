@@ -30,6 +30,7 @@ class BirthdateInputField extends StatefulWidget {
   final ValueChanged<String> onSaved;
 
   @override
+  // ignore: library_private_types_in_public_api
   _BirthdateInputFieldState createState() => _BirthdateInputFieldState();
 }
 
@@ -51,7 +52,7 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       //  height: 100.h,
       // padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -63,7 +64,7 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
                 widget.onChanged(value);
                 widget.onSaved(value);
               },
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
               ),
               decoration: InputDecoration(
@@ -74,7 +75,7 @@ class _BirthdateInputFieldState extends State<BirthdateInputField> {
                   borderSide: BorderSide.none,
                 ),
                 hintText: widget.hintText ?? '',
-                hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+                hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: Colors.grey,
                       fontSize: 14,
                     ),

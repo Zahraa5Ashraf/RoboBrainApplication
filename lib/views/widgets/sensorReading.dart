@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/global.dart';
 import 'package:healthcare/views/widgets/heart.dart';
-import 'package:healthcare/views/widgets/blood.dart';
+import 'package:healthcare/views/widgets/notificationtab.dart';
 import 'package:healthcare/views/widgets/temprature.dart';
 import 'package:healthcare/views/widgets/oxygen.dart';
 import 'package:http/http.dart' as http;
@@ -78,10 +78,10 @@ Future sensorupdate(BuildContext cont) async {
 
 class _sensorReadingState extends State<sensorReading> {
   List<Widget> sensors = [
-    Heart(),
-    temprature(),
-    const blood(),
-    oxygen(),
+    const Heart(),
+    const temprature(),
+    const notificationtab(),
+    const oxygen(),
   ];
 
   @override
@@ -115,7 +115,7 @@ class _sensorReadingState extends State<sensorReading> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                radius: 40,
+                radius: 38,
                 backgroundImage: NetworkImage(widget.pic),
               ),
               const SizedBox(

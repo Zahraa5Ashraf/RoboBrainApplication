@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../services/routes.dart';
-import '/views/profile screen/editprofile.dart';
 import '../../constants.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard();
+  const ProfileCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +36,12 @@ class ProfileCard extends StatelessWidget {
             children: [
               Text(
                 'Zahraa Ashraf',
-                style: Theme.of(context).textTheme.headline5!.copyWith(
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.bold, color: kPrimaryColor),
               ),
               Text(
                 'EG +0201222318030',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: ktextcolor2,
                     ),
               ),
@@ -54,7 +53,7 @@ class ProfileCard extends StatelessWidget {
             try {
               Navigator.of(context).pushNamed(RouteGenerator.edit);
             } catch (e) {
-              print(e.toString());
+              //print(e.toString());
             }
           },
           child: Container(

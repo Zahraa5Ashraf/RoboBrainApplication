@@ -1,8 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 
 class Details extends StatelessWidget {
-  const Details({
+  const Details({super.key, 
     required this.title,
     required this.desc,
   });
@@ -17,7 +19,7 @@ class Details extends StatelessWidget {
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 color: kPrimaryColor,
                 fontSize: 20,
               ),

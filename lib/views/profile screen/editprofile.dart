@@ -10,7 +10,7 @@ import 'charityInput.dart';
 import '/views/birthdate.dart';
 
 class editProfile extends StatefulWidget {
-  const editProfile();
+  const editProfile({super.key});
 
   @override
   State<editProfile> createState() => _editProfileState();
@@ -156,7 +156,9 @@ class _editProfileState extends State<editProfile> {
                             Token.first_name = value;
                           });
                         },
-                        validateStatus: (value) {},
+                        validateStatus: (value) {
+                          return value;
+                        },
                         controller: firstname,
                         hintText: 'first name',
                       ),
@@ -172,7 +174,9 @@ class _editProfileState extends State<editProfile> {
                             Token.last_name = value;
                           });
                         },
-                        validateStatus: (value) {},
+                        validateStatus: (value) {
+                          return value;
+                        },
                         controller: lastname,
                         hintText: 'last name',
                       ),
@@ -194,7 +198,9 @@ class _editProfileState extends State<editProfile> {
                       Token.phoneuser = value;
                     });
                   },
-                  validateStatus: (value) {},
+                  validateStatus: (value) {
+                    return value;
+                  },
                   controller: phone,
                   hintText: 'phone',
                 ),
@@ -210,7 +216,10 @@ class _editProfileState extends State<editProfile> {
                       height: 2.h,
                     ),
                     CountryInputField(
-                      validateStatus: (value) {},
+                      validateStatus: (value) {
+                        return value;
+                      },
+                      
                       onChanged: _updateSelectedCountry,
                       onSaved: _updateSelectedCountry,
                       color: kPlaceholder2,
@@ -231,7 +240,9 @@ class _editProfileState extends State<editProfile> {
                       height: 2.h,
                     ),
                     BirthdateInputField(
-                      validateStatus: (value) {},
+                      validateStatus: (value) {
+                        return value;
+                      },
                       onChanged: (String value) {
                         setState(() {
                           birthdate = value;
@@ -239,7 +250,7 @@ class _editProfileState extends State<editProfile> {
                         });
                       },
                       title: 'birth',
-                      hintText: '${Token.bdateuser}',
+                      hintText: Token.bdateuser,
                       onSaved: (String value) {
                         setState(() {
                           birthdate = value;

@@ -1,5 +1,7 @@
 //import 'dart:convert';
 //import 'package:http/http.dart' as http;
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/widgets/statisticsCard.dart';
@@ -7,6 +9,8 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class oxygen extends StatefulWidget {
   static List<dynamic> activities = [];
+
+  const oxygen({super.key});
 
   // const oxygen({super.key});
 
@@ -154,7 +158,7 @@ class _oxygenState extends State<oxygen> {
           showLabels: false,
           showTicks: false,
           radiusFactor: 0.6,
-          axisLineStyle: AxisLineStyle(
+          axisLineStyle: const AxisLineStyle(
               cornerStyle: CornerStyle.bothFlat,
               color: Colors.black12,
               thickness: 12),
@@ -187,7 +191,7 @@ class _oxygenState extends State<oxygen> {
                 axisValue: 5,
                 positionFactor: 0.1,
                 widget: Text(_volumeValue.ceil().toString() + '%',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
                         color: kPrimary2)))

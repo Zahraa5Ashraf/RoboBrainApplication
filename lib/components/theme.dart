@@ -9,7 +9,7 @@ class AppTheme {
 
   ThemeData initTheme() {
     return ThemeData(
-      primarySwatch: createMaterialColor(Color.fromARGB(255, 209, 148, 245)),
+      primarySwatch: createMaterialColor(const Color.fromARGB(255, 209, 148, 245)),
       primaryColor: kPrimaryColor,
       //   buttonColor: AppColor.kPrimaryColor,
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -116,7 +116,6 @@ class AppTheme {
         1,
       );
     }
-    ;
     return MaterialColor(color.value, swatch);
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, prefer_const_constructors
+// ignore_for_file: prefer_final_fields, prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +8,7 @@ import '/views/global.dart';
 
 class CountryInputField extends StatefulWidget {
   const CountryInputField(
-      {required this.onChanged,
+      {super.key, required this.onChanged,
       required this.onSaved,
       this.validateStatus,
       required this.height,
@@ -35,7 +35,7 @@ class _CountryInputFieldState extends State<CountryInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       //  padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
@@ -79,7 +79,7 @@ class _CountryInputFieldState extends State<CountryInputField> {
                       Token.country = country.name;
                     });
 
-                    print('Select country: ${country.displayName}');
+        //            print('Select country: ${country.displayName}');
                   },
                 );
               },

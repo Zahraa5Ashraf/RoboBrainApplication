@@ -1,4 +1,4 @@
-// ignore_for_file: dead_code, non_constant_identifier_names
+// ignore_for_file: dead_code, non_constant_identifier_names, camel_case_types
 
 //import 'dart:convert';
 
@@ -91,7 +91,6 @@ Future SignUp(BuildContext cont) async {
   //}
 }
 
-// ignore: camel_case_types
 class _registerState extends State<register> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -104,7 +103,6 @@ class _registerState extends State<register> {
   bool passwordVisible = true;
   @override
   Widget build(BuildContext context) {
-
     //var gender =
 
     return Scaffold(

@@ -1,7 +1,5 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
@@ -47,8 +45,6 @@ final ButtonStyle raisedButtonStyle2 = ElevatedButton.styleFrom(
   //     textColor: Colors.white,
 );
 
-Color _color = kPrimaryColor;
-Color _color2 = kPrimaryColor;
 
 class CardItem {
   final String urlImage;
@@ -145,8 +141,8 @@ class _addchairState extends State<addchair> {
                   const SizedBox(
                     height: 30,
                   ),
-                  SizedBox(height: 490, child: GridDashboard()),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 490, child: GridDashboard()),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -159,7 +155,7 @@ class _addchairState extends State<addchair> {
                               ShowDialogChair(context, size, flatbuttonstyle);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content: Text(
                                           'you have to select wheelchair!')));
                             }
@@ -189,7 +185,7 @@ class _addchairState extends State<addchair> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   SizedBox(

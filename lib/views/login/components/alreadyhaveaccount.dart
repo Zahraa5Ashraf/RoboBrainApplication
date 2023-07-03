@@ -1,4 +1,5 @@
-import 'dart:ffi';
+
+// ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
 
@@ -19,8 +20,8 @@ class alreadyhaveaccount extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          login ? "Don\'t have an account ? " : "Already have an account ? ",
-          style: TextStyle(
+          login ? "Don't have an account ? " : "Already have an account ? ",
+          style: const TextStyle(
             color: kPrimaryColor,
           ),
         ),
@@ -28,7 +29,7 @@ class alreadyhaveaccount extends StatelessWidget {
           onTap: press as VoidCallback,
           child: Text(
             login ? "SIGN UP" : "SIGN IN",
-            style: TextStyle(
+            style: const TextStyle(
               color: kPrimaryColor,
               fontWeight: FontWeight.bold,
             ),

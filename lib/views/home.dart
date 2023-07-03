@@ -5,7 +5,9 @@ import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/login/Login.dart';
 import 'package:healthcare/views/widgets/sensorReading.dart';
 //import 'package:http/http.dart' as http;
+// {
 
+// }
 //import 'dart:convert';
 import 'package:healthcare/views/global.dart';
 
@@ -221,7 +223,7 @@ class _homeState extends State<home> {
                       ],
                     ),
                     const SizedBox(
-                      height: 25,
+                      height: 30,
                     ),
                     //list view of sensor readings
                     Expanded(
@@ -229,7 +231,7 @@ class _homeState extends State<home> {
                         primary: false,
                         crossAxisCount: 2,
                         crossAxisSpacing: 8,
-                        childAspectRatio: (1 / 1.4),
+                        childAspectRatio: (1 / 1.5),
                         shrinkWrap: true,
                         padding: const EdgeInsets.all(10),
                         children: [
@@ -260,8 +262,8 @@ class _homeState extends State<home> {
                             Color2: Colors.white,
                             textcolor: Colors.grey[600],
                             pic:
-                                'https://raw.githubusercontent.com/Zahraa5Ashraf/flutter/main/location.jpg',
-                            sensorName: 'Internal map',
+                                'https://raw.githubusercontent.com/Zahraa5Ashraf/flutter/main/notificationicon.jpg',
+                            sensorName: 'Notification',
                             state: '180-190  Dangerous',
                           ),
                           sensorReading(

@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,7 +36,7 @@ class buttonWidget extends StatelessWidget {
         ),
       ),
       onPressed: press as VoidCallback,
-      child: Text('${label}'),
+      child: Text(label),
     );
   }
 }

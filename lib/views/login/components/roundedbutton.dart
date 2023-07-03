@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 
 class roundedbutton extends StatelessWidget {
@@ -20,7 +22,7 @@ class roundedbutton extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 5,
         bottom: 15,
       ),

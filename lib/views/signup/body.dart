@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: camel_case_types
 
-import '../../constants.dart';
+import 'package:flutter/material.dart';
 
 class body extends StatelessWidget {
   final Widget child;
@@ -11,7 +11,7 @@ class body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
+    return SizedBox(
       height: size.height,
       width: double.infinity,
       child: Stack(
@@ -20,14 +20,14 @@ class body extends StatelessWidget {
           Positioned(
             top: 0,
             left: 0,
-            child: Image.asset("assets/images/signup_top.png"),
             width: size.width * 0.4,
+            child: Image.asset("assets/images/signup_top.png"),
           ),
           Positioned(
             bottom: 0,
             left: 0,
-            child: Image.asset("assets/images/main_bottom.png"),
             width: size.width * 0.3,
+            child: Image.asset("assets/images/main_bottom.png"),
           ),
           child,
         ],
