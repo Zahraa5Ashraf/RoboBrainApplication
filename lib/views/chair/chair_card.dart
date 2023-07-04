@@ -79,7 +79,7 @@ class chairCard extends StatelessWidget {
               height: 8.h,
             ),
             Text(
-              info.id,
+              '${info.id}',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

@@ -8,8 +8,8 @@ import 'package:healthcare/views/login/components/roundedinputfield.dart';
 import 'package:healthcare/views/login/components/roundedpasswordfield.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:healthcare/views/profile%20screen/proflle_screen.dart';
-
+import '../global.dart';
+import '../login/Login.dart';
 import 'body.dart';
 
 class signup extends StatefulWidget {
@@ -55,8 +55,7 @@ Future SignUp(BuildContext cont) async {
       age == "") {
     print('Fields have not to be empty');
   } else {
-    var url =
-        Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/caregiver/signup");
+    var url = Uri.parse("${Token.server}caregiver/signup");
     var response = await http.post(url,
         headers: {'content-Type': 'application/json'},
         body: jsonBody,
@@ -74,7 +73,7 @@ Future SignUp(BuildContext cont) async {
       Navigator.push(
         cont,
         MaterialPageRoute(
-          builder: (context) => profile(),
+          builder: (context) => login(),
         ),
       );
     } else {
@@ -98,9 +97,7 @@ class _signupState extends State<signup> {
   /* Controllers */
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
-
 
     // style button important
     final ButtonStyle flatbuttonstyle = TextButton.styleFrom(

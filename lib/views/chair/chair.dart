@@ -8,16 +8,68 @@ import 'package:healthcare/views/login/components/roundedinputfield.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../global.dart';
+import '../login/components/body.dart';
 import 'ChairPage.dart';
 import 'gridview.dart';
 
 class addchair extends StatefulWidget {
-  static List<dynamic> activities = [];
-
   const addchair({super.key});
 
   @override
   State<addchair> createState() => _addchairState();
+}
+
+
+final List<dynamic> myprojects = [];
+
+Future getData() async {
+  try {
+/**FOR TEST */
+    var url2 = Uri.parse(Token.server);
+    var response2 = await http.get(
+      url2,
+      headers: {
+        'content-Type': 'application/json',
+        "Authorization": " Token $token"
+      },
+    );
+
+    if (response2.statusCode == 200) {
+      // Parse the JSON response
+     // final jsonData = json.decode(response2.body);
+
+      // Clear the specificurgents list before starting the loop
+      myprojects.clear();
+
+      // Iterate over the parsed data and append to the urgents list
+     // for (var data in jsonData) {
+        // Urgent urgent = Urgent(
+        //   id: data['id'],
+        //   userimage: data['user_image'],
+
+        //   title: data['title'],
+        //   target: target2,
+        //   percent: percent
+        //       .toStringAsFixed(0), // Convert to string with 2 decimal places
+        //   assetName: data['image'],
+        //   category: data['category'],
+        //   organizer: data['created_by'],
+        //   remaining: remaining.toString(),
+        //   rate: double.parse(data['rate']['avg_rate'].toString()),
+        //   details: data['details'],
+        //   end_date: data['end_date'],
+        //   start_date: data['start_date'],
+        //   days: days,
+        //   tags: data['tags'],
+        // );
+
+        //  myprojects.add(urgent);
+    //  }
+    }
+  } catch (e) {
+    //print(e.toString()); // print error
+  }
+ // return myprojects;
 }
 
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -44,7 +96,6 @@ final ButtonStyle raisedButtonStyle2 = ElevatedButton.styleFrom(
   //     color: Color.fromRGBO(0,160,227,1),
   //     textColor: Colors.white,
 );
-
 
 class CardItem {
   final String urlImage;
@@ -132,16 +183,16 @@ class _addchairState extends State<addchair> {
           left: 20.0,
           right: 20.0,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 30,
+                    height: 60,
                   ),
-                  const SizedBox(height: 490, child: GridDashboard()),
+                  const SizedBox(height: 380, child: GridDashboard()),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -385,8 +436,7 @@ class _addchairState extends State<addchair> {
     String jsonBody = json.encode(body);
     final encoding = Encoding.getByName('utf-8');
 
-    var url =
-        Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/patient/info");
+    var url = Uri.parse("${Token.server}patient/info");
 
     var response = await http.post(url,
         headers: {
@@ -396,7 +446,10 @@ class _addchairState extends State<addchair> {
         encoding: encoding);
 
     var data = json.decode(response.body);
-    if (data["message"] == "Success") {}
+  //  print(data);
+    if (data["message"] == "Success") {
+    //  print('success');
+    }
     /* UNCOMMENT WHEN SERVER ONLINE */
   }
 

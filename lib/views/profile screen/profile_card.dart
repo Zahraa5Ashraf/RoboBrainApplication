@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../global.dart';
 import '../services/routes.dart';
 import '../../constants.dart';
 
@@ -35,12 +36,12 @@ class ProfileCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Zahraa Ashraf',
+                '${Token.first_nameuser} ${Token.last_nameuser}',
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.bold, color: kPrimaryColor),
               ),
               Text(
-                'EG +0201222318030',
+                'age: ${Token.ageuser}',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: ktextcolor2,
                     ),

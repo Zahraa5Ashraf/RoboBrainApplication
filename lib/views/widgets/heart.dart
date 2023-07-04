@@ -6,10 +6,12 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../models/chartdata.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/widgets/statisticsCard.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../global.dart';
+import '../login/components/body.dart';
 
 class Heart extends StatefulWidget {
-  static List<dynamic> activities = [];
-
   const Heart({super.key});
 
   @override
@@ -25,6 +27,11 @@ class _HeartState extends State<Heart> {
 
   @override
   void initState() {
+    if (Token.emergencyStateheart) {
+      postnotification(
+          'HeartRate', Token.heartreading, int.parse(Token.selectedchairid));
+      //  print('posted');
+    }
     super.initState();
     startTimer();
   }
@@ -71,7 +78,7 @@ class _HeartState extends State<Heart> {
         pointers: <GaugePointer>[
           RangePointer(
             enableAnimation: true,
-            value: heartrate,
+            value: Token.heartreading,
             width: 0.1,
             sizeUnit: GaugeSizeUnit.factor,
             gradient: const SweepGradient(colors: <Color>[
@@ -97,7 +104,7 @@ class _HeartState extends State<Heart> {
                   ),
                 ),
                 Text(
-                  heartrate.toString(),
+                  Token.heartreading.toString(),
                   style: const TextStyle(
                       fontSize: 45, fontWeight: FontWeight.bold),
                 ),
@@ -336,6 +343,36 @@ class _HeartState extends State<Heart> {
         ),
       ),
     );
+  }
+
+  Future postnotification(String sensor, double value, int chairid) async {
+    try {
+/**FOR TEST */
+      Map<String, dynamic> body = {
+        "sensor": sensor,
+        "value": value,
+        "chair_id": chairid,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url2 = Uri.parse('${Token.server}caregiver/notification');
+      var response2 = await http.post(
+        url2,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": " Bearer $token"
+        },
+        body: jsonBody,
+        encoding: encoding,
+      );
+      //   print(response2.toString());
+      // print(response2.statusCode);
+          return response2;
+
+    } catch (e) {
+      //  print(e.toString()); // print error
+    }
   }
 }
 

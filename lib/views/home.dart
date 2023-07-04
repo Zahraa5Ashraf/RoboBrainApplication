@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
-import 'package:healthcare/views/login/Login.dart';
 import 'package:healthcare/views/widgets/sensorReading.dart';
 //import 'package:http/http.dart' as http;
 // {
@@ -46,20 +45,20 @@ class _homeState extends State<home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const login(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () {
+                //     Navigator.pushReplacement(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const login(),
+                //       ),
+                //     );
+                //   },
+                //   icon: const Icon(
+                //     Icons.arrow_back_ios,
+                //     color: Colors.white,
+                //   ),
+                // ),
 
                 Expanded(
                   child: Column(

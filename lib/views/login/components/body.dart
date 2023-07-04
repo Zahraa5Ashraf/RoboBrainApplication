@@ -2,12 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
-import 'package:healthcare/views/HomePage.dart';
 import 'package:healthcare/views/login/components/roundedinputfield.dart';
+import 'package:healthcare/views/profile%20screen/proflle_screen.dart';
 
 import 'package:healthcare/views/signup/signup_screen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../global.dart';
 import 'alreadyhaveaccount.dart';
 import 'roundedbutton.dart';
 import 'roundedpasswordfield.dart';
@@ -84,7 +86,7 @@ class _BodyState extends State<Body> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-              const    Text(
+                  const Text(
                     "LOGIN",
                     style: TextStyle(
                       color: kPrimaryColor,
@@ -116,7 +118,6 @@ class _BodyState extends State<Body> {
                     icon: Icons.person,
                   ),
                   roundedpasswordfield(
-                    
                     validateStatus: (value) {
                       if (value!.isEmpty) {
                         return 'Field must not be empty';
@@ -176,8 +177,7 @@ class _BodyState extends State<Body> {
         reload();
         //print('Fields have not to be empty');
       } else {
-        var url = Uri.parse(
-            "https://1a62-102-186-239-195.eu.ngrok.io/caregiver/login");
+        var url = Uri.parse("${Token.server}caregiver/login");
 
         var response = await http.post(url,
             headers: {
@@ -193,8 +193,7 @@ class _BodyState extends State<Body> {
         /* UNCOMMENT WHEN SERVER ONLINE */
       }
 
-      var url2 =
-          Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/patient/info/55");
+      var url2 = Uri.parse("${Token.server}caregiver/info");
       var response = await http.get(
         url2,
         headers: {
@@ -202,32 +201,33 @@ class _BodyState extends State<Body> {
           "Authorization": "Bearer $token"
         },
       );
+      var data2 = json.decode(response.body);
+     // print(data2);
+      storeToken();
+      setState(() {
+        Token.username = data2["username".toString()];
+        Token.first_nameuser = data2["first_name".toString()];
+        Token.last_nameuser = data2["last_name".toString()];
+        Token.emailuser = data2["email".toString()];
+        Token.ageuser = data2["age".toString()];
+      });
 
-      if (response.statusCode == 200) {
-        var data2 = json.decode(response.body);
-        Username = data2["first_name"].toString();
-        Gender = data2["gender"].toString();
-        Age = data2["age"].toString();
-        globalusername = Username;
-        globalage = Age;
-        globalgender = Gender;
-      }
       /* UNCOMMENT WHEN SERVER ONLINE */
     } catch (e) {
+    //  print(e.toString());
     }
+  }
+
+  storeToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
   }
 
   Future<void> reload() async {
     check = true;
-    await Future.delayed( const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomePage(
-                  Age: globalage,
-                  Gender: globalgender,
-                  Username: globalusername,
-                )));
+        context, MaterialPageRoute(builder: (context) => const profile()));
     return;
   }
 }

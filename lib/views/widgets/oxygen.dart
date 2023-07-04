@@ -1,5 +1,5 @@
-//import 'dart:convert';
-//import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
@@ -7,8 +7,10 @@ import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/widgets/statisticsCard.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import '../global.dart';
+import '../login/components/body.dart';
+
 class oxygen extends StatefulWidget {
-  static List<dynamic> activities = [];
 
   const oxygen({super.key});
 
@@ -18,45 +20,23 @@ class oxygen extends StatefulWidget {
   State<oxygen> createState() => _oxygenState();
 }
 
-var _volumeValue = 50.0;
-var date = '11 FEBRUARY';
-// Future update(BuildContext cont) async {
-//   Map<String, dynamic> body = {
-//     "email": "",
-//     "password": "",
-//   };
-//   String jsonBody = json.encode(body);
-//   final encoding = Encoding.getByName('utf-8');
 
-//   var url = Uri.parse("https://304d-197-133-196-239.eu.ngrok.io/chair/data");
-//   var response = await http.get(
-//     url,
-//     headers: {
-//       'content-Type': 'application/json',
-//       "Authorization": "Bearer ${token}"
-//     },
-//   );
-
-//   var data = json.decode(response.body);
-//   print(data);
-//   test = data["oxygen_rate"].toString();
-//   if (data["oxygen_rate"] < 120) {
-//     print('patient died');
-//   }
-//   print(data["oxygen_rate"]);
-// }
 
 class _oxygenState extends State<oxygen> {
+@override
+  void initState() {
+    if (Token.emergencyStateoxy) {
+      postnotification(
+          'OxygenRate', Token.oxygenreading, int.parse(Token.selectedchairid));
+      //print('posted');
+    }
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    // update(context);
 
-    // DioHelper.getData(url: 'activity/', query: {'': ''}).then((value) {
-    //   print(value!.data['type'].toString());
-    //   test = value.data['type'].toString();
-    // }).catchError((error) {
-    //   print(error.toString());
-    // });
     return Container(
       padding: const EdgeInsets.only(
         top: 20,
@@ -104,7 +84,7 @@ class _oxygenState extends State<oxygen> {
                         height: 20,
                       ),
                       Text(
-                        '  SO2 = ${_volumeValue.toString()} 💧',
+                        '  SO2 = ${Token.oxygenreading.toString()} 💧',
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w500,
@@ -165,7 +145,7 @@ class _oxygenState extends State<oxygen> {
           pointers: <GaugePointer>[
             RangePointer(
                 enableAnimation: true,
-                value: _volumeValue,
+                value: Token.oxygenreading,
                 cornerStyle: CornerStyle.bothFlat,
                 width: 12,
                 sizeUnit: GaugeSizeUnit.logicalPixel,
@@ -175,7 +155,7 @@ class _oxygenState extends State<oxygen> {
                     stops: <double>[0.25, 0.75])),
             MarkerPointer(
                 enableAnimation: true,
-                value: _volumeValue,
+                value: Token.oxygenreading,
                 enableDragging: true,
                 //   onValueChanged: onVolumeChanged,
                 markerHeight: 20,
@@ -190,7 +170,7 @@ class _oxygenState extends State<oxygen> {
                 angle: 90,
                 axisValue: 5,
                 positionFactor: 0.1,
-                widget: Text(_volumeValue.ceil().toString() + '%',
+                widget: Text('${Token.oxygenreading.ceil()}%',
                     style: const TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
@@ -198,7 +178,35 @@ class _oxygenState extends State<oxygen> {
           ])
     ]);
   }
+   Future postnotification(String sensor, double value, int chairid) async {
+    try {
+/**FOR TEST */
+      Map<String, dynamic> body = {
+        "sensor": sensor,
+        "value": value,
+        "chair_id": chairid,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url2 = Uri.parse('${Token.server}caregiver/notification');
+      var response2 = await http.post(
+        url2,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": " Bearer $token"
+        },
+        body: jsonBody,
+        encoding: encoding,
+      );
+          return response2;
+
+    } catch (e) {
+      // print error
+    }
+  }
 }
+  
 
 Stream<DateTime> getTime() async* {
   DateTime currentTime = DateTime.now();

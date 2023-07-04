@@ -1,16 +1,16 @@
-//import 'dart:convert';
+import 'dart:convert';
 // ignore_for_file: camel_case_types
 
 import 'package:healthcare/constants.dart';
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/widgets/statisticsCard.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../../components/button.dart';
+import '../global.dart';
+import '../login/components/body.dart';
 
 class temprature extends StatefulWidget {
-  static List<dynamic> activities = [];
-
   const temprature({super.key});
   //const temprature({super.key});
 
@@ -22,15 +22,16 @@ var tempratureValue = 37.0;
 
 class _tempratureState extends State<temprature> {
   @override
-  Widget build(BuildContext context) {
-    //update(context);
+  void initState() {
+    if (Token.emergencyStatetemp) {
+      postnotification('TempratureRate', Token.tempreading,
+          int.parse(Token.selectedchairid));
+    }
+    super.initState();
+  }
 
-    // DioHelper.getData(url: 'activity/', query: {'': ''}).then((value) {
-    //   print(value!.data['type'].toString());
-    //   test = value.data['type'].toString();
-    // }).catchError((error) {
-    //   print(error.toString());
-    // });
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(
         top: 20,
@@ -162,7 +163,7 @@ class _tempratureState extends State<temprature> {
           // ),
           LinearWidgetPointer(
               enableAnimation: true,
-              value: tempratureValue,
+              value: Token.tempreading,
               child: SizedBox(
                 width: 34,
                 height: 34,
@@ -181,7 +182,7 @@ class _tempratureState extends State<temprature> {
                     ),
                     child: Center(
                       child: Text(
-                        tempratureValue.toString(),
+                        Token.tempreading.toString(),
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white),
                       ),
@@ -199,5 +200,32 @@ class _tempratureState extends State<temprature> {
             edgeStyle: LinearEdgeStyle.bothCurve,
             thickness: 15.0,
             borderColor: Colors.grey));
+  }
+
+  Future postnotification(String sensor, double value, int chairid) async {
+    try {
+/**FOR TEST */
+      Map<String, dynamic> body = {
+        "sensor": sensor,
+        "value": value,
+        "chair_id": chairid,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url2 = Uri.parse('${Token.server}caregiver/notification');
+      var response2 = await http.post(
+        url2,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": " Bearer $token"
+        },
+        body: jsonBody,
+        encoding: encoding,
+      );
+      return response2;
+    } catch (e) {
+      // print error
+    }
   }
 }

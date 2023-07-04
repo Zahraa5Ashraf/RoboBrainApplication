@@ -55,8 +55,8 @@ class _editProfileState extends State<editProfile> {
   void initState() {
     super.initState();
     // Initialize the text controllers with existing data
-    firstname = TextEditingController(text: Token.first_name);
-    lastname = TextEditingController(text: Token.last_name);
+    firstname = TextEditingController(text: Token.first_nameuser);
+    lastname = TextEditingController(text: Token.last_nameuser);
     phone = TextEditingController(text: Token.phoneuser);
   }
 
@@ -153,7 +153,7 @@ class _editProfileState extends State<editProfile> {
                         'First Name',
                         onchanged: (String value) {
                           setState(() {
-                            Token.first_name = value;
+                            Token.first_nameuser = value;
                           });
                         },
                         validateStatus: (value) {
@@ -171,7 +171,7 @@ class _editProfileState extends State<editProfile> {
                         'Last Name',
                         onchanged: (String value) {
                           setState(() {
-                            Token.last_name = value;
+                            Token.last_nameuser = value;
                           });
                         },
                         validateStatus: (value) {

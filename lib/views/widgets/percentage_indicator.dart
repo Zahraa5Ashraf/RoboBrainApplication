@@ -28,7 +28,7 @@ class _PercentageIndicatiorState extends State<PercentageIndicatior> {
                 width: 80.w,
                 height: 80.w,
                 child: CustomPaint(
-                  foregroundPainter: CircleProgress(percent as double),
+                  foregroundPainter: CircleProgress(percent),
                   child: SizedBox(
                     width: 80.w,
                     height: 80.w,

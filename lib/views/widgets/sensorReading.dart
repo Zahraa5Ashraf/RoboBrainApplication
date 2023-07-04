@@ -1,6 +1,8 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, unnecessary_brace_in_string_interps, empty_catches
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, unnecessary_brace_in_string_interps, empty_catches, file_names
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthcare/views/global.dart';
 import 'package:healthcare/views/widgets/heart.dart';
 import 'package:healthcare/views/widgets/notificationtab.dart';
@@ -8,8 +10,9 @@ import 'package:healthcare/views/widgets/temprature.dart';
 import 'package:healthcare/views/widgets/oxygen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import '../../main.dart';
 import '../register.dart';
+import '../services/getfcm.dart';
 import '../services/notif_service.dart';
 
 class sensorReading extends StatefulWidget {
@@ -36,45 +39,11 @@ class sensorReading extends StatefulWidget {
   State<sensorReading> createState() => _sensorReadingState();
 }
 
-var heartint = 100.0;
-var tempint = 100.0;
-var heart2 = '100.0';
-var temp2 = '100.0';
-Future sensorupdate(BuildContext cont) async {
-  try {
-    var url =
-        Uri.parse("https://1a62-102-186-239-195.eu.ngrok.io/chair/data/55");
-    var response = await http.get(
-      url,
-      headers: {
-        'content-Type': 'application/json',
-        "Authorization": "Bearer ${token}"
-      },
-    );
-    /*remove this comments*/
-    var data = json.decode(response.body);
-    heartint = data["pulse_rate"];
-    tempint = data["temperature"];
-    heart2 = data["pulse_rate"].toString();
-    temp2 = data["temperature"].toString();
-    /*remove this comments*/
+var heartdouble = 70.0;
+var tempdouble = 37.0;
 
-    // heart2 = '100';
-    // temp2 = '40';
-    // heartint = 100;
-    // tempint = 40;
-    if (heartint > 90 || heartint < 50) {
-      NotificationService().showNotification(
-          title: 'Heart Emergency',
-          body: 'Heart Rate is high Go to the hospital immediately!');
-    }
-    if (tempint > 37 || tempint < 35) {
-      NotificationService().showNotification(
-          title: 'Temprature Emergency',
-          body: 'body Temp Rate is high Call the doctor immediately!');
-    }
-  } catch (e) {}
-}
+var oxratedouble = 50.0;
+final List<dynamic> notifications = [];
 
 class _sensorReadingState extends State<sensorReading> {
   List<Widget> sensors = [
@@ -84,6 +53,125 @@ class _sensorReadingState extends State<sensorReading> {
     const oxygen(),
   ];
 
+  Future<void> sensorupdate(BuildContext cont) async {
+  try {
+    var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
+    var response = await http.get(
+      url,
+      headers: {
+        'content-Type': 'application/json',
+        "Authorization": "Bearer $token"
+      },
+    );
+    var data = json.decode(response.body);
+
+    if (mounted) {
+      setState(() {
+        heartdouble = data["pulse_rate"];
+        tempdouble = data["temperature"];
+        oxratedouble = data["oximeter"];
+
+        if (heartdouble > 160.0 || heartdouble < 50.0) {
+          showNotification('Heart Emergency',
+              'Heart Rate is high Go to the hospital immediately!');
+          Token.emergencyStateheart = true;
+          Token.heartreading = heartdouble;
+        } else {
+          Token.emergencyStateheart = false;
+        }
+
+        if (tempdouble > 37.0 || tempdouble < 35.0) {
+          NotificationService().showNotification(
+              title: 'Temprature Emergency',
+              body: 'body Temp Rate is high Call the doctor immediately!');
+          Token.emergencyStatetemp = true;
+          Token.tempreading = tempdouble;
+        } else {
+          Token.emergencyStatetemp = false;
+        }
+
+        if (oxratedouble < 95.0) {
+          NotificationService().showNotification(
+              title: 'Oxygen rate Emergency',
+              body: 'Oxygen rate is low Call the doctor immediately!');
+          Token.emergencyStateoxy = true;
+          Token.oxygenreading = oxratedouble;
+        } else {
+          Token.emergencyStateoxy = false;
+        }
+      });
+    }
+  } catch (e) {
+   // print(e.toString());
+  }
+}
+
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      //   print('A new onMessageOpenedApp event was published!');
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body!)],
+                  ),
+                ),
+              );
+            });
+      }
+    });
+  }
+
+  void showNotification(String title, String desc) async {
+   String? fcmKey = await getFcmToken();
+    print('fcm: $fcmKey');
+    setState(() {
+      Token.counter++;
+    });
+    flutterLocalNotificationsPlugin.show(
+        0,
+        title,
+        desc,
+        NotificationDetails(
+            android: AndroidNotificationDetails(channel.id, channel.name,
+                channelDescription: channel.description,
+                importance: Importance.high,
+                color: Colors.blue,
+                playSound: true,
+                icon: '@mipmap/ic_launcher')));
+  }
+
   @override
   Widget build(BuildContext context) {
     sensorupdate(context);
@@ -91,8 +179,9 @@ class _sensorReadingState extends State<sensorReading> {
       child: InkWell(
         onTap: () {
           setState(() {
-            Token.heartreading = heart2;
-            Token.tempreading = temp2;
+            Token.heartreading = heartdouble;
+            Token.tempreading = tempdouble;
+            Token.oxygenreading = oxratedouble;
           });
           Navigator.push(
             context,
@@ -131,35 +220,6 @@ class _sensorReadingState extends State<sensorReading> {
               ),
             ],
           ),
-
-          // child: ListTile(
-          //   leading: ClipRRect(
-          //     borderRadius: BorderRadius.circular(12),
-          //     child: Container(
-          //       padding: EdgeInsets.all(5),
-          //       color: Color,
-          //       child: Image.asset(
-          //         pic,
-          //         height: 70.0,
-          //         width: 70,
-          //       ),
-          //     ),
-          //   ),
-          //   title: Text(
-          //     sensorName,
-          //     style: TextStyle(
-          //       color: Colors.grey[600],
-          //       fontWeight: FontWeight.bold,
-          //       fontSize: 20,
-          //     ),
-          //   ),
-          //   subtitle: Text(
-          //     state,
-          //     style: TextStyle(
-          //       color: Colors.grey[500],
-          //     ),
-          //   ),
-          // ),
         ),
       ),
     );

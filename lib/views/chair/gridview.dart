@@ -1,13 +1,13 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../constants.dart';
 import '../HomePage.dart';
 import '../global.dart';
 import '../login/components/body.dart';
-
 class GridDashboard extends StatefulWidget {
   const GridDashboard({super.key});
 
@@ -15,14 +15,21 @@ class GridDashboard extends StatefulWidget {
   State<GridDashboard> createState() => _GridDashboardState();
 }
 
+var heartint = 100.0;
+var tempint = 100.0;
+var heart2 = '100.0';
+var temp2 = '100.0';
+var oxrate = '59';
+var oxrateint = 50;
+
 class _GridDashboardState extends State<GridDashboard> {
   Items item1 = Items(
-    title: "wheelchair1",
+    title: "77",
     subtitle: "patient1",
   );
 
   Items item2 = Items(
-    title: "wheelchair2",
+    title: "33",
     subtitle: "patient2",
   );
 
@@ -62,15 +69,32 @@ class _GridDashboardState extends State<GridDashboard> {
       itemBuilder: (context, index) {
         Items data = myList[index];
         return GestureDetector(
-          onDoubleTap: () {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HomePage(
-                          Age: globalage,
-                          Username: globalusername,
-                          Gender: globalgender,
-                        )));
+          onDoubleTap: () async {
+            setState(() {
+              Token.selectedchairid = data.title;
+            });
+
+            try {
+              var url = Uri.parse(
+                  "${Token.server}patient/info/${Token.selectedchairid}");
+              var response = await http.get(
+                url,
+                headers: {
+                  'content-Type': 'application/json',
+                  "Authorization": "Bearer $token"
+                },
+              );
+              /*remove this comments*/
+              var data = json.decode(response.body);
+
+              globalusername = data["first_name"].toString();
+              globalage = data["age"].toString();
+              globalgender = data["gender"].toString();
+           //   print(data);
+              reload();
+            } catch (e) {
+           //   print(e.toString());
+            }
           },
           onTap: () {
             setState(() {
@@ -106,7 +130,7 @@ class _GridDashboardState extends State<GridDashboard> {
                         height: 14,
                       ),
                       Text(
-                        data.title,
+                        'ID:${data.title}',
                         style: GoogleFonts.openSans(
                           textStyle: TextStyle(
                             color: selectedIndex == index
@@ -144,6 +168,23 @@ class _GridDashboardState extends State<GridDashboard> {
         );
       },
     );
+  }
+
+  Future<void> reload() async {
+    try {
+      await Future.delayed(const Duration(seconds: 3));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    Age: globalage,
+                    Username: globalusername,
+                    Gender: globalgender,
+                  )));
+    } catch (e) {
+      //print(e.toString());
+    }
+    return;
   }
 }
 
