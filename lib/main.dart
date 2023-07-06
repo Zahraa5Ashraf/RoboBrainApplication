@@ -72,8 +72,9 @@ class _healthcareState extends State<healthcare> {
       );
 
       var data2 = json.decode(response2.body);
-
+      print(response2.statusCode);
       setState(() {
+        Token.caregiverid = data2["id".toString()];
         Token.username = data2["username".toString()];
         Token.first_nameuser = data2["first_name".toString()];
         Token.last_nameuser = data2["last_name".toString()];
@@ -81,8 +82,15 @@ class _healthcareState extends State<healthcare> {
         Token.ageuser = data2["age".toString()];
       });
     } catch (e) {
-     // print(e.toString());
+      // print(e.toString());
     }
+  }
+
+  gettokenfcm() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    Token.deviceToken = (await messaging.getToken())!;
+    print('Device Token: ${Token.deviceToken}');
   }
 
   gettoken() async {
@@ -94,6 +102,7 @@ class _healthcareState extends State<healthcare> {
   void initState() {
     super.initState();
     checkLoginStatus();
+    gettokenfcm();
   }
 
   var Tokenid;
@@ -103,9 +112,11 @@ class _healthcareState extends State<healthcare> {
     if (Tokenid != null) {
       setState(() {
         token = Tokenid;
+        print('token user:$token');
       });
       getinfo();
     }
+    return Tokenid;
   }
 
   @override
@@ -116,7 +127,21 @@ class _healthcareState extends State<healthcare> {
         title: 'healthcare',
         theme: AppTheme(context).initTheme(),
         debugShowCheckedModeBanner: false,
-        home: Tokenid == null ? login() : profile(),
+        home: Tokenid == null
+            ? FutureBuilder<void>(
+                future: Future.delayed(
+                    Duration(seconds: 2), () => checkLoginStatus()),
+                builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return login();
+                  }
+                },
+              )
+            : profile(),
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

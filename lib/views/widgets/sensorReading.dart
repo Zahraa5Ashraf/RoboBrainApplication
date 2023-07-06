@@ -54,58 +54,57 @@ class _sensorReadingState extends State<sensorReading> {
   ];
 
   Future<void> sensorupdate(BuildContext cont) async {
-  try {
-    var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
-    var response = await http.get(
-      url,
-      headers: {
-        'content-Type': 'application/json',
-        "Authorization": "Bearer $token"
-      },
-    );
-    var data = json.decode(response.body);
+    try {
+      var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
+      var response = await http.get(
+        url,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": "Bearer $token"
+        },
+      );
+      var data = json.decode(response.body);
 
-    if (mounted) {
-      setState(() {
-        heartdouble = data["pulse_rate"];
-        tempdouble = data["temperature"];
-        oxratedouble = data["oximeter"];
+      if (mounted) {
+        setState(() {
+          heartdouble = data["pulse_rate"];
+          tempdouble = data["temperature"];
+          oxratedouble = data["oximeter"];
 
-        if (heartdouble > 160.0 || heartdouble < 50.0) {
-          showNotification('Heart Emergency',
-              'Heart Rate is high Go to the hospital immediately!');
-          Token.emergencyStateheart = true;
-          Token.heartreading = heartdouble;
-        } else {
-          Token.emergencyStateheart = false;
-        }
+          if (heartdouble > 160.0 || heartdouble < 50.0) {
+            showNotification('Heart Emergency',
+                'Heart Rate is high Go to the hospital immediately!');
+            Token.emergencyStateheart = true;
+            Token.heartreading = heartdouble;
+          } else {
+            Token.emergencyStateheart = false;
+          }
 
-        if (tempdouble > 37.0 || tempdouble < 35.0) {
-          NotificationService().showNotification(
-              title: 'Temprature Emergency',
-              body: 'body Temp Rate is high Call the doctor immediately!');
-          Token.emergencyStatetemp = true;
-          Token.tempreading = tempdouble;
-        } else {
-          Token.emergencyStatetemp = false;
-        }
+          if (tempdouble > 37.0 || tempdouble < 35.0) {
+            NotificationService().showNotification(
+                title: 'Temprature Emergency',
+                body: 'body Temp Rate is high Call the doctor immediately!');
+            Token.emergencyStatetemp = true;
+            Token.tempreading = tempdouble;
+          } else {
+            Token.emergencyStatetemp = false;
+          }
 
-        if (oxratedouble < 95.0) {
-          NotificationService().showNotification(
-              title: 'Oxygen rate Emergency',
-              body: 'Oxygen rate is low Call the doctor immediately!');
-          Token.emergencyStateoxy = true;
-          Token.oxygenreading = oxratedouble;
-        } else {
-          Token.emergencyStateoxy = false;
-        }
-      });
+          if (oxratedouble < 95.0) {
+            NotificationService().showNotification(
+                title: 'Oxygen rate Emergency',
+                body: 'Oxygen rate is low Call the doctor immediately!');
+            Token.emergencyStateoxy = true;
+            Token.oxygenreading = oxratedouble;
+          } else {
+            Token.emergencyStateoxy = false;
+          }
+        });
+      }
+    } catch (e) {
+      // print(e.toString());
     }
-  } catch (e) {
-   // print(e.toString());
   }
-}
-
 
   @override
   void initState() {
@@ -154,7 +153,7 @@ class _sensorReadingState extends State<sensorReading> {
   }
 
   void showNotification(String title, String desc) async {
-   String? fcmKey = await getFcmToken();
+    String? fcmKey = await getFcmToken();
     print('fcm: $fcmKey');
     setState(() {
       Token.counter++;

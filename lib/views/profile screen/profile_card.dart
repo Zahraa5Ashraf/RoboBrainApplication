@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../global.dart';
 import '../services/routes.dart';
 import '../../constants.dart';
@@ -16,16 +15,12 @@ class ProfileCard extends StatelessWidget {
           height: 80.w,
           width: 80.w,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              8.r,
-            ),
-            color: ktextcolor1,
+            borderRadius: BorderRadius.circular(20.r),
+            color: kPrimary2,
           ),
-          child: Center(
-            child: SvgPicture.asset(
-              'assets/images/image_placeholder.svg',
-              width: 32.w,
-            ),
+          child: Image.network(
+            'https://raw.githubusercontent.com/Zahraa5Ashraf/flutter/main/new%20logo%20finalllllllyyyy.jpg', // Replace with your image URL
+            fit: BoxFit.fill,
           ),
         ),
         SizedBox(

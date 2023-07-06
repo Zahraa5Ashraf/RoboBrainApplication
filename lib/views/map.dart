@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
-
 import '../constants.dart';
 
 class map extends StatefulWidget {
@@ -13,6 +12,12 @@ class map extends StatefulWidget {
 }
 
 class _mapState extends State<map> {
+  final controller = MapController.withPosition(
+    initPosition: GeoPoint(
+      latitude: 47.4358055,
+      longitude: 8.4737324,
+    ),
+  );
   final _mapController = MapController.withUserPosition(
       trackUserLocation: const UserTrackingOption(
     enableTracking: true,
@@ -23,6 +28,7 @@ class _mapState extends State<map> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mapController.listenerMapSingleTapping.addListener(() async {
         var position = _mapController.listenerMapSingleTapping.value;

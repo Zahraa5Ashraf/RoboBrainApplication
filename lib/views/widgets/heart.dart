@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../global.dart';
 import '../login/components/body.dart';
+import '../services/notif_service.dart';
 
 class Heart extends StatefulWidget {
   const Heart({super.key});
@@ -22,8 +23,39 @@ List<ChartData> data = [];
 ChartSeriesController? _chartSeriesController;
 
 class _HeartState extends State<Heart> {
-  var heartrate = 120.0;
+  var heartdouble = 120.0;
   Timer? _timer;
+  Future<void> sensorupdate(Timer timer) async {
+    try {
+      var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
+      var response = await http.get(
+        url,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": "Bearer $token"
+        },
+      );
+      var data = json.decode(response.body);
+      if (mounted) {
+        setState(() {
+          heartdouble = data["pulse_rate"];
+          Token.heartreading = heartdouble;
+
+          if (heartdouble > 160.0 || heartdouble < 50.0) {
+            NotificationService().showNotification(
+                title: 'Heart Emergency',
+                body: 'Heart Rate is high Go to the hospital immediately!');
+            Token.emergencyStateheart = true;
+            Token.heartreading = heartdouble;
+          } else {
+            Token.emergencyStateheart = false;
+          }
+        });
+      }
+    } catch (e) {
+      // print(e.toString());
+    }
+  }
 
   @override
   void initState() {
@@ -43,7 +75,7 @@ class _HeartState extends State<Heart> {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), updateDataSource);
+    _timer = Timer.periodic(const Duration(seconds: 3), sensorupdate);
   }
 
   void stopTimer() {
@@ -368,8 +400,7 @@ class _HeartState extends State<Heart> {
       );
       //   print(response2.toString());
       // print(response2.statusCode);
-          return response2;
-
+      return response2;
     } catch (e) {
       //  print(e.toString()); // print error
     }

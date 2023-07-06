@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:healthcare/constants.dart';
-import 'package:healthcare/views/services/getfcm.dart';
 import '../../main.dart';
 import '../../models/notifications.dart';
 import '../global.dart';
@@ -31,6 +29,7 @@ class _notificationtabState extends State<notificationtab> {
   @override
   void initState() {
     super.initState();
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
@@ -74,25 +73,6 @@ class _notificationtabState extends State<notificationtab> {
     });
   }
 
-  void showNotification() async {
-    String? fcmKey = await getFcmToken();
-    print('fcm: $fcmKey');
-    setState(() {
-      Token.counter++;
-    });
-    flutterLocalNotificationsPlugin.show(
-        0,
-        "Testing ${Token.counter}",
-        "How you doin ?",
-        NotificationDetails(
-            android: AndroidNotificationDetails(channel.id, channel.name,
-                channelDescription: channel.description,
-                importance: Importance.high,
-                color: Colors.blue,
-                playSound: true,
-                icon: '@mipmap/ic_launcher')));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,56 +107,55 @@ class _notificationtabState extends State<notificationtab> {
           } else if (snapshot.hasData) {
             return Padding(
               padding: const EdgeInsets.all(2.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
                 children: [
                   SingleChildScrollView(
                     child: Column(children: [
                       const SizedBox(
-                        height: 10,
+                        height: 40,
                       ),
-                      Container(
-                        height: 500,
-                        padding: const EdgeInsets.only(
-                          top: 25,
-                        ),
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              physics: const ScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: notifications.length,
-                              itemBuilder: (context, index) {
-                                return notifcard(notifications[index]);
-                              },
-                            ),
-                            const Divider(
-                              height: 20,
-                            ),
-                          ],
+
+                      SizedBox(
+                        height: 600,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          physics: const ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: notifications.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                notifcard(
+                                  notifications[index],
+                                ),
+                                const Divider(
+                                  height: 20,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
+
                       const SizedBox(
                         height: 20,
                       ),
-                      Center(
-                        child: SizedBox(
-                          height: 70,
-                          width: 200,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                //    showNotification();
-                                getData();
-                              },
-                              child: const Text(
-                                'Click her',
-                                style: TextStyle(color: ktextcolor2),
-                              )),
-                        ),
-                      ),
+                      // Center(
+                      //   child: SizedBox(
+                      //     height: 70,
+                      //     width: 200,
+                      //     child: ElevatedButton(
+                      //         onPressed: () {
+                      //           //  getLocation();
+                      //           //    showNotification();
+                      //           //   getData();
+                      //         },
+                      //         child: const Text(
+                      //           'Click her',
+                      //           style: TextStyle(color: ktextcolor2),
+                      //         )),
+                      //   ),
+                      // ),
                     ]),
                   ),
                 ],
@@ -190,9 +169,8 @@ class _notificationtabState extends State<notificationtab> {
     );
   }
 
-  Future getData() async {
+  Future<List> getData() async {
     try {
-      /**FOR TEST */
       var url2 = Uri.parse('${Token.server}caregiver/notification');
       var response2 = await http.get(
         url2,
@@ -201,16 +179,15 @@ class _notificationtabState extends State<notificationtab> {
           "Authorization": " Bearer $token"
         },
       );
-      // Parse the JSON response
-      final jsonData = json.decode(response2.body);
-     // print(jsonData);
 
-      // Clear the notifications list before starting the loop
+      final jsonData = json.decode(response2.body);
+  //    print(jsonData);
+
       notifications.clear();
 
-      // Iterate over the parsed data and append to the notifications list
       for (var data in jsonData) {
         Notificationcard notification = Notificationcard(
+          notificationid: data['id'],
           chairid: data['chair_id'],
           datetime: data['date'],
           sensorname: data['sensor'],
@@ -220,7 +197,8 @@ class _notificationtabState extends State<notificationtab> {
         notifications.add(notification);
       }
     } catch (e) {
-   //   print(e.toString()); // print error
+      // Handle error appropriately
+    //  print(e.toString());
     }
 
     return notifications;

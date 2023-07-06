@@ -202,9 +202,10 @@ class _BodyState extends State<Body> {
         },
       );
       var data2 = json.decode(response.body);
-     // print(data2);
+      // print(data2);
       storeToken();
       setState(() {
+        Token.caregiverid = data2["id".toString()];
         Token.username = data2["username".toString()];
         Token.first_nameuser = data2["first_name".toString()];
         Token.last_nameuser = data2["last_name".toString()];
@@ -214,7 +215,7 @@ class _BodyState extends State<Body> {
 
       /* UNCOMMENT WHEN SERVER ONLINE */
     } catch (e) {
-    //  print(e.toString());
+      //  print(e.toString());
     }
   }
 

@@ -8,6 +8,7 @@ import '../../constants.dart';
 import '../HomePage.dart';
 import '../global.dart';
 import '../login/components/body.dart';
+
 class GridDashboard extends StatefulWidget {
   const GridDashboard({super.key});
 
@@ -71,6 +72,9 @@ class _GridDashboardState extends State<GridDashboard> {
         return GestureDetector(
           onDoubleTap: () async {
             setState(() {
+              reload();
+              selectedIndex = index;
+
               Token.selectedchairid = data.title;
             });
 
@@ -90,10 +94,9 @@ class _GridDashboardState extends State<GridDashboard> {
               globalusername = data["first_name"].toString();
               globalage = data["age"].toString();
               globalgender = data["gender"].toString();
-           //   print(data);
-              reload();
+              //   print(data);
             } catch (e) {
-           //   print(e.toString());
+              //   print(e.toString());
             }
           },
           onTap: () {
@@ -171,20 +174,43 @@ class _GridDashboardState extends State<GridDashboard> {
   }
 
   Future<void> reload() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(height: 10),
+                Text('Reloading...'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
     try {
       await Future.delayed(const Duration(seconds: 3));
+      Navigator.pop(context); // Close the progress dialog
+
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomePage(
-                    Age: globalage,
-                    Username: globalusername,
-                    Gender: globalgender,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(
+            Age: globalage,
+            Username: globalusername,
+            Gender: globalgender,
+          ),
+        ),
+      );
     } catch (e) {
-      //print(e.toString());
+      // Handle error
     }
-    return;
   }
 }
 

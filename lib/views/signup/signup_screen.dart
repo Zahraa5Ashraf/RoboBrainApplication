@@ -70,12 +70,16 @@ Future SignUp(BuildContext cont) async {
     if (data["message"] == "Success") {
       token = data["access_token"];
       print("Registeration succeeded");
-      Navigator.push(
-        cont,
-        MaterialPageRoute(
-          builder: (context) => login(),
-        ),
-      );
+      try {
+        Navigator.push(
+          cont,
+          MaterialPageRoute(
+            builder: (context) => login(),
+          ),
+        );
+      } catch (e) {
+        print(e.toString());
+      }
     } else {
       print("Registeration Failed");
     }

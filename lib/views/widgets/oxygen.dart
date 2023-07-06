@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'package:healthcare/views/widgets/sensorReading.dart';
 import 'package:http/http.dart' as http;
 // ignore_for_file: camel_case_types
 
@@ -9,9 +11,9 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../global.dart';
 import '../login/components/body.dart';
+import '../services/notif_service.dart';
 
 class oxygen extends StatefulWidget {
-
   const oxygen({super.key});
 
   // const oxygen({super.key});
@@ -20,23 +22,67 @@ class oxygen extends StatefulWidget {
   State<oxygen> createState() => _oxygenState();
 }
 
-
-
 class _oxygenState extends State<oxygen> {
-@override
+  Timer? _timer;
+  Future<void> sensorupdate(Timer timer) async {
+    try {
+      var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
+      var response = await http.get(
+        url,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": "Bearer $token"
+        },
+      );
+      var data = json.decode(response.body);
+      if (mounted) {
+        setState(() {
+          oxratedouble = data["oximeter"];
+          Token.oxygenreading = oxratedouble;
+
+          if (oxratedouble < 95.0) {
+            NotificationService().showNotification(
+                title: 'Oxygen rate Emergency',
+                body: 'Oxygen rate is low Call the doctor immediately!');
+            Token.emergencyStateoxy = true;
+            Token.oxygenreading = oxratedouble;
+          } else {
+            Token.emergencyStateoxy = false;
+          }
+        });
+      }
+    } catch (e) {
+      // print(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 3), sensorupdate);
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+  }
+
+  @override
   void initState() {
     if (Token.emergencyStateoxy) {
       postnotification(
-          'OxygenRate', Token.oxygenreading, int.parse(Token.selectedchairid));
+          'OxygRate', Token.oxygenreading, int.parse(Token.selectedchairid));
       //print('posted');
     }
     super.initState();
-
+    startTimer();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: const EdgeInsets.only(
         top: 20,
@@ -178,7 +224,8 @@ class _oxygenState extends State<oxygen> {
           ])
     ]);
   }
-   Future postnotification(String sensor, double value, int chairid) async {
+
+  Future postnotification(String sensor, double value, int chairid) async {
     try {
 /**FOR TEST */
       Map<String, dynamic> body = {
@@ -199,14 +246,12 @@ class _oxygenState extends State<oxygen> {
         body: jsonBody,
         encoding: encoding,
       );
-          return response2;
-
+      return response2;
     } catch (e) {
       // print error
     }
   }
 }
-  
 
 Stream<DateTime> getTime() async* {
   DateTime currentTime = DateTime.now();

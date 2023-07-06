@@ -2,14 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
-import 'package:healthcare/views/login/components/roundedbutton.dart';
-import 'package:healthcare/views/login/components/roundedinputfield.dart';
-
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../global.dart';
 import '../login/components/body.dart';
-import 'ChairPage.dart';
+import 'addwheelchair.dart';
 import 'gridview.dart';
 
 class addchair extends StatefulWidget {
@@ -19,13 +15,14 @@ class addchair extends StatefulWidget {
   State<addchair> createState() => _addchairState();
 }
 
-
-final List<dynamic> myprojects = [];
+final List<dynamic> patients = [];
+bool trackpatient = true;
+bool addwheelchair = false;
 
 Future getData() async {
   try {
 /**FOR TEST */
-    var url2 = Uri.parse(Token.server);
+    var url2 = Uri.parse("${Token.server}caregiver/assigned-patients");
     var response2 = await http.get(
       url2,
       headers: {
@@ -33,43 +30,44 @@ Future getData() async {
         "Authorization": " Token $token"
       },
     );
+    print(response2.body);
 
     if (response2.statusCode == 200) {
       // Parse the JSON response
-     // final jsonData = json.decode(response2.body);
+      // final jsonData = json.decode(response2.body);
 
       // Clear the specificurgents list before starting the loop
-      myprojects.clear();
+      patients.clear();
 
       // Iterate over the parsed data and append to the urgents list
-     // for (var data in jsonData) {
-        // Urgent urgent = Urgent(
-        //   id: data['id'],
-        //   userimage: data['user_image'],
+      // for (var data in jsonData) {
+      // Urgent urgent = Urgent(
+      //   id: data['id'],
+      //   userimage: data['user_image'],
 
-        //   title: data['title'],
-        //   target: target2,
-        //   percent: percent
-        //       .toStringAsFixed(0), // Convert to string with 2 decimal places
-        //   assetName: data['image'],
-        //   category: data['category'],
-        //   organizer: data['created_by'],
-        //   remaining: remaining.toString(),
-        //   rate: double.parse(data['rate']['avg_rate'].toString()),
-        //   details: data['details'],
-        //   end_date: data['end_date'],
-        //   start_date: data['start_date'],
-        //   days: days,
-        //   tags: data['tags'],
-        // );
+      //   title: data['title'],
+      //   target: target2,
+      //   percent: percent
+      //       .toStringAsFixed(0), // Convert to string with 2 decimal places
+      //   assetName: data['image'],
+      //   category: data['category'],
+      //   organizer: data['created_by'],
+      //   remaining: remaining.toString(),
+      //   rate: double.parse(data['rate']['avg_rate'].toString()),
+      //   details: data['details'],
+      //   end_date: data['end_date'],
+      //   start_date: data['start_date'],
+      //   days: days,
+      //   tags: data['tags'],
+      // );
 
-        //  myprojects.add(urgent);
-    //  }
+      //  myprojects.add(urgent);
+      //  }
     }
   } catch (e) {
     //print(e.toString()); // print error
   }
- // return myprojects;
+  // return myprojects;
 }
 
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
@@ -97,63 +95,10 @@ final ButtonStyle raisedButtonStyle2 = ElevatedButton.styleFrom(
   //     textColor: Colors.white,
 );
 
-class CardItem {
-  final String urlImage;
-  final String title;
-  final String subtitle;
-  const CardItem({
-    required this.urlImage,
-    required this.subtitle,
-    required this.title,
-  });
-}
-
 class _addchairState extends State<addchair> {
-  List<CardItem> items = [
-    const CardItem(
-        urlImage: ('assets/images/wheelchair1.jpg'),
-        title: 'ID:23940',
-        subtitle: 'Name:Patient1'),
-    const CardItem(
-        urlImage: ('assets/images/wheelchair3.jpg'),
-        title: 'ID:37289',
-        subtitle: 'Name:Patient2'),
-    const CardItem(
-        urlImage: ('assets/images/wheelchair2.png'),
-        title: 'ID:62890',
-        subtitle: 'Name:Patient3'),
-    const CardItem(
-        urlImage: ('assets/images/wheelchair1.jpg'),
-        title: 'ID:23940',
-        subtitle: 'Name:Patient1'),
-    const CardItem(
-        urlImage: ('assets/images/wheelchair3.jpg'),
-        title: 'ID:37289',
-        subtitle: 'Name:Patient2'),
-    const CardItem(
-        urlImage: ('assets/images/wheelchair2.png'),
-        title: 'ID:62890',
-        subtitle: 'Name:Patient3'),
-  ];
-  String idchair = '';
-  String pfirstname = '';
-  String plastname = '';
-  String ppass = '';
-  String page = '';
-  String pgender = '';
-  String dropdownValue = 'Male';
   @override
   Widget build(BuildContext context) {
-    // style button important
-    Size size = MediaQuery.of(context).size;
-    final ButtonStyle flatbuttonstyle = TextButton.styleFrom(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20,
-        horizontal: 40,
-      ),
-      backgroundColor: kPrimaryColor,
-    );
-    //style button important
+    getData();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -203,7 +148,12 @@ class _addchairState extends State<addchair> {
                           style: raisedButtonStyle,
                           onPressed: () {
                             if (Token.selectedwheelchair != -1) {
-                              ShowDialogChair(context, size, flatbuttonstyle);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Addwheelchair()),
+                              );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -245,7 +195,11 @@ class _addchairState extends State<addchair> {
                     child: ElevatedButton(
                       style: raisedButtonStyle2,
                       onPressed: () {
-                        ShowDialogChair(context, size, flatbuttonstyle);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Addwheelchair()),
+                        );
                       },
                       child: const Text(
                         "Add wheelchair",
@@ -264,307 +218,4 @@ class _addchairState extends State<addchair> {
       ),
     );
   }
-
-  Future<dynamic> ShowDialogChair(
-      BuildContext context, Size size, ButtonStyle flatbuttonstyle) {
-    return showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Center(
-                    child: Text(
-                  'Fill in patient\'s data',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: kPrimaryColor,
-                  ),
-                )),
-                const SizedBox(
-                  height: 20,
-                ),
-                RoundedInputField(
-                  action: TextInputAction.go,
-                  onchanged: ((value) {
-                    setState(() {
-                      idchair = value;
-                    });
-                  }),
-                  controller: null,
-                  hinttext: 'chair id',
-                  icon: Icons.wheelchair_pickup,
-                  validateStatus: (value) {
-                    return null;
-                  },
-                  type: TextInputType.text,
-                ),
-                RoundedInputField(
-                  action: TextInputAction.go,
-                  onchanged: ((value) {
-                    setState(() {
-                      ppass = value;
-                    });
-                  }),
-                  controller: null,
-                  hinttext: 'Password',
-                  icon: Icons.lock,
-                  validateStatus: (value) {
-                    return null;
-                  },
-                  type: TextInputType.text,
-                ),
-                RoundedInputField(
-                  action: TextInputAction.go,
-                  onchanged: ((value) {
-                    setState(() {
-                      pfirstname = value;
-                    });
-                  }),
-                  controller: null,
-                  hinttext: 'First name',
-                  icon: Icons.person,
-                  validateStatus: (value) {
-                    return null;
-                  },
-                  type: TextInputType.text,
-                ),
-                RoundedInputField(
-                  action: TextInputAction.go,
-                  onchanged: ((value) {
-                    setState(() {
-                      plastname = value;
-                    });
-                  }),
-                  controller: null,
-                  hinttext: 'Last name',
-                  icon: Icons.person,
-                  validateStatus: (value) {
-                    return null;
-                  },
-                  type: TextInputType.text,
-                ),
-                RoundedInputField(
-                  action: TextInputAction.go,
-                  onchanged: ((value) {
-                    setState(() {
-                      page = value;
-                    });
-                  }),
-                  controller: null,
-                  hinttext: ' Age ',
-                  icon: Icons.app_registration_sharp,
-                  validateStatus: (value) {
-                    return null;
-                  },
-                  type: TextInputType.number,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide:
-                          const BorderSide(color: Colors.white, width: 1),
-                      //<-- SEE HERE
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      borderSide:
-                          const BorderSide(color: Colors.white, width: 1),
-                      //<-- SEE HERE
-                    ),
-                    filled: true,
-                    fillColor: kPrimaryLightColor,
-                  ),
-                  dropdownColor: kPrimaryLightColor,
-                  value: dropdownValue,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownValue = newValue!;
-                      pgender = newValue;
-                    });
-                  },
-                  items: <String>['Male', 'Female']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 15, color: Colors.grey[600]),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                roundedbutton(
-                    size: size,
-                    flatbuttonstyle: flatbuttonstyle,
-                    text: 'Save',
-                    textcolor: Colors.white,
-                    press: () {
-                      _save();
-                      setState(() {
-                        //  items[index].title = idchair;
-                      });
-                    })
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _save() async {
-    /* UNCOMMENT WHEN SERVER ONLINE */
-    Map<String, dynamic> body = {
-      "chair_id": idchair,
-      "password": ppass,
-      "first_name": pfirstname,
-      "last_name": plastname,
-      "age": page,
-      "gender": pgender,
-    };
-    String jsonBody = json.encode(body);
-    final encoding = Encoding.getByName('utf-8');
-
-    var url = Uri.parse("${Token.server}patient/info");
-
-    var response = await http.post(url,
-        headers: {
-          'content-Type': 'application/json',
-        },
-        body: jsonBody,
-        encoding: encoding);
-
-    var data = json.decode(response.body);
-  //  print(data);
-    if (data["message"] == "Success") {
-    //  print('success');
-    }
-    /* UNCOMMENT WHEN SERVER ONLINE */
-  }
-
-  Widget buildcard({
-    required CardItem item,
-    required IconButton delete,
-    required IconButton edit,
-  }) =>
-      Center(
-        child: Container(
-          width: 300,
-          height: 300,
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    delete,
-                    edit,
-                  ],
-                ),
-                Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 3 / 4,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Material(
-                        child: Ink.image(
-                          image: AssetImage(
-                            item.urlImage,
-                          ),
-                          fit: BoxFit.cover,
-                          child: InkWell(
-                            splashColor: kPrimary2,
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChairPage(item: item)));
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  item.title,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: kPrimaryColor),
-                ),
-                Text(
-                  item.subtitle,
-                  style: const TextStyle(fontSize: 20, color: Colors.grey),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
 }
-
-
-    // Container(
-                      //   height: 400,
-                      //   padding: const EdgeInsets.only(
-                      //       left: 35, right: 35, bottom: 20),
-                      // child: Center(
-                      //   child: ListView.separated(
-                      //     shrinkWrap: true,
-                      //     scrollDirection: Axis.horizontal,
-                      //     // physics: PageScrollPhysics(),
-                      //     itemCount: items.length,
-                      //     itemBuilder: (context, int index) => Center(
-                      //       child: buildcard(
-                      //         item: items[index],
-                      //         delete: IconButton(
-                      //           splashColor: kPrimaryLightColor,
-                      //           onPressed: () {
-                      //             setState(() {
-                      //               items.removeAt(index);
-                      //             });
-                      //           },
-                      //           icon: Icon(
-                      //             Icons.remove_rounded,
-                      //             size: 35,
-                      //             color: _color2,
-                      //           ),
-                      //         ),
-                      //         edit: IconButton(
-                      //           splashColor: kPrimary2,
-                      //           onPressed: () {
-                      //             ShowDialogChair(
-                      //                 context, size, flatbuttonstyle);
-                      //           },
-                      //           icon: Icon(
-                      //             Icons.edit,
-                      //             size: 25,
-                      //             color: _color,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     separatorBuilder: (context, _) => const SizedBox(
-                      //       width: 10,
-                      //     ),
-                      //   ),
-                      // ),
-                      //   ),

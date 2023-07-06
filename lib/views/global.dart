@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class Token {
+  static int caregiverid = 0;
   static String server =
       'https://caregiver-fastapi-bf7f5c929f08.herokuapp.com/';
   static int counter = 0;
@@ -24,8 +25,8 @@ class Token {
   static var username = '';
   static int ageuser = 0;
   static bool emergencyStateheart = false;
-    static bool emergencyStateoxy = false;
-      static bool emergencyStatetemp = false;
+  static bool emergencyStateoxy = false;
+  static bool emergencyStatetemp = false;
   static String first_nameuser = '';
   static String last_nameuser = '';
   static String emailuser = '';
@@ -35,6 +36,10 @@ class Token {
   static var photofile = 'Upload Picture';
   static var password = 'ggggggg';
   static DateTime birthdate = DateTime(2023, 4, 5);
+  static String deviceToken = '';
+  static String fcmKey = '';
+  static String servertoken =
+      'AAAAXUQrMc0:APA91bE_xkl6TVyTbAQ9gZlFXlzXl8up3a9j0zLof9fWznPOv0ni8oWmwkP_HZM7QMRwQPRevtJAQADSGp91Zc_3dIClagkFaK98GuSGKITgfSObqcA-cYnnTm0PkAK4ciEF_ZhjQYqw';
   static File? image;
   static String urlprofile =
       "https://firebasestorage.googleapis.com/v0/b/kickfunding-a2c6e.appspot.com/o/zahraa.jpg?alt=media&token=1e786cec-f5f8-4611-ba5f-9b36838788fd";

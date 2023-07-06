@@ -1,13 +1,13 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, camel_case_types
+// ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, camel_case_types, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:healthcare/constants.dart';
+import '../login/components/body.dart';
 import '/views/global.dart';
-import 'country.dart';
 import 'charityInput.dart';
-import '/views/birthdate.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class editProfile extends StatefulWidget {
   const editProfile({super.key});
@@ -17,34 +17,12 @@ class editProfile extends StatefulWidget {
 }
 
 class _editProfileState extends State<editProfile> {
-  //   File? _profilePicture;
-
-  // Future<void> pickercamera() async {
-  //   final XFile? file = await ImagePicker()
-  //       .pickImage(source: ImageSource.gallery, imageQuality: 20);
-  //   if (file != null) {
-  //     setState(() {
-  //       _profilePicture = File(file.path);
-  //       Token.image = _profilePicture;
-  //       Token.photofile = _profilePicture!.path;
-  //     });
-  //   }
-  // }
-
-  void _updateSelectedCountry(String value) {
-    setState(() {
-      Token.country = value;
-      Token.countryuser = value;
-    });
-  }
-
   final _formKey = GlobalKey<FormState>();
   late TextEditingController firstname;
   late TextEditingController lastname;
-  late TextEditingController phone;
+  late TextEditingController username;
+  late TextEditingController age;
 
-  var birthdate;
-  var country;
   var obsecurepassword = true;
   var obsecurepassword2 = true;
   Color iconcolor = Colors.grey;
@@ -57,7 +35,8 @@ class _editProfileState extends State<editProfile> {
     // Initialize the text controllers with existing data
     firstname = TextEditingController(text: Token.first_nameuser);
     lastname = TextEditingController(text: Token.last_nameuser);
-    phone = TextEditingController(text: Token.phoneuser);
+    username = TextEditingController(text: Token.username);
+    age = TextEditingController(text: Token.ageuser.toString());
   }
 
   @override
@@ -94,58 +73,8 @@ class _editProfileState extends State<editProfile> {
               shrinkWrap: true,
               children: [
                 SizedBox(
-                  height: 16.h,
+                  height: 30.h,
                 ),
-                SizedBox(
-                  width: 120.w,
-                  height: 120.w,
-                  child: Center(
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          height: 120.w,
-                          width: 120.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              8.r,
-                            ),
-                            color: kPrimaryLightColor,
-                          ),
-                          child: Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  8.r,
-                                ),
-                                image: DecorationImage(
-                                    image: NetworkImage(Token.urlprofile),
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          right: -12.w,
-                          bottom: -12.w,
-                          child: GestureDetector(
-                            onTap: () {
-                              //    _pickImage();
-                            },
-                            child: SvgPicture.asset(
-                              'assets/images/edit.svg',
-                              width: 32.w,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 16.h,
-                ),
-                SizedBox(height: 16.h),
                 Row(
                   children: [
                     Expanded(
@@ -184,83 +113,36 @@ class _editProfileState extends State<editProfile> {
                   ],
                 ),
                 SizedBox(height: 16.h),
-                // CharityInputField(
-                //   'Email',
-                //   onchanged: (String value) {},
-                //   validateStatus: (value) {},
-                //   controller: email,
-                // ),
-                // SizedBox(height: 16.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CharityInputField(
+                      'Username',
+                      onchanged: (String value) {
+                        setState(() {
+                          Token.username = value;
+                        });
+                      },
+                      validateStatus: (value) {
+                        return null;
+                      },
+                      controller: username,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
                 CharityInputField(
-                  'Phone Number',
+                  'age',
                   onchanged: (String value) {
                     setState(() {
-                      Token.phoneuser = value;
+                      Token.ageuser = int.parse(value);
                     });
                   },
                   validateStatus: (value) {
-                    return value;
+                    return null;
                   },
-                  controller: phone,
-                  hintText: 'phone',
-                ),
-                SizedBox(height: 26.h),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Country',
-                      style: TextStyle(),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    CountryInputField(
-                      validateStatus: (value) {
-                        return value;
-                      },
-                      
-                      onChanged: _updateSelectedCountry,
-                      onSaved: _updateSelectedCountry,
-                      color: kPlaceholder2,
-                      height: 20,
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 26.h),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Birthdate',
-                      style: TextStyle(),
-                    ),
-                    SizedBox(
-                      height: 2.h,
-                    ),
-                    BirthdateInputField(
-                      validateStatus: (value) {
-                        return value;
-                      },
-                      onChanged: (String value) {
-                        setState(() {
-                          birthdate = value;
-                          Token.bdateuser = value;
-                        });
-                      },
-                      title: 'birth',
-                      hintText: Token.bdateuser,
-                      onSaved: (String value) {
-                        setState(() {
-                          birthdate = value;
-                          Token.bdateuser = value;
-                        });
-                      },
-                      height: 20,
-                      color: kPlaceholder2,
-                    ),
-                  ],
+                  controller: age,
+                  keyboardtype: TextInputType.number,
                 ),
                 SizedBox(height: 26.h),
                 Column(
@@ -306,7 +188,6 @@ class _editProfileState extends State<editProfile> {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 40.h),
                 SizedBox(
                   height: 60,
@@ -330,7 +211,7 @@ class _editProfileState extends State<editProfile> {
                       ),
                     ),
                     onPressed: () {
-                      //  _submitForm();
+                      _submitForm();
                       //   saveprofile();
                     },
                     child: Text(
@@ -346,5 +227,56 @@ class _editProfileState extends State<editProfile> {
             ),
           ),
         ));
+  }
+
+  void _submitForm() async {
+    try {
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+
+        Map<String, dynamic> body = {
+          "first_name": Token.first_nameuser,
+          "last_name": Token.last_nameuser,
+          "username": Token.username,
+          "age": "${Token.ageuser}",
+        };
+        String jsonBody = json.encode(body);
+        final encoding = Encoding.getByName('utf-8');
+       // print(Token.caregiverid);
+
+        var url = Uri.parse(
+            "${Token.server}caregiver/update/${Token.caregiverid.toString()}");
+        var response = await http.put(url,
+            headers: {
+              'content-Type': 'application/json',
+              "Authorization": " Token $token"
+            },
+            body: jsonBody,
+            encoding: encoding);
+        print(response.statusCode);
+        print(response.body);
+        if (response.statusCode < 400) {
+          showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                    content: Text(
+                      "Profile updated successfully",
+                      style: TextStyle(color: Colors.green),
+                    ),
+                  ));
+        }
+      } else {
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text(
+                    "Profile NOT updated",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ));
+      }
+    } catch (e) {
+   //   print(e.toString());
+    }
   }
 }

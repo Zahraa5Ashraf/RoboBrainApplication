@@ -1,12 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
 // ignore_for_file: camel_case_types
 
 import 'package:healthcare/constants.dart';
+import 'package:healthcare/views/services/notif_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:healthcare/views/widgets/statisticsCard.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import '../../components/button.dart';
 import '../global.dart';
 import '../login/components/body.dart';
 
@@ -21,13 +22,61 @@ class temprature extends StatefulWidget {
 var tempratureValue = 37.0;
 
 class _tempratureState extends State<temprature> {
+  Timer? _timer;
+  Future<void> sensorupdate(Timer timer) async {
+    try {
+      var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
+      var response = await http.get(
+        url,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": "Bearer $token"
+        },
+      );
+      var data = json.decode(response.body);
+      if (mounted) {
+        setState(() {
+          tempratureValue = data["temperature"];
+          Token.tempreading = tempratureValue;
+
+          if (tempratureValue > 37.0 || tempratureValue < 35.0) {
+            NotificationService().showNotification(
+                title: 'Temprature Emergency',
+                body: 'body Temp Rate is high Call the doctor immediately!');
+            Token.emergencyStatetemp = true;
+            Token.tempreading = tempratureValue;
+          } else {
+            Token.emergencyStatetemp = false;
+          }
+        });
+      }
+    } catch (e) {
+      // print(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 3), sensorupdate);
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+  }
+
   @override
   void initState() {
     if (Token.emergencyStatetemp) {
-      postnotification('TempratureRate', Token.tempreading,
-          int.parse(Token.selectedchairid));
+      postnotification(
+          'TempRate', Token.tempreading, int.parse(Token.selectedchairid));
     }
     super.initState();
+    startTimer();
   }
 
   @override
@@ -120,19 +169,6 @@ class _tempratureState extends State<temprature> {
                         ),
                         const SizedBox(
                           height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: buttonWidget(
-                                  label: 'Update',
-                                  press: () {},
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
                         const SizedBox(
                           width: 80,
