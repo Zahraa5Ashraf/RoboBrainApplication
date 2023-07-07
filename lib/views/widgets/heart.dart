@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../global.dart';
 import '../login/components/body.dart';
+import '../services/globalfunction.dart';
 import '../services/notif_service.dart';
 
 class Heart extends StatefulWidget {
@@ -60,9 +61,9 @@ class _HeartState extends State<Heart> {
   @override
   void initState() {
     if (Token.emergencyStateheart) {
-      postnotification(
-          'HeartRate', Token.heartreading, int.parse(Token.selectedchairid));
-      //  print('posted');
+      postnotification('HeartRate', Token.heartreading,
+          int.parse(Token.selectedchairid.toString()));
+      print('posted heart');
     }
     super.initState();
     startTimer();
@@ -375,35 +376,6 @@ class _HeartState extends State<Heart> {
         ),
       ),
     );
-  }
-
-  Future postnotification(String sensor, double value, int chairid) async {
-    try {
-/**FOR TEST */
-      Map<String, dynamic> body = {
-        "sensor": sensor,
-        "value": value,
-        "chair_id": chairid,
-      };
-      String jsonBody = json.encode(body);
-      final encoding = Encoding.getByName('utf-8');
-
-      var url2 = Uri.parse('${Token.server}caregiver/notification');
-      var response2 = await http.post(
-        url2,
-        headers: {
-          'content-Type': 'application/json',
-          "Authorization": " Bearer $token"
-        },
-        body: jsonBody,
-        encoding: encoding,
-      );
-      //   print(response2.toString());
-      // print(response2.statusCode);
-      return response2;
-    } catch (e) {
-      //  print(e.toString()); // print error
-    }
   }
 }
 

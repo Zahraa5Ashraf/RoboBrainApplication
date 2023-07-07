@@ -149,11 +149,9 @@ class _notifcardState extends State<notifcard> {
         url,
         headers: {
           'content-Type': 'application/json',
-          "Authorization": "Token ${token}",
+          "Authorization": "Bearer ${token}",
         },
       );
-      print(response.body);
-      print(response.statusCode);
 
       if (response.statusCode < 400) {
         ScaffoldMessenger.of(context).showSnackBar(

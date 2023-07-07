@@ -9,6 +9,7 @@ import '../../models/notifications.dart';
 import '../global.dart';
 import 'dart:core';
 import '../login/components/body.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'notificationcard.dart';
 
 class notificationtab extends StatefulWidget {
@@ -17,6 +18,9 @@ class notificationtab extends StatefulWidget {
   @override
   State<notificationtab> createState() => _notificationtabState();
 }
+
+final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+    GlobalKey<LiquidPullToRefreshState>();
 
 final List<dynamic> notifications = [];
 
@@ -107,58 +111,62 @@ class _notificationtabState extends State<notificationtab> {
           } else if (snapshot.hasData) {
             return Padding(
               padding: const EdgeInsets.all(2.0),
-              child: ListView(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-
-                      SizedBox(
-                        height: 600,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          physics: const ScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: notifications.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                notifcard(
-                                  notifications[index],
-                                ),
-                                const Divider(
-                                  height: 20,
-                                ),
-                              ],
-                            );
-                          },
+              child: LiquidPullToRefresh(
+                key: _refreshIndicatorKey,
+                onRefresh: getData,
+                child: ListView(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(children: [
+                        const SizedBox(
+                          height: 40,
                         ),
-                      ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // Center(
-                      //   child: SizedBox(
-                      //     height: 70,
-                      //     width: 200,
-                      //     child: ElevatedButton(
-                      //         onPressed: () {
-                      //           //  getLocation();
-                      //           //    showNotification();
-                      //           //   getData();
-                      //         },
-                      //         child: const Text(
-                      //           'Click her',
-                      //           style: TextStyle(color: ktextcolor2),
-                      //         )),
-                      //   ),
-                      // ),
-                    ]),
-                  ),
-                ],
+                        SizedBox(
+                          height: 600,
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            physics: const ScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: notifications.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  notifcard(
+                                    notifications[index],
+                                  ),
+                                  const Divider(
+                                    height: 20,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        // Center(
+                        //   child: SizedBox(
+                        //     height: 70,
+                        //     width: 200,
+                        //     child: ElevatedButton(
+                        //         onPressed: () {
+                        //           //  getLocation();
+                        //           //    showNotification();
+                        //           //   getData();
+                        //         },
+                        //         child: const Text(
+                        //           'Click her',
+                        //           style: TextStyle(color: ktextcolor2),
+                        //         )),
+                        //   ),
+                        // ),
+                      ]),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
@@ -181,7 +189,7 @@ class _notificationtabState extends State<notificationtab> {
       );
 
       final jsonData = json.decode(response2.body);
-  //    print(jsonData);
+      //  print(jsonData);
 
       notifications.clear();
 
@@ -193,12 +201,13 @@ class _notificationtabState extends State<notificationtab> {
           sensorname: data['sensor'],
           value: data['value'],
         );
-
-        notifications.add(notification);
+        setState(() {
+          notifications.add(notification);
+        });
       }
     } catch (e) {
       // Handle error appropriately
-    //  print(e.toString());
+      //  print(e.toString());
     }
 
     return notifications;

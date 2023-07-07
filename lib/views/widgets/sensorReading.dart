@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, unnecessary_brace_in_string_interps, empty_catches, file_names
 
+import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:healthcare/views/global.dart';
+import 'package:healthcare/views/services/globalfunction.dart';
 import 'package:healthcare/views/widgets/heart.dart';
 import 'package:healthcare/views/widgets/notificationtab.dart';
 import 'package:healthcare/views/widgets/temprature.dart';
@@ -46,6 +49,9 @@ var oxratedouble = 50.0;
 final List<dynamic> notifications = [];
 
 class _sensorReadingState extends State<sensorReading> {
+  Timer? _timer;
+  Timer? _timer2;
+
   List<Widget> sensors = [
     const Heart(),
     const temprature(),
@@ -53,9 +59,10 @@ class _sensorReadingState extends State<sensorReading> {
     const oxygen(),
   ];
 
-  Future<void> sensorupdate(BuildContext cont) async {
+  Future<void> sensorupdate(Timer timer) async {
     try {
       var url = Uri.parse("${Token.server}chair/data/${Token.selectedchairid}");
+
       var response = await http.get(
         url,
         headers: {
@@ -64,7 +71,7 @@ class _sensorReadingState extends State<sensorReading> {
         },
       );
       var data = json.decode(response.body);
-
+//      print(data);
       if (mounted) {
         setState(() {
           heartdouble = data["pulse_rate"];
@@ -106,8 +113,48 @@ class _sensorReadingState extends State<sensorReading> {
     }
   }
 
+  Future<void> checkEmergency(Timer timer2) async {
+    try {
+      if (Token.emergencyStateheart) {
+        postnotification('HeartRate', Token.heartreading,
+            int.parse(Token.selectedchairid.toString()));
+      }
+      if (Token.emergencyStateoxy) {
+        postnotification('OxygRate', Token.oxygenreading,
+            int.parse(Token.selectedchairid.toString()));
+        //print('posted');
+      }
+      if (Token.emergencyStatetemp) {
+        postnotification('TempRate', Token.tempreading,
+            int.parse(Token.selectedchairid.toString()));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _timer2?.cancel();
+
+    super.dispose();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 10), sensorupdate);
+    _timer2 = Timer.periodic(const Duration(seconds: 10), checkEmergency);
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+    _timer2?.cancel();
+  }
+
   @override
   void initState() {
+    startTimer();
+
     super.initState();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
@@ -173,7 +220,6 @@ class _sensorReadingState extends State<sensorReading> {
 
   @override
   Widget build(BuildContext context) {
-    sensorupdate(context);
     return Card(
       child: InkWell(
         onTap: () {

@@ -1,8 +1,13 @@
 // ignore_for_file: camel_case_types
 
+import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:healthcare/views/global.dart';
 import '../constants.dart';
+import 'login/components/body.dart';
 
 class map extends StatefulWidget {
   const map({super.key});
@@ -12,22 +17,56 @@ class map extends StatefulWidget {
 }
 
 class _mapState extends State<map> {
-  final controller = MapController.withPosition(
+  Timer? _timer;
+
+  Future<void> sensorupdate(Timer timer) async {
+    try {
+      var url = Uri.parse(
+          "${Token.server}caregiver/location/${Token.selectedchairid}");
+
+      var response = await http.get(
+        url,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": "Bearer $token"
+        },
+      );
+      var data = json.decode(response.body);
+
+      setState(() {
+        Token.chairlatitude = data["latitude"];
+        Token.chairlongitude = data["longitude"];
+      });
+    } catch (e) {
+      // print(e.toString());
+    }
+  }
+
+  final _mapController = MapController.withPosition(
     initPosition: GeoPoint(
-      latitude: 47.4358055,
-      longitude: 8.4737324,
+      latitude: Token.chairlatitude,
+      longitude: Token.chairlongitude,
     ),
   );
-  final _mapController = MapController.withUserPosition(
-      trackUserLocation: const UserTrackingOption(
-    enableTracking: true,
-    unFollowUser: false,
-  ));
   Map<String, String> markerMap = {};
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 3), sensorupdate);
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+  }
 
   @override
   void initState() {
     super.initState();
+    startTimer();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mapController.listenerMapSingleTapping.addListener(() async {
@@ -57,17 +96,20 @@ class _mapState extends State<map> {
   @override
   Widget build(BuildContext context) {
     return OSMFlutter(
+      onLocationChanged: (p0) {
+        print('chage');
+      },
       controller: _mapController,
       mapIsLoading: const Center(
         child: CircularProgressIndicator(),
       ),
       userTrackingOption: const UserTrackingOption(
-        enableTracking: true,
+        enableTracking: false,
         unFollowUser: false,
       ),
-      initZoom: 12,
+      initZoom: 14,
       minZoomLevel: 8,
-      maxZoomLevel: 14,
+      maxZoomLevel: 18.8,
       stepZoom: 1.0,
       userLocationMarker: UserLocationMaker(
         personMarker: const MarkerIcon(
@@ -99,7 +141,14 @@ class _mapState extends State<map> {
       onMapIsReady: (isReady) async {
         if (isReady) {
           await Future.delayed(const Duration(seconds: 1), () async {
-            await _mapController.currentLocation();
+            await _mapController.goToLocation(GeoPoint(
+                latitude: Token.chairlatitude,
+                longitude: Token.chairlongitude));
+            await _addMarker(
+              GeoPoint(
+                  latitude: Token.chairlatitude,
+                  longitude: Token.chairlongitude),
+            );
           });
         }
       },
@@ -144,6 +193,19 @@ class _mapState extends State<map> {
               );
             });
       },
+    );
+  }
+
+  Future<void> _addMarker(GeoPoint position) async {
+    await _mapController.addMarker(
+      position,
+      markerIcon: const MarkerIcon(
+        icon: Icon(
+          Icons.pin_drop,
+          color: Colors.pinkAccent,
+          size: 48,
+        ),
+      ),
     );
   }
 }

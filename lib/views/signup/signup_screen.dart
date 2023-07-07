@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
+import 'package:healthcare/views/Welcome.dart';
 import 'package:healthcare/views/login/components/alreadyhaveaccount.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
 import 'package:healthcare/views/login/components/roundedinputfield.dart';
@@ -21,7 +22,6 @@ class signup extends StatefulWidget {
 
 /* Variables*/
 var token = "";
-var formkey1 = GlobalKey<FormState>();
 var email = "";
 var password = "";
 var first_name = "";
@@ -70,17 +70,20 @@ Future SignUp(BuildContext cont) async {
     if (data["message"] == "Success") {
       token = data["access_token"];
       print("Registeration succeeded");
-      try {
-        Navigator.push(
-          cont,
-          MaterialPageRoute(
-            builder: (context) => login(),
-          ),
-        );
-      } catch (e) {
-        print(e.toString());
-      }
+      ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
+          content:
+              Text('Registeration is done successfully, you can now signIN')));
+   
+      Navigator.push(
+        cont,
+        MaterialPageRoute(
+          builder: (context) => login(),
+        ),
+      );
     } else {
+      ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
+          content:
+              Text('Registeration Failed')));
       print("Registeration Failed");
     }
   }
@@ -89,6 +92,8 @@ Future SignUp(BuildContext cont) async {
 
 class _signupState extends State<signup> {
   /* Controllers */
+  var formkey1 = GlobalKey<FormState>();
+
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var idController = TextEditingController();

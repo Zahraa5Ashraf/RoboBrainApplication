@@ -72,8 +72,8 @@ class _tempratureState extends State<temprature> {
   @override
   void initState() {
     if (Token.emergencyStatetemp) {
-      postnotification(
-          'TempRate', Token.tempreading, int.parse(Token.selectedchairid));
+      postnotification('TempRate', Token.tempreading,
+          int.parse(Token.selectedchairid.toString()));
     }
     super.initState();
     startTimer();

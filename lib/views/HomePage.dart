@@ -19,7 +19,8 @@ class HomePage extends StatefulWidget {
   final String Age;
   final String Gender;
 
-  const HomePage({super.key, 
+  const HomePage({
+    super.key,
     required this.Username,
     required this.Age,
     required this.Gender,

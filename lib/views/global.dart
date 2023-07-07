@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class Token {
+  static double chairlatitude=39.1290;
+  static double chairlongitude=-122.2930;
+
   static int caregiverid = 0;
   static String server =
       'https://caregiver-fastapi-bf7f5c929f08.herokuapp.com/';

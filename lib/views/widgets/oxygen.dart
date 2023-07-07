@@ -73,8 +73,8 @@ class _oxygenState extends State<oxygen> {
   @override
   void initState() {
     if (Token.emergencyStateoxy) {
-      postnotification(
-          'OxygRate', Token.oxygenreading, int.parse(Token.selectedchairid));
+      postnotification('OxygRate', Token.oxygenreading,
+          int.parse(Token.selectedchairid.toString()));
       //print('posted');
     }
     super.initState();

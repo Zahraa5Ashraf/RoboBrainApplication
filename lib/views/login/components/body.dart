@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
+import 'package:healthcare/views/Welcome.dart';
 import 'package:healthcare/views/login/components/roundedinputfield.dart';
 import 'package:healthcare/views/profile%20screen/proflle_screen.dart';
 
@@ -15,7 +16,7 @@ import 'roundedbutton.dart';
 import 'roundedpasswordfield.dart';
 
 class Body extends StatefulWidget {
-  const Body({
+  Body({
     super.key,
   });
 
@@ -36,12 +37,13 @@ var Heart;
 
 /* Variables*/
 var token = "";
-var formkey2 = GlobalKey<FormState>();
 var email = "";
 var password = "";
 /* Variables*/
 
 class _BodyState extends State<Body> {
+  var formkey2 = GlobalKey<FormState>();
+
   /* Controllers */
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -136,7 +138,7 @@ class _BodyState extends State<Body> {
                     press: () {
                       if (formkey2.currentState!.validate()) {
                         _login();
-                        reload();
+                        // reload();
                       }
                     },
                     size: size,
@@ -212,7 +214,10 @@ class _BodyState extends State<Body> {
         Token.emailuser = data2["email".toString()];
         Token.ageuser = data2["age".toString()];
       });
-
+      print(data2);
+      await Future.delayed(const Duration(seconds: 1));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const SplashScreen()));
       /* UNCOMMENT WHEN SERVER ONLINE */
     } catch (e) {
       //  print(e.toString());
@@ -226,9 +231,9 @@ class _BodyState extends State<Body> {
 
   Future<void> reload() async {
     check = true;
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const profile()));
+        context, MaterialPageRoute(builder: (context) => const SplashScreen()));
     return;
   }
 }

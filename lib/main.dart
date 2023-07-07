@@ -4,14 +4,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:healthcare/views/Welcome.dart';
+import 'package:healthcare/views/login/Login.dart';
 import 'package:healthcare/views/login/components/body.dart';
-import 'package:healthcare/views/profile%20screen/proflle_screen.dart';
+
 import 'package:healthcare/views/services/notif_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '/views/global.dart';
 import 'package:healthcare/network/dio_helper.dart';
-import 'package:healthcare/views/login/Login.dart';
 import 'package:healthcare/views/services/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/theme.dart';
@@ -93,10 +94,10 @@ class _healthcareState extends State<healthcare> {
     print('Device Token: ${Token.deviceToken}');
   }
 
-  gettoken() async {
-    final prefs = await SharedPreferences.getInstance();
-    Tokenid = prefs.get('token');
-  }
+  // gettoken() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   Tokenid = prefs.get('token');
+  // }
 
   @override
   void initState() {
@@ -108,6 +109,7 @@ class _healthcareState extends State<healthcare> {
   var Tokenid;
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
+
     Tokenid = prefs.get('token');
     if (Tokenid != null) {
       setState(() {
@@ -127,21 +129,7 @@ class _healthcareState extends State<healthcare> {
         title: 'healthcare',
         theme: AppTheme(context).initTheme(),
         debugShowCheckedModeBanner: false,
-        home: Tokenid == null
-            ? FutureBuilder<void>(
-                future: Future.delayed(
-                    Duration(seconds: 2), () => checkLoginStatus()),
-                builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
-                    return login();
-                  }
-                },
-              )
-            : profile(),
+        home: Tokenid == null ? login() : SplashScreen(),
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

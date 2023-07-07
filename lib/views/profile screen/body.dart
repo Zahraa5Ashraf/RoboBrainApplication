@@ -8,6 +8,7 @@ import 'package:healthcare/views/login/components/roundedbutton.dart';
 
 import '../../constants.dart';
 import '../chair/chair.dart';
+import '../services/globalfunction.dart';
 import 'details.dart';
 import 'profile_card.dart';
 
@@ -118,11 +119,12 @@ class body extends StatelessWidget {
                       flatbuttonstyle: flatbuttonstyle,
                       text: 'Logout',
                       textcolor: Colors.white,
-                      press: () {
+                      press: () async {
+                        await removeTokenFromSharedPreferences();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const login(),
+                            builder: (context) =>  login(),
                           ),
                         );
                       }),

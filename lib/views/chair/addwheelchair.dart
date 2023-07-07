@@ -269,7 +269,7 @@ class _AddwheelchairState extends State<Addwheelchair> {
                           setState(() {
                             dropdownValue = newValue!;
                             pgender = newValue;
-                      //      print(pgender);
+                            //      print(pgender);
                           });
                         },
                         items: <String>['Male', 'Female']
@@ -330,7 +330,7 @@ class _AddwheelchairState extends State<Addwheelchair> {
         },
         body: jsonBody,
         encoding: encoding);
-
+    print(response.body);
     if (response.statusCode == 201) {
       showDialog(
           context: context,
@@ -340,6 +340,9 @@ class _AddwheelchairState extends State<Addwheelchair> {
                   style: TextStyle(color: Colors.greenAccent),
                 ),
               ));
+      setState(() {
+        Navigator.pop(context);
+      });
     } else if (response.statusCode == 400) {
       showDialog(
           context: context,
@@ -359,14 +362,14 @@ class _AddwheelchairState extends State<Addwheelchair> {
                 ),
               ));
     }
-   // print(data);
-   // print(response.statusCode);
+    // print(data);
+    // print(response.statusCode);
   }
 
   void _save2() async {
     /* UNCOMMENT WHEN SERVER ONLINE */
     Map<String, dynamic> body = {
-      "chair_id": int.parse(idchair),
+      "chair_id": idchair,
       "password": ppass,
     };
     String jsonBody = json.encode(body);
@@ -382,8 +385,8 @@ class _AddwheelchairState extends State<Addwheelchair> {
         body: jsonBody,
         encoding: encoding);
 
-  //  print(data);
-  //  print(response.statusCode);
+    print(response.body);
+    //  print(response.statusCode);
     if (response.statusCode == 404) {
       showDialog(
           context: context,
@@ -411,6 +414,9 @@ class _AddwheelchairState extends State<Addwheelchair> {
                   style: TextStyle(color: Colors.greenAccent),
                 ),
               ));
+      setState(() {
+        Navigator.pop(context);
+      });
     }
   }
 }

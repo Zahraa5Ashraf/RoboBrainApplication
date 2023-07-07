@@ -22,6 +22,8 @@ class _editProfileState extends State<editProfile> {
   late TextEditingController lastname;
   late TextEditingController username;
   late TextEditingController age;
+  late TextEditingController password;
+  late TextEditingController email;
 
   var obsecurepassword = true;
   var obsecurepassword2 = true;
@@ -37,6 +39,8 @@ class _editProfileState extends State<editProfile> {
     lastname = TextEditingController(text: Token.last_nameuser);
     username = TextEditingController(text: Token.username);
     age = TextEditingController(text: Token.ageuser.toString());
+    password = TextEditingController();
+    email = TextEditingController(text: Token.emailuser);
   }
 
   @override
@@ -145,48 +149,33 @@ class _editProfileState extends State<editProfile> {
                   keyboardtype: TextInputType.number,
                 ),
                 SizedBox(height: 26.h),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          kPlaceholder2,
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              8.r,
-                            ),
-                          ),
-                        ),
-                        minimumSize: MaterialStateProperty.all(
-                          Size(
-                            double.infinity,
-                            60.h,
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        // updatePassword(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Text(
-                            'Update Password',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: ktextcolor2,
-                                fontSize: 13),
-                          ),
-                          Icon(
-                            Icons.lock,
-                            color: ktextcolor2,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                CharityInputField(
+                  'Password',
+                  hintText: 'Add New Password',
+                  onchanged: (String value) {
+                    setState(() {
+                      Token.password = value;
+                    });
+                  },
+                  validateStatus: (value) {
+                    return null;
+                  },
+                  controller: password,
+                  keyboardtype: TextInputType.visiblePassword,
+                ),
+                SizedBox(height: 26.h),
+                CharityInputField(
+                  'Email',
+                  onchanged: (String value) {
+                    setState(() {
+                      Token.password = value;
+                    });
+                  },
+                  validateStatus: (value) {
+                    return null;
+                  },
+                  controller: email,
+                  keyboardtype: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 40.h),
                 SizedBox(
@@ -235,21 +224,22 @@ class _editProfileState extends State<editProfile> {
         _formKey.currentState!.save();
 
         Map<String, dynamic> body = {
+          "email": "zahraa@gmail.com",
           "first_name": Token.first_nameuser,
           "last_name": Token.last_nameuser,
           "username": Token.username,
           "age": "${Token.ageuser}",
+          "password": "12345",
         };
         String jsonBody = json.encode(body);
         final encoding = Encoding.getByName('utf-8');
-       // print(Token.caregiverid);
+        print(Token.caregiverid);
 
-        var url = Uri.parse(
-            "${Token.server}caregiver/update/${Token.caregiverid.toString()}");
+        var url = Uri.parse("${Token.server}caregiver/update/4");
         var response = await http.put(url,
             headers: {
               'content-Type': 'application/json',
-              "Authorization": " Token $token"
+              "Authorization": "Bearer $token"
             },
             body: jsonBody,
             encoding: encoding);
@@ -276,7 +266,7 @@ class _editProfileState extends State<editProfile> {
                 ));
       }
     } catch (e) {
-   //   print(e.toString());
+      //   print(e.toString());
     }
   }
 }
