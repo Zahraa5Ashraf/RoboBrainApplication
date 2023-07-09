@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healthcare/constants.dart';
+import 'package:healthcare/views/services/globalfunction.dart';
 import '../login/components/body.dart';
 import '/views/global.dart';
 import 'charityInput.dart';
@@ -211,6 +212,37 @@ class _editProfileState extends State<editProfile> {
                 ),
                 SizedBox(
                   height: 40.h,
+                ),
+                SizedBox(
+                  height: 60,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        kPrimaryColor,
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            20.r,
+                          ),
+                        ),
+                      ),
+                      minimumSize: MaterialStateProperty.all(
+                        Size(
+                          double.infinity,
+                          56.h,
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      sendNotification(
+                          Token.devicetokeennn, 'test zahraa', 'test zoza');
+                    },
+                    child: Text(
+                      'post notification',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ),
                 ),
               ],
             ),

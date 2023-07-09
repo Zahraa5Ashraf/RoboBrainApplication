@@ -1,12 +1,11 @@
 // ignore_for_file: camel_case_types
 
 import 'dart:async';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import 'package:healthcare/views/global.dart';
-import '../constants.dart';
 import 'login/components/body.dart';
 
 class map extends StatefulWidget {
@@ -17,6 +16,19 @@ class map extends StatefulWidget {
 }
 
 class _mapState extends State<map> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+
+  static const CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
   Timer? _timer;
 
   Future<void> sensorupdate(Timer timer) async {
@@ -32,7 +44,7 @@ class _mapState extends State<map> {
         },
       );
       var data = json.decode(response.body);
-
+      print(data);
       setState(() {
         Token.chairlatitude = data["latitude"];
         Token.chairlongitude = data["longitude"];
@@ -42,13 +54,6 @@ class _mapState extends State<map> {
     }
   }
 
-  final _mapController = MapController.withPosition(
-    initPosition: GeoPoint(
-      latitude: Token.chairlatitude,
-      longitude: Token.chairlongitude,
-    ),
-  );
-  Map<String, String> markerMap = {};
   @override
   void dispose() {
     _timer?.cancel();
@@ -67,24 +72,6 @@ class _mapState extends State<map> {
   void initState() {
     super.initState();
     startTimer();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mapController.listenerMapSingleTapping.addListener(() async {
-        var position = _mapController.listenerMapSingleTapping.value;
-        if (position != null) {
-          await _mapController.addMarker(position,
-              markerIcon: const MarkerIcon(
-                icon: Icon(
-                  Icons.pin_drop,
-                  color: Colors.pinkAccent,
-                  size: 48,
-                ),
-              ));
-          var key = '${position.latitude},${position.longitude}';
-          markerMap[key] = markerMap.length.toString();
-        }
-      });
-    });
   }
 
   // @override
@@ -95,117 +82,27 @@ class _mapState extends State<map> {
 
   @override
   Widget build(BuildContext context) {
-    return OSMFlutter(
-      onLocationChanged: (p0) {
-        print('chage');
-      },
-      controller: _mapController,
-      mapIsLoading: const Center(
-        child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('map'),
       ),
-      userTrackingOption: const UserTrackingOption(
-        enableTracking: false,
-        unFollowUser: false,
+      body: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: _kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
       ),
-      initZoom: 14,
-      minZoomLevel: 8,
-      maxZoomLevel: 18.8,
-      stepZoom: 1.0,
-      userLocationMarker: UserLocationMaker(
-        personMarker: const MarkerIcon(
-          icon: Icon(
-            Icons.location_history_rounded,
-            color: Colors.red,
-            size: 48,
-          ),
-        ),
-        directionArrowMarker: const MarkerIcon(
-          icon: Icon(
-            Icons.double_arrow,
-            size: 48,
-            color: kPrimary2,
-          ),
-        ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _goToTheLake,
+        label: const Text('To the lake!'),
+        icon: const Icon(Icons.directions_boat),
       ),
-      roadConfiguration: const RoadOption(
-        roadColor: Colors.yellowAccent,
-      ),
-      markerOption: MarkerOption(
-          defaultMarker: const MarkerIcon(
-        icon: Icon(
-          Icons.person_pin_circle,
-          color: Colors.blue,
-          size: 56,
-        ),
-      )),
-      onMapIsReady: (isReady) async {
-        if (isReady) {
-          await Future.delayed(const Duration(seconds: 1), () async {
-            await _mapController.goToLocation(GeoPoint(
-                latitude: Token.chairlatitude,
-                longitude: Token.chairlongitude));
-            await _addMarker(
-              GeoPoint(
-                  latitude: Token.chairlatitude,
-                  longitude: Token.chairlongitude),
-            );
-          });
-        }
-      },
-      onGeoPointClicked: (geoPoint) {
-        var key = '${geoPoint.latitude},${geoPoint.longitude}';
-        showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return Card(
-                child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Position ${markerMap[key]}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: kPrimaryColor,
-                                ),
-                              ),
-                              const Divider(
-                                thickness: 1,
-                              ),
-                              Text(key),
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: const Icon(Icons.clear),
-                        )
-                      ],
-                    )),
-              );
-            });
-      },
     );
   }
 
-  Future<void> _addMarker(GeoPoint position) async {
-    await _mapController.addMarker(
-      position,
-      markerIcon: const MarkerIcon(
-        icon: Icon(
-          Icons.pin_drop,
-          color: Colors.pinkAccent,
-          size: 48,
-        ),
-      ),
-    );
+  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }

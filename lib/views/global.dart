@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class Token {
-  static double chairlatitude=39.1290;
-  static double chairlongitude=-122.2930;
+  static double chairlatitude = 39.1290;
+  static double chairlongitude = -122.2930;
 
   static int caregiverid = 0;
   static String server =
@@ -41,6 +41,8 @@ class Token {
   static DateTime birthdate = DateTime(2023, 4, 5);
   static String deviceToken = '';
   static String fcmKey = '';
+  static String devicetokeennn =
+      'csYSIjP5TQa9j37kwlPf7r:APA91bE5-kQz17VtJ2DFB8aFSEB-Hc1nq2uguUXggFkgI3-LA7ebt5TIZLa06NtU_wlsaXosa5dVVbbcP8aEop87ee9wVxD_UvPO3PQfu0I6WGFqf10daJbNqJ-bjHk_N79C4B-uZ8IJ';
   static String servertoken =
       'AAAAXUQrMc0:APA91bE_xkl6TVyTbAQ9gZlFXlzXl8up3a9j0zLof9fWznPOv0ni8oWmwkP_HZM7QMRwQPRevtJAQADSGp91Zc_3dIClagkFaK98GuSGKITgfSObqcA-cYnnTm0PkAK4ciEF_ZhjQYqw';
   static File? image;
