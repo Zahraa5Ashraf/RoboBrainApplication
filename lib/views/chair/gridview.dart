@@ -85,6 +85,7 @@ class _GridDashboardState extends State<GridDashboard> {
                       selectedIndex = index;
 
                       Token.selectedwheelchair = index;
+                      Token.selectedchairid = data.chair_parcode_id;
                     });
                   },
                   child: Container(

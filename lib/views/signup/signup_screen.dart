@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
-import 'package:healthcare/views/Welcome.dart';
 import 'package:healthcare/views/login/components/alreadyhaveaccount.dart';
 import 'package:healthcare/views/login/components/roundedbutton.dart';
 import 'package:healthcare/views/login/components/roundedinputfield.dart';
@@ -41,8 +40,9 @@ Future SignUp(BuildContext cont) async {
     "first_name": first_name,
     "last_name": last_name,
     "username": username,
-    // "phone_number": phone,
     "age": age,
+
+    /// "token":Token.devicetokeennn,
   };
   String jsonBody = json.encode(body);
   final encoding = Encoding.getByName('utf-8');
@@ -50,7 +50,6 @@ Future SignUp(BuildContext cont) async {
       password == "" ||
       first_name == "" ||
       username == "" ||
-      phone == "" ||
       last_name == "" ||
       age == "") {
     print('Fields have not to be empty');
@@ -73,7 +72,7 @@ Future SignUp(BuildContext cont) async {
       ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
           content:
               Text('Registeration is done successfully, you can now signIN')));
-   
+
       Navigator.push(
         cont,
         MaterialPageRoute(
@@ -81,9 +80,8 @@ Future SignUp(BuildContext cont) async {
         ),
       );
     } else {
-      ScaffoldMessenger.of(cont).showSnackBar(SnackBar(
-          content:
-              Text('Registeration Failed')));
+      ScaffoldMessenger.of(cont)
+          .showSnackBar(SnackBar(content: Text('Registeration Failed')));
       print("Registeration Failed");
     }
   }
@@ -229,22 +227,6 @@ class _signupState extends State<signup> {
                     icon: Icons.person,
                     onchanged: ((String value) {
                       age = value;
-                    }),
-                    validateStatus: (value) {
-                      if (value!.isEmpty) {
-                        return 'Field must not be empty';
-                      }
-                      return null;
-                    },
-                  ),
-                  RoundedInputField(
-                    action: TextInputAction.go,
-                    controller: phoneController,
-                    type: TextInputType.phone,
-                    hinttext: "Phone number",
-                    icon: Icons.phone,
-                    onchanged: ((String value) {
-                      phone = value;
                     }),
                     validateStatus: (value) {
                       if (value!.isEmpty) {

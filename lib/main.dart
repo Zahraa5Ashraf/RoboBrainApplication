@@ -87,10 +87,14 @@ class _healthcareState extends State<healthcare> {
   }
 
   gettokenfcm() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    try {
+      FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    Token.deviceToken = (await messaging.getToken())!;
-    print('Device Token: ${Token.deviceToken}');
+      Token.deviceToken = (await messaging.getToken())!;
+      print('FCM Token: ${Token.deviceToken}');
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   // gettoken() async {
@@ -113,7 +117,6 @@ class _healthcareState extends State<healthcare> {
     if (Tokenid != null) {
       setState(() {
         token = Tokenid;
-        print('token user:$token');
       });
       getinfo();
     }

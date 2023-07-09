@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Token {
   static double chairlatitude = 39.1290;
@@ -36,11 +37,14 @@ class Token {
   static var countryuser = '';
   static String phoneuser = '';
   static String bdateuser = 'g';
+    static  Position? position;
+
   static var photofile = 'Upload Picture';
   static var password = 'ggggggg';
   static DateTime birthdate = DateTime(2023, 4, 5);
   static String deviceToken = '';
   static String fcmKey = '';
+  static String googleApiKey = 'AIzaSyAP4C-a8BDQFXENf2MokLJHkvf3sTBmnfk';
   static String devicetokeennn =
       'csYSIjP5TQa9j37kwlPf7r:APA91bE5-kQz17VtJ2DFB8aFSEB-Hc1nq2uguUXggFkgI3-LA7ebt5TIZLa06NtU_wlsaXosa5dVVbbcP8aEop87ee9wVxD_UvPO3PQfu0I6WGFqf10daJbNqJ-bjHk_N79C4B-uZ8IJ';
   static String servertoken =

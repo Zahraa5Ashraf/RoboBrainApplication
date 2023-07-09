@@ -1,10 +1,14 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
+// ignore_for_file: camel_case_types, non_constant_identifier_names, use_build_context_synchronously
 
 import 'dart:convert';
-
+import 'package:healthcare/views/login/components/roundedbutton.dart';
+import 'package:healthcare/views/login/components/roundedinputfield.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:healthcare/constants.dart';
 import '../global.dart';
+import '../login/components/body.dart';
 import 'addwheelchair.dart';
 import 'gridview.dart';
 
@@ -17,7 +21,13 @@ class addchair extends StatefulWidget {
 
 bool trackpatient = true;
 bool addwheelchair = false;
-
+final ButtonStyle flatbuttonstyle = TextButton.styleFrom(
+  padding: const EdgeInsets.symmetric(
+    vertical: 20,
+    horizontal: 40,
+  ),
+  backgroundColor: kPrimaryColor,
+);
 final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
   foregroundColor: kPlaceholder3,
   backgroundColor: Colors.white,
@@ -50,7 +60,8 @@ class _addchairState extends State<addchair> {
   }
 
   int counter = 0;
-
+  String idchair = '';
+  String ppass = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,6 +113,7 @@ class _addchairState extends State<addchair> {
                             style: raisedButtonStyle,
                             onPressed: () {
                               if (Token.selectedwheelchair != -1) {
+                                editWheelchair();
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -122,7 +134,9 @@ class _addchairState extends State<addchair> {
                           width: 157.5,
                           child: ElevatedButton(
                             style: raisedButtonStyle,
-                            onPressed: () {},
+                            onPressed: () {
+                              delete();
+                            },
                             child: const Text(
                               "Delete",
                               style: TextStyle(
@@ -164,5 +178,167 @@ class _addchairState extends State<addchair> {
             ],
           )),
     );
+  }
+
+  editWheelchair() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32.r),
+      ),
+      builder: (_) => SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: 200,
+            top: 32.h,
+            left: 16.w,
+            right: 16.w,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RoundedInputField(
+                action: TextInputAction.go,
+                onchanged: ((value) {
+                  setState(() {
+                    idchair = value;
+                  });
+                }),
+                controller: null,
+                hinttext: 'Chair ID',
+                icon: Icons.wheelchair_pickup,
+                validateStatus: (value) {
+                  return null;
+                },
+                type: TextInputType.number,
+              ),
+              RoundedInputField(
+                action: TextInputAction.go,
+                onchanged: ((value) {
+                  setState(() {
+                    ppass = value;
+                  });
+                }),
+                controller: null,
+                hinttext: 'Password',
+                icon: Icons.lock,
+                validateStatus: (value) {
+                  return null;
+                },
+                type: TextInputType.text,
+              ),
+              Container(
+                margin: const EdgeInsets.only(
+                  top: 5,
+                  bottom: 15,
+                ),
+                width: 315,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(29),
+                  child: TextButton(
+                    style: flatbuttonstyle,
+                    onPressed: () {
+                      _save2();
+                    },
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(
+                        color: kPlaceholder3,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void delete() async {
+    try {
+      Map<String, dynamic> body = {
+        "chair_id": idchair,
+        "password": ppass,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url =
+          Uri.parse("${Token.server}patient/info/${Token.selectedchairid}");
+
+      var response = await http.delete(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": "Bearer $token"
+          },
+          body: jsonBody,
+          encoding: encoding);
+
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode > 300) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Failed to delete')));
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Wheelchair deleted successfully')));
+        setState(() {
+          Navigator.pop(context);
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _save2() async {
+    try {
+      Map<String, dynamic> body = {
+        "chair_id": idchair,
+        "password": ppass,
+      };
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
+
+      var url = Uri.parse(
+          "${Token.server}patient/chair-update/${Token.selectedchairid}");
+
+      var response = await http.put(url,
+          headers: {
+            'content-Type': 'application/json',
+            "Authorization": "Bearer $token"
+          },
+          body: jsonBody,
+          encoding: encoding);
+
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode > 300) {
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text(
+                    "failed to delete",
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                ));
+      } else {
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Text(
+                    "wheelchair is deleted successfully",
+                    style: TextStyle(color: Colors.greenAccent),
+                  ),
+                ));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:healthcare/views/login/components/body.dart';
 
 import 'package:healthcare/views/map.dart';
+import 'package:healthcare/views/services/globalfunction.dart';
 
 //import 'package:http/http.dart' as http;
 
@@ -51,6 +52,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    getcurrentLocation();
+    // TODO: implement initState
+    super.initState();
   }
 
   @override

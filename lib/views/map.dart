@@ -1,7 +1,10 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, prefer_const_constructors
 
 import 'dart:async';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:healthcare/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -18,17 +21,25 @@ class map extends StatefulWidget {
 class _mapState extends State<map> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  final CameraPosition _kwheelchair = CameraPosition(
+    target: LatLng(Token.chairlatitude, Token.chairlongitude),
+    zoom: 15,
+  );
+  LatLng sourceLocation = LatLng(Token.chairlatitude, Token.chairlongitude);
+  LatLng destiation =
+      LatLng(Token.position!.latitude, Token.position!.longitude);
+  List<LatLng> polylineCoordinates = [];
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+  static final Polyline _kpolyline = Polyline(
+    polylineId: const PolylineId('polylineID'),
+    points: [
+      LatLng(Token.chairlatitude, Token.chairlongitude),
+      LatLng(Token.position!.latitude, Token.position!.longitude),
+    ],
+    width: 5,
+    color: kPrimary2,
   );
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
   Timer? _timer;
 
   Future<void> sensorupdate(Timer timer) async {
@@ -84,25 +95,72 @@ class _mapState extends State<map> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('map'),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+        ),
+        title: const Text(
+          'Map',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  'assets/images/animatedbackground.gif'), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
       ),
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
+      body: Token.position == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : GoogleMap(
+              mapType: MapType.hybrid,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              polylines: {
+                _kpolyline,
+              },
+              initialCameraPosition: CameraPosition(
+                  target: destiation,
+                  // LatLng(position!.latitude, position!.longitude),
+                  zoom: 14),
+              markers: {
+                Marker(
+                  markerId: const MarkerId("source"),
+                  infoWindow: InfoWindow(title: 'wheelchair '),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueMagenta),
+                  position: sourceLocation,
+                ),
+                Marker(
+                  markerId: MarkerId("destination"),
+                  infoWindow: InfoWindow(title: Token.first_nameuser),
+                  position: destiation,
+                ),
+              },
+            ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
+        onPressed: () {
+          setState(() {
+            _findwheelchair();
+          });
+        },
+        label: const Text('Find Wheelchair'),
+        icon: const Icon(Icons.wheelchair_pickup_rounded),
       ),
     );
   }
 
-  Future<void> _goToTheLake() async {
+  Future<void> _findwheelchair() async {
     final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    controller.animateCamera(CameraUpdate.newCameraPosition(_kwheelchair));
   }
 }

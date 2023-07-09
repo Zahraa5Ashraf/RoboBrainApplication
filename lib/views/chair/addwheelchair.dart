@@ -44,7 +44,7 @@ class _AddwheelchairState extends State<Addwheelchair> {
   String plastname = '';
   String ppass = '';
   String page = '';
-  String pgender = '';
+  String pgender = 'Male';
   String dropdownValue = 'Male';
   SingingCharacter? _character = SingingCharacter.TrackPatient;
 
@@ -320,7 +320,8 @@ class _AddwheelchairState extends State<Addwheelchair> {
     };
     String jsonBody = json.encode(body);
     final encoding = Encoding.getByName('utf-8');
-
+    print(body);
+    print(jsonBody);
     var url = Uri.parse("${Token.server}patient/info");
 
     var response = await http.post(url,
