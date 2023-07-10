@@ -23,6 +23,10 @@ class _mapState extends State<map> {
     target: LatLng(Token.chairlatitude, Token.chairlongitude),
     zoom: 15,
   );
+  final CameraPosition _caregiver = CameraPosition(
+    target: LatLng(Token.position!.latitude, Token.position!.longitude),
+    zoom: 15,
+  );
   LatLng sourceLocation = LatLng(Token.chairlatitude, Token.chairlongitude);
   LatLng destiation =
       LatLng(Token.position!.latitude, Token.position!.longitude);
@@ -88,6 +92,7 @@ class _mapState extends State<map> {
   //   _mapController.dispose();
   //   super.dispose();
   // }
+  var title = 'Find Wheelchair';
 
   @override
   Widget build(BuildContext context) {
@@ -147,12 +152,24 @@ class _mapState extends State<map> {
             ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          setState(() {
+          if (title == 'Find Wheelchair') {
             _findwheelchair();
+          } else if (title == 'locate me') {
+            _locateme();
+          }
+          setState(() {
+            title =
+                (title == 'Find Wheelchair') ? 'locate me' : 'Find Wheelchair';
           });
         },
-        label: const Text('Find Wheelchair'),
-        icon: const Icon(Icons.wheelchair_pickup_rounded),
+        label: Text(
+          '$title',
+          style: TextStyle(color: kPlaceholder3),
+        ),
+        icon: const Icon(
+          Icons.wheelchair_pickup_rounded,
+          color: kPlaceholder3,
+        ),
       ),
     );
   }
@@ -160,5 +177,10 @@ class _mapState extends State<map> {
   Future<void> _findwheelchair() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kwheelchair));
+  }
+
+  Future<void> _locateme() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_caregiver));
   }
 }

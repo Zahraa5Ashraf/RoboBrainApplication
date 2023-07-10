@@ -87,101 +87,110 @@ class _addchairState extends State<addchair> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
-      body: Padding(
-          padding: const EdgeInsets.only(
-            left: 20.0,
-            right: 20.0,
+      // backgroundColor: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/images/background-gradient.png'), // Replace with your image path
+            fit: BoxFit.cover,
           ),
-          child: ListView(
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 60,
-                    ),
-                    const SizedBox(height: 380, child: GridDashboard()),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SizedBox(
-                          width: 157.5,
-                          child: ElevatedButton(
-                            style: raisedButtonStyle,
-                            onPressed: () {
-                              if (Token.selectedwheelchair != -1) {
-                                editWheelchair();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text(
-                                            'you have to select wheelchair!')));
-                              }
-                            },
-                            child: const Text(
-                              "Edit",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: kPrimaryColor,
+        ),
+        child: Padding(
+            padding: const EdgeInsets.only(
+              left: 20.0,
+              right: 20.0,
+            ),
+            child: ListView(
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      const SizedBox(height: 480, child: GridDashboard()),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(
+                            width: 157.5,
+                            child: ElevatedButton(
+                              style: raisedButtonStyle,
+                              onPressed: () {
+                                if (Token.selectedwheelchair != -1) {
+                                  editWheelchair();
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'you have to select wheelchair!')));
+                                }
+                              },
+                              child: const Text(
+                                "Edit",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: kPrimaryColor,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 157.5,
-                          child: ElevatedButton(
-                            style: raisedButtonStyle2,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Addwheelchair()),
-                              );
-                            },
-                            child: const Text(
-                              "New +",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: kPlaceholder3,
+                          SizedBox(
+                            width: 157.5,
+                            child: ElevatedButton(
+                              style: raisedButtonStyle2,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Addwheelchair()),
+                                );
+                              },
+                              child: const Text(
+                                "New +",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: kPlaceholder3,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    // SizedBox(
-                    //   height: 50,
-                    //   width: 335,
-                    //   child: ElevatedButton(
-                    //     style: raisedButtonStyle2,
-                    //     onPressed: () {
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => const Addwheelchair()),
-                    //       );
-                    //     },
-                    //     child: const Text(
-                    //       "Add wheelchair",
-                    //       style: TextStyle(
-                    //         fontSize: 20,
-                    //         color: Colors.white,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      // SizedBox(
+                      //   height: 50,
+                      //   width: 335,
+                      //   child: ElevatedButton(
+                      //     style: raisedButtonStyle2,
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => const Addwheelchair()),
+                      //       );
+                      //     },
+                      //     child: const Text(
+                      //       "Add wheelchair",
+                      //       style: TextStyle(
+                      //         fontSize: 20,
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          )),
+              ],
+            )),
+      ),
     );
   }
 

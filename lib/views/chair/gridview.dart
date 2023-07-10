@@ -40,119 +40,128 @@ class _GridDashboardState extends State<GridDashboard> {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else if (snapshot.hasData) {
-            return GridView.builder(
-              itemCount: patients.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 18,
-                mainAxisSpacing: 18,
-              ),
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              itemBuilder: (context, index) {
-                Patient data = patients[index];
-                return GestureDetector(
-                  onDoubleTap: () async {
-                    setState(() {
-                      reload();
-                      selectedIndex = index;
+            if (patients.isEmpty) {
+              return Center(
+                child: Text(
+                  'No Wheelchairs added Yet!\n   Start tracking patients',
+                  style: TextStyle(color: ktextcolor2, fontSize: 20),
+                ),
+              );
+            } else {
+              return GridView.builder(
+                itemCount: patients.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 18,
+                  mainAxisSpacing: 18,
+                ),
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                itemBuilder: (context, index) {
+                  Patient data = patients[index];
+                  return GestureDetector(
+                    onDoubleTap: () async {
+                      setState(() {
+                        reload();
+                        selectedIndex = index;
 
-                      Token.selectedchairid = data.chair_parcode_id;
-                    });
+                        Token.selectedchairid = data.chair_parcode_id;
+                      });
 
-                    try {
-                      var url = Uri.parse(
-                          "${Token.server}patient/info/${Token.selectedchairid}");
-                      var response = await http.get(
-                        url,
-                        headers: {
-                          'content-Type': 'application/json',
-                          "Authorization": "Bearer $token"
-                        },
-                      );
-                      /*remove this comments*/
-                      var data = json.decode(response.body);
+                      try {
+                        var url = Uri.parse(
+                            "${Token.server}patient/info/${Token.selectedchairid}");
+                        var response = await http.get(
+                          url,
+                          headers: {
+                            'content-Type': 'application/json',
+                            "Authorization": "Bearer $token"
+                          },
+                        );
+                        /*remove this comments*/
+                        var data = json.decode(response.body);
 
-                      globalusername = data["first_name"].toString();
-                      globalage = data["age"].toString();
-                      globalgender = data["gender"].toString();
-                      //   print(data);
-                    } catch (e) {
-                      //   print(e.toString());
-                    }
-                  },
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = index;
+                        globalusername = data["first_name"].toString();
+                        globalage = data["age"].toString();
+                        globalgender = data["gender"].toString();
+                        //   print(data);
+                      } catch (e) {
+                        //   print(e.toString());
+                      }
+                    },
+                    onTap: () {
+                      setState(() {
+                        selectedIndex = index;
 
-                      Token.selectedwheelchair = index;
-                      Token.selectedchairid = data.chair_parcode_id;
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: selectedIndex == index ? kPrimaryColor : color,
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                            child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    selectedIndex = -1;
-                                    Token.selectedwheelchair = -1;
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.cancel_rounded,
-                                  color: color,
-                                ))),
-                        Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              const SizedBox(
-                                height: 14,
-                              ),
-                              Text(
-                                'ID:${data.chair_parcode_id}',
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    color: selectedIndex == index
-                                        ? kPlaceholder2
-                                        : ktextcolor1,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                        Token.selectedwheelchair = index;
+                        Token.selectedchairid = data.chair_parcode_id;
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: selectedIndex == index ? kPrimaryColor : color,
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                              child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      selectedIndex = -1;
+                                      Token.selectedwheelchair = -1;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.cancel_rounded,
+                                    color: color,
+                                  ))),
+                          Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                                Text(
+                                  'ID:${data.chair_parcode_id}',
+                                  style: GoogleFonts.openSans(
+                                    textStyle: TextStyle(
+                                      color: selectedIndex == index
+                                          ? kPlaceholder2
+                                          : ktextcolor1,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                data.patient_name,
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    color: selectedIndex == index
-                                        ? kPlaceholder2
-                                        : ktextcolor2,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  data.patient_name,
+                                  style: GoogleFonts.openSans(
+                                    textStyle: TextStyle(
+                                      color: selectedIndex == index
+                                          ? kPlaceholder2
+                                          : ktextcolor2,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 14,
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 14,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
+                  );
+                },
+              );
+            }
           } else {
             return Center(
               child: CircularProgressIndicator(),
@@ -202,8 +211,6 @@ class _GridDashboardState extends State<GridDashboard> {
   }
 
   Future<List> fetchPatients() async {
-   
-
     try {
       var url2 = Uri.parse("${Token.server}caregiver/assigned-patients");
       var response = await http.get(

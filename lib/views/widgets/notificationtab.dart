@@ -1,4 +1,5 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
+import 'package:healthcare/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -102,77 +103,94 @@ class _notificationtabState extends State<notificationtab> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
-      body: FutureBuilder(
-        future: getData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (snapshot.hasData) {
-            return Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: LiquidPullToRefresh(
-                key: _refreshIndicatorKey,
-                onRefresh: getData,
-                child: ListView(
-                  children: [
-                    SingleChildScrollView(
-                      child: Column(children: [
-                        const SizedBox(
-                          height: 40,
-                        ),
-
-                        SizedBox(
-                          height: 600,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            physics: const ScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: notifications.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  notifcard(
-                                    notifications[index],
-                                  ),
-                                  const Divider(
-                                    height: 20,
-                                  ),
-                                ],
-                              );
-                            },
+      //backgroundColor: Colors.white,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/images/background-gradient.png'), // Replace with your image path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: FutureBuilder(
+          future: getData(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (snapshot.hasData) {
+              return Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: LiquidPullToRefresh(
+                  key: _refreshIndicatorKey,
+                  onRefresh: getData,
+                  child: ListView(
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(children: [
+                          const SizedBox(
+                            height: 40,
                           ),
-                        ),
 
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        // Center(
-                        //   child: SizedBox(
-                        //     height: 70,
-                        //     width: 200,
-                        //     child: ElevatedButton(
-                        //         onPressed: () {
-                        //           //  getLocation();
-                        //           //    showNotification();
-                        //           //   getData();
-                        //         },
-                        //         child: const Text(
-                        //           'Click her',
-                        //           style: TextStyle(color: ktextcolor2),
-                        //         )),
-                        //   ),
-                        // ),
-                      ]),
-                    ),
-                  ],
+                          SizedBox(
+                            height: 600,
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              physics: const ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: notifications.length,
+                              itemBuilder: (context, index) {
+                                if (notifications.isEmpty) {
+                                  return const Text(
+                                    'EMPTY',
+                                    style: TextStyle(
+                                        fontSize: 25, color: ktextcolor1),
+                                  );
+                                } else {
+                                  return Column(
+                                    children: [
+                                      notifcard(
+                                        notifications[index],
+                                      ),
+                                      const Divider(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          // Center(
+                          //   child: SizedBox(
+                          //     height: 70,
+                          //     width: 200,
+                          //     child: ElevatedButton(
+                          //         onPressed: () {
+                          //           //  getLocation();
+                          //           //    showNotification();
+                          //           //   getData();
+                          //         },
+                          //         child: const Text(
+                          //           'Click her',
+                          //           style: TextStyle(color: ktextcolor2),
+                          //         )),
+                          //   ),
+                          // ),
+                        ]),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        },
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
   }

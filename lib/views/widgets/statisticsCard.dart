@@ -8,8 +8,7 @@ class stasticsCard extends StatelessWidget {
   const stasticsCard({
     super.key,
     required this.title,
-        required this.value,
-
+    required this.value,
   });
   final String title;
   final String value;
@@ -28,7 +27,7 @@ class stasticsCard extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: [
                   kPlaceholder3,
-                  kPlaceholder3,
+                  Colors.white,
                 ]),
           ),
           child: Column(

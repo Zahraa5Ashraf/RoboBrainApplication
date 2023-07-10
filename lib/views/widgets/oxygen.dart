@@ -118,65 +118,80 @@ class _oxygenState extends State<oxygen> {
             ),
           ),
         ),
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.only(
-              // top: 30.0,
-              ),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Expanded(
-              child: ClipRRect(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 25,
-                  ),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 20,
+        //   backgroundColor: Colors.white,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  'assets/images/background-gradient.png'), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+                // top: 30.0,
+                ),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Expanded(
+                child: ClipRRect(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 25,
+                    ),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/images/background-gradient.png'), // Replace with your image path
+                        fit: BoxFit.cover,
                       ),
-                      Text(
-                        '  SO2 = ${Token.oxygenreading.toString()} 💧',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                          color: ktextcolor2,
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Center(
-                        child: Container(child: _getRadialGauge()),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          stasticsCard(
-                            title: 'Min',
-                            value: '$min',
+                        Text(
+                          '  SO2 = ${Token.oxygenreading.toString()} 💧',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                            color: ktextcolor2,
                           ),
-                          const stasticsCard(
-                            title: 'Normal',
-                            value: '90',
-                          ),
-                          stasticsCard(
-                            title: 'Max',
-                            value: '$max',
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Center(
+                          child: Container(child: _getRadialGauge()),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            stasticsCard(
+                              title: 'Min',
+                              value: '$min',
+                            ),
+                            const stasticsCard(
+                              title: 'Normal',
+                              value: '90',
+                            ),
+                            stasticsCard(
+                              title: 'Max',
+                              value: '$max',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );

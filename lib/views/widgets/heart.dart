@@ -268,7 +268,7 @@ class _HeartState extends State<Heart> {
             ),
           ),
         ),
-        backgroundColor: Colors.white,
+        //  backgroundColor: Colors.white,
         body: TabBarView(
           children: [
             Padding(
@@ -283,7 +283,13 @@ class _HeartState extends State<Heart> {
                       padding: const EdgeInsets.only(
                         top: 5,
                       ),
-                      color: Colors.white,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              'assets/images/background-gradient.png'), // Replace with your image path
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -293,16 +299,36 @@ class _HeartState extends State<Heart> {
                             Center(
                               child: _getRadialGauge(),
                             ),
-                            Container(
-                              width: 500,
-                              height: 223,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/heartbeat.gif'),
-                                ),
-                              ),
+                            SizedBox(
+                              height: 15,
                             ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                stasticsCard(
+                                  title: 'Min',
+                                  value: '$min',
+                                ),
+                                const stasticsCard(
+                                  title: 'Normal',
+                                  value: '120',
+                                ),
+                                stasticsCard(
+                                  title: 'Max',
+                                  value: '$max',
+                                ),
+                              ],
+                            ),
+                            // Container(
+                            //   width: 500,
+                            //   height: 223,
+                            //   decoration: const BoxDecoration(
+                            //     image: DecorationImage(
+                            //       image:
+                            //           AssetImage('assets/images/heartbeat.gif'),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -320,7 +346,7 @@ class _HeartState extends State<Heart> {
                 });
               },
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(0.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -329,7 +355,13 @@ class _HeartState extends State<Heart> {
                         padding: const EdgeInsets.only(
                           top: 5,
                         ),
-                        color: Colors.white,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'assets/images/background-gradient.png'), // Replace with your image path
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
@@ -352,24 +384,6 @@ class _HeartState extends State<Heart> {
                               ),
                               const SizedBox(
                                 height: 30,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  stasticsCard(
-                                    title: 'Min',
-                                    value: '$min',
-                                  ),
-                                  const stasticsCard(
-                                    title: 'Normal',
-                                    value: '120',
-                                  ),
-                                  stasticsCard(
-                                    title: 'Max',
-                                    value: '$max',
-                                  ),
-                                ],
                               ),
                             ],
                           ),

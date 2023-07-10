@@ -85,8 +85,16 @@ class _editProfileState extends State<editProfile> {
             ),
           ),
         ),
-        backgroundColor: Colors.white,
+        //   backgroundColor: Colors.white,
         body: Container(
+          height: 850,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  'assets/images/background-gradient.png'), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
           padding: EdgeInsets.only(left: 20.0, right: 20.0),
           child: Form(
             key: _formKey,
@@ -225,9 +233,6 @@ class _editProfileState extends State<editProfile> {
                       style: TextStyle(fontSize: 17),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 40.h,
                 ),
               ],
             ),

@@ -80,228 +80,238 @@ class _AddwheelchairState extends State<Addwheelchair> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              Column(
-                children: <Widget>[
-                  ListTile(
-                    title: const Text(
-                      'Track Patient',
-                      style: TextStyle(fontSize: 19, color: ktextcolor1),
-                    ),
-                    leading: Radio<SingingCharacter>(
-                      value: SingingCharacter.TrackPatient,
-                      groupValue: _character,
-                      onChanged: (SingingCharacter? value) {
-                        setState(() {
-                          _character = value;
-                        });
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text(
-                      'Add New Wheelchair',
-                      style: TextStyle(fontSize: 19, color: ktextcolor1),
-                    ),
-                    leading: Radio<SingingCharacter>(
-                      value: SingingCharacter.AddNewWheelchair,
-                      groupValue: _character,
-                      onChanged: (SingingCharacter? value) {
-                        setState(() {
-                          _character = value;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              if (_character == SingingCharacter.TrackPatient)
+      //   backgroundColor: Colors.white,
+      body: Container(
+        height: 850,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                'assets/images/background-gradient.png'), // Replace with your image path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
                 Column(
-                  children: [
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          idchair = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'Chair ID',
-                      icon: Icons.wheelchair_pickup,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.number,
-                    ),
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          ppass = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'Password',
-                      icon: Icons.lock,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.text,
-                    ),
-                    const SizedBox(height: 10),
-                    roundedbutton(
-                        size: size,
-                        flatbuttonstyle: flatbuttonstyle,
-                        text: 'Save',
-                        textcolor: Colors.white,
-                        press: () {
-                          _save2();
-                        }),
-                  ],
-                ),
-              if (_character == SingingCharacter.AddNewWheelchair)
-                Column(
-                  children: [
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          idchair = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'Chair ID',
-                      icon: Icons.wheelchair_pickup,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.number,
-                    ),
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          ppass = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'Password',
-                      icon: Icons.lock,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.text,
-                    ),
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          pfirstname = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'First name',
-                      icon: Icons.person,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.text,
-                    ),
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          plastname = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'Last name',
-                      icon: Icons.person,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.text,
-                    ),
-                    RoundedInputField(
-                      action: TextInputAction.go,
-                      onchanged: ((value) {
-                        setState(() {
-                          page = value;
-                        });
-                      }),
-                      controller: null,
-                      hinttext: 'Age',
-                      icon: Icons.app_registration_sharp,
-                      validateStatus: (value) {
-                        return null;
-                      },
-                      type: TextInputType.number,
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: 315,
-                      height: 60,
-                      child: DropdownButtonFormField(
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide:
-                                const BorderSide(color: Colors.white, width: 1),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide:
-                                const BorderSide(color: Colors.white, width: 1),
-                          ),
-                          filled: true,
-                          fillColor: kPrimaryLightColor,
-                        ),
-                        dropdownColor: kPrimaryLightColor,
-                        value: dropdownValue,
-                        onChanged: (String? newValue) {
+                  children: <Widget>[
+                    ListTile(
+                      title: const Text(
+                        'Track Patient',
+                        style: TextStyle(fontSize: 19, color: ktextcolor1),
+                      ),
+                      leading: Radio<SingingCharacter>(
+                        value: SingingCharacter.TrackPatient,
+                        groupValue: _character,
+                        onChanged: (SingingCharacter? value) {
                           setState(() {
-                            dropdownValue = newValue!;
-                            pgender = newValue;
-                            //      print(pgender);
+                            _character = value;
                           });
                         },
-                        items: <String>['Male', 'Female']
-                            .map<DropdownMenuItem<String>>(
-                          (String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                    fontSize: 15, color: ktextcolor2),
-                              ),
-                            );
-                          },
-                        ).toList(),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    roundedbutton(
-                        size: size,
-                        flatbuttonstyle: flatbuttonstyle,
-                        text: 'Save',
-                        textcolor: Colors.white,
-                        press: () {
-                          _save();
-                          // setState(() {
-                          //   //  items[index].title = idchair;
-                          // });
-                        }),
+                    ListTile(
+                      title: const Text(
+                        'Add New Wheelchair',
+                        style: TextStyle(fontSize: 19, color: ktextcolor1),
+                      ),
+                      leading: Radio<SingingCharacter>(
+                        value: SingingCharacter.AddNewWheelchair,
+                        groupValue: _character,
+                        onChanged: (SingingCharacter? value) {
+                          setState(() {
+                            _character = value;
+                          });
+                        },
+                      ),
+                    ),
                   ],
                 ),
-            ],
+                const SizedBox(height: 20),
+                if (_character == SingingCharacter.TrackPatient)
+                  Column(
+                    children: [
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            idchair = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'Chair ID',
+                        icon: Icons.wheelchair_pickup,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.number,
+                      ),
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            ppass = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'Password',
+                        icon: Icons.lock,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.text,
+                      ),
+                      const SizedBox(height: 10),
+                      roundedbutton(
+                          size: size,
+                          flatbuttonstyle: flatbuttonstyle,
+                          text: 'Save',
+                          textcolor: Colors.white,
+                          press: () {
+                            _save2();
+                          }),
+                    ],
+                  ),
+                if (_character == SingingCharacter.AddNewWheelchair)
+                  Column(
+                    children: [
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            idchair = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'Chair ID',
+                        icon: Icons.wheelchair_pickup,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.number,
+                      ),
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            ppass = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'Password',
+                        icon: Icons.lock,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.text,
+                      ),
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            pfirstname = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'First name',
+                        icon: Icons.person,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.text,
+                      ),
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            plastname = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'Last name',
+                        icon: Icons.person,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.text,
+                      ),
+                      RoundedInputField(
+                        action: TextInputAction.go,
+                        onchanged: ((value) {
+                          setState(() {
+                            page = value;
+                          });
+                        }),
+                        controller: null,
+                        hinttext: 'Age',
+                        icon: Icons.app_registration_sharp,
+                        validateStatus: (value) {
+                          return null;
+                        },
+                        type: TextInputType.number,
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        width: 315,
+                        height: 60,
+                        child: DropdownButtonFormField(
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 1),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(50),
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 1),
+                            ),
+                            filled: true,
+                            fillColor: kPrimaryLightColor,
+                          ),
+                          dropdownColor: kPrimaryLightColor,
+                          value: dropdownValue,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                              pgender = newValue;
+                              //      print(pgender);
+                            });
+                          },
+                          items: <String>['Male', 'Female']
+                              .map<DropdownMenuItem<String>>(
+                            (String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: const TextStyle(
+                                      fontSize: 15, color: ktextcolor2),
+                                ),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      roundedbutton(
+                          size: size,
+                          flatbuttonstyle: flatbuttonstyle,
+                          text: 'Save',
+                          textcolor: Colors.white,
+                          press: () {
+                            _save();
+                            // setState(() {
+                            //   //  items[index].title = idchair;
+                            // });
+                          }),
+                    ],
+                  ),
+              ],
+            ),
           ),
         ),
       ),
@@ -387,38 +397,54 @@ class _AddwheelchairState extends State<Addwheelchair> {
         encoding: encoding);
 
     print(response.body);
-    //  print(response.statusCode);
+    print(response.statusCode);
     if (response.statusCode == 404) {
-      showDialog(
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        showDialog(
           context: context,
           builder: (_) => const AlertDialog(
-                content: Text(
-                  "No Patient currently use this chair.",
-                  style: TextStyle(color: Colors.redAccent),
-                ),
-              ));
+            content: Text(
+              "No Patient currently use this chair.",
+              style: TextStyle(color: Colors.redAccent),
+            ),
+          ),
+        );
+      });
     } else if (response.statusCode == 400) {
-      showDialog(
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        showDialog(
           context: context,
           builder: (_) => const AlertDialog(
-                content: Text(
-                  "Chair ID or Password Invalid",
-                  style: TextStyle(color: Colors.redAccent),
-                ),
-              ));
-    } else if (response.statusCode > 200) {
-      showDialog(
+            content: Text(
+              "Chair ID or Password Invalid",
+              style: TextStyle(color: Colors.redAccent),
+            ),
+          ),
+        );
+      });
+    } else {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        showDialog(
           context: context,
           builder: (_) => const AlertDialog(
-                content: Text(
-                  "patient is added successfully",
-                  style: TextStyle(color: Colors.greenAccent),
-                ),
-              ));
-      setState(() {
-        Navigator.pop(context);
+            content: Text(
+              "patient is added successfully",
+              style: TextStyle(color: Colors.greenAccent),
+            ),
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'patient is added successfully, Start tracking your patient'),
+          ),
+        );
       });
     }
+
+    setState(() {
+      Navigator.pop(context);
+    });
   }
 }
 

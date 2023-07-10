@@ -121,73 +121,88 @@ class _tempratureState extends State<temprature> {
             ),
           ),
         ),
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: const EdgeInsets.only(
-              // top: 30.0,
-              ),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Expanded(
-              child: ClipRRect(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 25,
-                    //  left: 25,
-                    // right: 25,
-                  ),
-                  color: Colors.white,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 60,
-                        ),
-                        Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Container(
-                                child: _getRadialGauge(),
-                              ),
-                              Column(
-                                children: [
-                                  stasticsCard(
-                                    title: 'Max',
-                                    value: '$max',
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  const stasticsCard(
-                                    title: 'Normal',
-                                    value: '37',
-                                  ),
-                                  const SizedBox(
-                                    height: 30,
-                                  ),
-                                  stasticsCard(
-                                    title: 'Min',
-                                    value: '$min',
-                                  ),
-                                ],
-                              ),
-                            ],
+        //  backgroundColor: Colors.white,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                  'assets/images/background-gradient.png'), // Replace with your image path
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+                // top: 30.0,
+                ),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Expanded(
+                child: ClipRRect(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 25,
+                      //  left: 25,
+                      // right: 25,
+                    ),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/images/background-gradient.png'), // Replace with your image path
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 60,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const SizedBox(
-                          width: 80,
-                        ),
-                      ],
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  child: _getRadialGauge(),
+                                ),
+                                Column(
+                                  children: [
+                                    stasticsCard(
+                                      title: 'Max',
+                                      value: '$max',
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    const stasticsCard(
+                                      title: 'Normal',
+                                      value: '37',
+                                    ),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    stasticsCard(
+                                      title: 'Min',
+                                      value: '$min',
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const SizedBox(
+                            width: 80,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );
