@@ -22,6 +22,8 @@ class temprature extends StatefulWidget {
 var tempratureValue = 37.0;
 
 class _tempratureState extends State<temprature> {
+  var min = 35.0;
+  var max = 39.0;
   Timer? _timer;
   Future<void> sensorupdate(Timer timer) async {
     try {
@@ -37,6 +39,12 @@ class _tempratureState extends State<temprature> {
       if (mounted) {
         setState(() {
           tempratureValue = data["temperature"];
+          if (tempratureValue < Token.tempreading) {
+            min = tempratureValue;
+          }
+          if (tempratureValue > Token.tempreading) {
+            max = tempratureValue;
+          }
           Token.tempreading = tempratureValue;
 
           if (tempratureValue > 37.0 || tempratureValue < 35.0) {
@@ -142,25 +150,25 @@ class _tempratureState extends State<temprature> {
                               Container(
                                 child: _getRadialGauge(),
                               ),
-                              const Column(
+                              Column(
                                 children: [
                                   stasticsCard(
                                     title: 'Max',
-                                    value: '46',
+                                    value: '$max',
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30,
                                   ),
-                                  stasticsCard(
-                                    title: 'Avg',
+                                  const stasticsCard(
+                                    title: 'Normal',
                                     value: '37',
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 30,
                                   ),
                                   stasticsCard(
                                     title: 'Min',
-                                    value: '35',
+                                    value: '$min',
                                   ),
                                 ],
                               ),

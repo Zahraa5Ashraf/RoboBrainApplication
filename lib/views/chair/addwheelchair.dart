@@ -406,7 +406,7 @@ class _AddwheelchairState extends State<Addwheelchair> {
                   style: TextStyle(color: Colors.redAccent),
                 ),
               ));
-    } else {
+    } else if (response.statusCode > 200) {
       showDialog(
           context: context,
           builder: (_) => const AlertDialog(

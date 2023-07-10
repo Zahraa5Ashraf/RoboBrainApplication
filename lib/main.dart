@@ -7,9 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healthcare/views/Welcome.dart';
 import 'package:healthcare/views/login/Login.dart';
 import 'package:healthcare/views/login/components/body.dart';
+import 'package:healthcare/views/services/globalfunction.dart';
 
 import 'package:healthcare/views/services/notif_service.dart';
 import 'package:http/http.dart' as http;
+import 'package:workmanager/workmanager.dart';
 import 'dart:convert';
 import '/views/global.dart';
 import 'package:healthcare/network/dio_helper.dart';
@@ -18,18 +20,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'components/theme.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
-    'high_importance_channel', // id
-    'High Importance Notifications', // title
-    description:
-        'This channel is used for important notifications.', // description
-    importance: Importance.high,
-    playSound: true);
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  description:
+      'This channel is used for important notifications.', // description
+  importance: Importance.high,
+  playSound: true,
+);
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  // print('A bg message just showed up :  ${message.messageId}');
 }
 
 Future<void> main() async {
@@ -48,6 +50,7 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
+
   NotificationService().initNotification();
   runApp(const healthcare());
 }
@@ -56,6 +59,23 @@ class healthcare extends StatefulWidget {
   const healthcare({super.key});
 
   State<healthcare> createState() => _healthcareState();
+}
+
+void registerPeriodicTask() {
+  try {
+    Workmanager().registerPeriodicTask(
+      "task",
+      "started",
+      initialDelay: Duration(seconds: 10),
+    );
+  } catch (e) {
+    print(e.toString());
+  }
+}
+
+void callbackDispatcher() {
+  sensorcheck();
+  print('hi');
 }
 
 class _healthcareState extends State<healthcare> {
@@ -97,18 +117,33 @@ class _healthcareState extends State<healthcare> {
     }
   }
 
-  // gettoken() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   Tokenid = prefs.get('token');
-  // }
-
   @override
   void initState() {
+    try {
+      Workmanager().registerPeriodicTask(
+        "task",
+        "started",
+        initialDelay: Duration(seconds: 10),
+      );
+    } catch (e) {
+      print(e.toString());
+    }
+    initWorkManager(); // Initialize Workmanager
+
     super.initState();
     checkLoginStatus();
     gettokenfcm();
   }
 
+/**WORK MANAGER */
+  void initWorkManager() {
+    Workmanager().initialize(
+      callbackDispatcher, // The callback method that will be executed when the task is triggered
+    );
+    registerPeriodicTask(); // Register the periodic task
+  }
+
+/**WORK MANAGER */
   var Tokenid;
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();

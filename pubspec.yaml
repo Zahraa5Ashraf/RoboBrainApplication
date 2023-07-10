@@ -45,6 +45,7 @@ dependencies:
   email_auth: ^1.0.0
   syncfusion_flutter_gauges: ^22.1.36
   syncfusion_flutter_charts: ^22.1.36
+  workmanager: ^0.5.1
 
 
   

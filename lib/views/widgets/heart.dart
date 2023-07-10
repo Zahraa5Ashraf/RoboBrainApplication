@@ -20,6 +20,8 @@ class Heart extends StatefulWidget {
   State<Heart> createState() => _HeartState();
 }
 
+var min = 80.0;
+var max = 180.0;
 List<ChartData> data = [];
 ChartSeriesController? _chartSeriesController;
 
@@ -40,6 +42,12 @@ class _HeartState extends State<Heart> {
       if (mounted) {
         setState(() {
           heartdouble = data["pulse_rate"];
+          if (heartdouble < Token.heartreading) {
+            min = heartdouble;
+          }
+          if (heartdouble > Token.heartreading) {
+            max = heartdouble;
+          }
           Token.heartreading = heartdouble;
 
           if (heartdouble > 160.0 || heartdouble < 50.0) {
@@ -345,21 +353,21 @@ class _HeartState extends State<Heart> {
                               const SizedBox(
                                 height: 30,
                               ),
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   stasticsCard(
                                     title: 'Min',
-                                    value: '80',
+                                    value: '$min',
                                   ),
-                                  stasticsCard(
-                                    title: 'Avg',
+                                  const stasticsCard(
+                                    title: 'Normal',
                                     value: '120',
                                   ),
                                   stasticsCard(
                                     title: 'Max',
-                                    value: '180',
+                                    value: '$max',
                                   ),
                                 ],
                               ),

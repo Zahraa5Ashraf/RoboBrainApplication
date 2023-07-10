@@ -202,6 +202,8 @@ class _GridDashboardState extends State<GridDashboard> {
   }
 
   Future<List> fetchPatients() async {
+   
+
     try {
       var url2 = Uri.parse("${Token.server}caregiver/assigned-patients");
       var response = await http.get(
@@ -228,8 +230,13 @@ class _GridDashboardState extends State<GridDashboard> {
             patient_id: data['patient_id'],
             patient_name: data['patient_name'],
           );
+          int chairParcodeId = data[
+              'chair_parcode_id']; // Extract the chair_parcode_id from the data
+
           setState(() {
             patients.add(patient);
+            Token.chairParcodeIds
+                .add(chairParcodeId); // Add the chair_parcode_id to the list
           });
         }
 

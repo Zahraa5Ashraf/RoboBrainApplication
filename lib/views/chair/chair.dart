@@ -133,15 +133,20 @@ class _addchairState extends State<addchair> {
                         SizedBox(
                           width: 157.5,
                           child: ElevatedButton(
-                            style: raisedButtonStyle,
+                            style: raisedButtonStyle2,
                             onPressed: () {
-                              delete();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Addwheelchair()),
+                              );
                             },
                             child: const Text(
-                              "Delete",
+                              "New +",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: kPrimaryColor,
+                                color: kPlaceholder3,
                               ),
                             ),
                           ),
@@ -151,27 +156,27 @@ class _addchairState extends State<addchair> {
                     const SizedBox(
                       height: 15,
                     ),
-                    SizedBox(
-                      height: 50,
-                      width: 335,
-                      child: ElevatedButton(
-                        style: raisedButtonStyle2,
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Addwheelchair()),
-                          );
-                        },
-                        child: const Text(
-                          "Add wheelchair",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    //   width: 335,
+                    //   child: ElevatedButton(
+                    //     style: raisedButtonStyle2,
+                    //     onPressed: () {
+                    //       Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) => const Addwheelchair()),
+                    //       );
+                    //     },
+                    //     child: const Text(
+                    //       "Add wheelchair",
+                    //       style: TextStyle(
+                    //         fontSize: 20,
+                    //         color: Colors.white,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, camel_case_types, use_build_context_synchronously
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healthcare/constants.dart';
 import 'package:healthcare/views/services/globalfunction.dart';
+import 'package:workmanager/workmanager.dart';
+import '../../main.dart';
 import '../login/components/body.dart';
 import '/views/global.dart';
 import 'charityInput.dart';
@@ -43,6 +47,18 @@ class _editProfileState extends State<editProfile> {
     password = TextEditingController();
     email = TextEditingController(text: Token.emailuser);
   }
+
+  final ButtonStyle raisedButtonStyle2 = ElevatedButton.styleFrom(
+    backgroundColor: kPrimaryColor,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: const BorderSide(color: kPrimaryColor)),
+    //     onPressed: () {},
+
+    padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 10, right: 10),
+    //     color: Color.fromRGBO(0,160,227,1),
+    //     textColor: Colors.white,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -212,37 +228,6 @@ class _editProfileState extends State<editProfile> {
                 ),
                 SizedBox(
                   height: 40.h,
-                ),
-                SizedBox(
-                  height: 60,
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        kPrimaryColor,
-                      ),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            20.r,
-                          ),
-                        ),
-                      ),
-                      minimumSize: MaterialStateProperty.all(
-                        Size(
-                          double.infinity,
-                          56.h,
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      sendNotification(
-                          Token.devicetokeennn, 'test zahraa', 'test zoza');
-                    },
-                    child: Text(
-                      'post notification',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                  ),
                 ),
               ],
             ),

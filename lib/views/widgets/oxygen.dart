@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:healthcare/views/widgets/sensorReading.dart';
+import 'package:healthcare/views/HomePage.dart';
 import 'package:http/http.dart' as http;
 // ignore_for_file: camel_case_types
 
@@ -23,6 +23,8 @@ class oxygen extends StatefulWidget {
 }
 
 class _oxygenState extends State<oxygen> {
+  var min = 95.0;
+  var max = 100.0;
   Timer? _timer;
   Future<void> sensorupdate(Timer timer) async {
     try {
@@ -38,6 +40,12 @@ class _oxygenState extends State<oxygen> {
       if (mounted) {
         setState(() {
           oxratedouble = data["oximeter"];
+          if (oxratedouble < Token.oxygenreading) {
+            min = oxratedouble;
+          }
+          if (oxratedouble > Token.oxygenreading) {
+            max = oxratedouble;
+          }
           Token.oxygenreading = oxratedouble;
 
           if (oxratedouble < 95.0) {
@@ -146,20 +154,20 @@ class _oxygenState extends State<oxygen> {
                       const SizedBox(
                         height: 30,
                       ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           stasticsCard(
                             title: 'Min',
-                            value: '50',
+                            value: '$min',
                           ),
-                          stasticsCard(
-                            title: 'Avg',
+                          const stasticsCard(
+                            title: 'Normal',
                             value: '90',
                           ),
                           stasticsCard(
                             title: 'Max',
-                            value: '100',
+                            value: '$max',
                           ),
                         ],
                       ),

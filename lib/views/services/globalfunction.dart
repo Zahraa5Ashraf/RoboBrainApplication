@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -107,34 +109,77 @@ Future<void> sendNotification(
     // print('Failed to send notification');
   }
 }
-void getcurrentLocation() async {
 
-    bool serviceEnabled;
-    LocationPermission permission;
+Future<void> sensorcheck() async {
+  var sensorheartdouble = 0.0;
+  var sensortempdouble = 0.0;
+  var sensoroxratedouble = 0.0;
+  try {
+    for (int chairParcodeId in Token.chairParcodeIds) {
+      var url = Uri.parse("${Token.server}chair/data/$chairParcodeId");
 
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      print('Location services are disabled.');
-      return;
-    }
+      var response = await http.get(
+        url,
+        headers: {
+          'content-Type': 'application/json',
+          "Authorization": "Bearer $token"
+        },
+      );
+      var data = json.decode(response.body);
+      print(data);
 
-    // Request location permissions
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        print('Location permissions are denied.');
-        return;
+      sensorheartdouble = data["pulse_rate"];
+      sensortempdouble = data["temperature"];
+      sensoroxratedouble = data["oximeter"];
+
+      if (sensorheartdouble > 160.0 || sensorheartdouble < 50.0) {
+        sendNotification('${Token.devicetokeennn}', 'Chair ID $chairParcodeId',
+            'Heart Rate Emergency, value =$sensorheartdouble');
+        postnotification('HeartRate', sensorheartdouble, chairParcodeId);
+      }
+      if (sensortempdouble > 37.0 || sensortempdouble < 35.0) {
+        sendNotification('${Token.devicetokeennn}', 'Chair ID $chairParcodeId',
+            'Tempratue Emergency, value =$sensortempdouble');
+        postnotification('TempRate', sensortempdouble, chairParcodeId);
+      }
+      if (sensoroxratedouble < 94) {
+        sendNotification('${Token.devicetokeennn}', 'Chair ID $chairParcodeId',
+            'Oxygen Emergency, value =$sensoroxratedouble');
+        postnotification('OxygRate', sensoroxratedouble, chairParcodeId);
       }
     }
-
-    // Get the current position
-    Token.position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-      
-    );
+  } catch (e) {
+    // print(e.toString());
   }
+}
+
+void getcurrentLocation() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Check if location services are enabled
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    print('Location services are disabled.');
+    return;
+  }
+
+  // Request location permissions
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      print('Location permissions are denied.');
+      return;
+    }
+  }
+
+  // Get the current position
+  Token.position = await Geolocator.getCurrentPosition(
+    desiredAccuracy: LocationAccuracy.high,
+  );
+}
+
 Future<void> removeTokenFromSharedPreferences() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String tokenKey = 'token'; // Replace with your actual token key
