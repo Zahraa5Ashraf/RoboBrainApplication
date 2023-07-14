@@ -27,8 +27,8 @@ class _mapState extends State<map> {
     target: LatLng(Token.position!.latitude, Token.position!.longitude),
     zoom: 15,
   );
-  LatLng sourceLocation = LatLng(Token.chairlatitude, Token.chairlongitude);
-  LatLng destiation =
+  LatLng destiation = LatLng(Token.chairlatitude, Token.chairlongitude);
+  LatLng sourceLocation =
       LatLng(Token.position!.latitude, Token.position!.longitude);
   List<LatLng> polylineCoordinates = [];
 
@@ -44,7 +44,7 @@ class _mapState extends State<map> {
 
   Timer? _timer;
 
-  Future<void> sensorupdate(Timer timer) async {
+  Future<void> updateWheelchairLocation() async {
     try {
       var url = Uri.parse(
           "${Token.server}caregiver/location/${Token.selectedchairid}");
@@ -59,12 +59,19 @@ class _mapState extends State<map> {
       var data = json.decode(response.body);
       print(data);
       setState(() {
+        destiation = LatLng(data["latitude"], data["longitude"]);
         Token.chairlatitude = data["latitude"];
         Token.chairlongitude = data["longitude"];
       });
     } catch (e) {
-      // print(e.toString());
+      print(e.toString());
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
   }
 
   @override
@@ -73,18 +80,25 @@ class _mapState extends State<map> {
     super.dispose();
   }
 
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 3), sensorupdate);
-  }
+void startTimer() {
+  _timer = Timer.periodic(const Duration(minutes: 1), (_) async {
+    await updateWheelchairLocation();
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      target: destiation,
+      zoom: 14,
+    )));
+
+    setState(() {
+      sourceLocation = LatLng(Token.chairlatitude, Token.chairlongitude);
+    });
+  });
+}
+
 
   void stopTimer() {
     _timer?.cancel();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    startTimer();
   }
 
   // @override

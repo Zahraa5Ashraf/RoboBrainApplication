@@ -34,6 +34,72 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
+const fetchBackground = "fetchBackground";
+
+void callbackDispatcher() {
+  Workmanager workmanager = Workmanager();
+  workmanager.executeTask((task, inputData) async {
+    switch (task) {
+      case "fetchBackground":
+        Future<void> sensorcheck() async {
+          var sensorheartdouble = 0.0;
+          var sensortempdouble = 0.0;
+          var sensoroxratedouble = 0.0;
+          try {
+            for (int chairParcodeId in Token.chairParcodeIds) {
+              var url = Uri.parse("${Token.server}chair/data/$chairParcodeId");
+
+              var response = await http.get(
+                url,
+                headers: {
+                  'content-Type': 'application/json',
+                  "Authorization": "Bearer $token"
+                },
+              );
+              var data = json.decode(response.body);
+              print(data);
+
+              sensorheartdouble = data["pulse_rate"];
+              sensortempdouble = data["temperature"];
+              sensoroxratedouble = data["oximeter"];
+
+              if (sensorheartdouble > 160.0 || sensorheartdouble < 50.0) {
+                sendNotification(
+                    '${Token.devicetokeennn}',
+                    'Chair ID $chairParcodeId',
+                    'Heart Rate Emergency, value =$sensorheartdouble');
+                postnotification(
+                    'HeartRate', sensorheartdouble, chairParcodeId);
+                print('heart emergency');
+              }
+              if (sensortempdouble > 37.0 || sensortempdouble < 35.0) {
+                sendNotification(
+                    '${Token.devicetokeennn}',
+                    'Chair ID $chairParcodeId',
+                    'Tempratue Emergency, value =$sensortempdouble');
+                postnotification('TempRate', sensortempdouble, chairParcodeId);
+                print('temp emergency');
+              }
+              if (sensoroxratedouble < 94) {
+                sendNotification(
+                    '${Token.devicetokeennn}',
+                    'Chair ID $chairParcodeId',
+                    'Oxygen Emergency, value =$sensoroxratedouble');
+                postnotification(
+                    'OxygRate', sensoroxratedouble, chairParcodeId);
+                print('oxygen emergency');
+              }
+            }
+          } catch (e) {
+            // print(e.toString());
+          }
+        }
+        break;
+    }
+    return Future.value(true);
+  });
+}
+
 Future<void> main() async {
   DioHelper.init();
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +116,10 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-
+  Workmanager workmanager = Workmanager();
+  workmanager.initialize(callbackDispatcher);
+  workmanager.registerPeriodicTask("fetchBackgroundTask", "fetchBackground",
+      frequency: Duration(minutes: 1));
   NotificationService().initNotification();
   runApp(const healthcare());
 }
@@ -71,11 +140,6 @@ void registerPeriodicTask() {
   } catch (e) {
     print(e.toString());
   }
-}
-
-void callbackDispatcher() {
-  sensorcheck();
-  print('hi');
 }
 
 class _healthcareState extends State<healthcare> {

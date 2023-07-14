@@ -10,10 +10,9 @@ class Token {
   static double chairlongitude = -122.2930;
 
   static int caregiverid = 0;
-  static String server =
-      'https://caregiver-fastapi-bf7f5c929f08.herokuapp.com/';
-   static  List<int> chairParcodeIds =
-        []; // Create an empty list to store the chair_parcode_id values
+  static String server = 'http://13.48.27.223:8000/';
+  static List<int> chairParcodeIds =
+      []; // Create an empty list to store the chair_parcode_id values
   static int counter = 0;
   static int selectedwheelchair = -1;
   static var token = "";

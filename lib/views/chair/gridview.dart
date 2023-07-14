@@ -217,10 +217,10 @@ class _GridDashboardState extends State<GridDashboard> {
         url2,
         headers: {
           'content-Type': 'application/json',
-          "Authorization": " Token $token"
+          "Authorization": " Bearer $token"
         },
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         final assignedPatients = jsonData['assigned_patients'];
